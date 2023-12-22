@@ -14,6 +14,8 @@ class GlobalController extends GetxController {
   Color getThemeColor() => _theme.value == 'dark'
       ? const Color.fromARGB(255, 31, 37, 45)
       : Colors.white;
+  Color getTextColorTwo() =>
+      _theme.value == 'dark' ? Colors.grey.shade400 : Colors.grey.shade700;
 
   @override
   void onInit() {
@@ -21,8 +23,10 @@ class GlobalController extends GetxController {
     if (_isLoading.isTrue) getLocation();
   }
 
-  void setTheme(String themeType) {
-    _theme.value = themeType;
+  void setTheme() {
+    print(_theme.value);
+    _theme.value = _theme.value == 'dark' ? 'light' : 'dark';
+    print('** change theme **');
     update(); // Trigger UI update
   }
 
@@ -54,8 +58,9 @@ class GlobalController extends GetxController {
         // Update our data Location
         _longitude.value = value.longitude;
         _latitude.value = value.latitude;
+        _isLoading.value = false;
       });
-    } catch (e) { 
+    } catch (e) {
       return Future.error('Error getting location: $e');
     }
   }
