@@ -5,4 +5,4 @@ import 'package:flutter/animation.dart';
 import 'package:dio/dio.dart';
 
 part 'setting_model.dart';
-part 'weather_model.dart';
+part 'home_model.dart';
