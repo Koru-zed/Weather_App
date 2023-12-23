@@ -15,8 +15,7 @@ class _HeaderState extends State<Header> {
   String _city = "";
   String dateTime = DateFormat('yMMMMd').format(DateTime.now());
 
-  final GlobalController globalController =
-      Get.put(GlobalController());
+  final GlobalController globalController = Get.put(GlobalController());
 
   @override
   void initState() {

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/controller.dart';
@@ -23,26 +22,27 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SafeArea(
-        child: Obx(() => _controller.loading
+        body: SafeArea(
+      child: Obx(
+        () => _controller.loading
             ? Center(
                 child: CircularProgressIndicator(color: Colors.blue),
               )
-            :  Column(
+            : Column(
                 children: [
                   Container(
                     alignment: Alignment.topRight,
                     child: IconButton(
-                      onPressed: () => _controller.switchTheme(),
-                      icon: Icon(
-                        Icons.dark_mode_outlined,
-                        color: Theme.of(context).colorScheme.secondary,
-                    )),
+                        onPressed: () => _controller.switchTheme(),
+                        icon: Icon(
+                          Icons.dark_mode_outlined,
+                          color: Theme.of(context).colorScheme.secondary,
+                        )),
                   ),
                   const Header(),
                 ],
               ),
-            ),
+      ),
     ));
   }
 
@@ -52,5 +52,3 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 }
-
-

@@ -20,7 +20,6 @@ class GlobalController extends GetxController {
   final RxDouble _longitude = 0.0.obs;
   final MyTheme myTheme = Get.put(MyTheme());
 
-
   bool get loading => _isLoading.value;
   double get getLatitude => _latitude.value;
   double get getLongitude => _longitude.value;
