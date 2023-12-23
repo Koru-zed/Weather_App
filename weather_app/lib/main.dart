@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/pages/pages_library.dart';
+import 'package:get/get.dart';
+import 'pages/home_page.dart';
+import 'models/theme_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,13 +10,14 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
-
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: WeatherHome(),
-      title: "Weather",
+    return GetMaterialApp(
+      title: 'Flutter Demo',
+      theme: CustomTheme.lightTheme,
+      darkTheme: CustomTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      home: const Home(),
     );
   }
 }

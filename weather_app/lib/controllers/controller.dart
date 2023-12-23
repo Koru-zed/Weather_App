@@ -1,21 +1,29 @@
-part of './controller_library.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:geolocator/geolocator.dart';
+
+class MyTheme extends GetxController {
+  // initializing with the current theme of the device
+  Rx<ThemeMode> currentTheme = ThemeMode.system.obs;
+
+  // function to switch between themes
+  void switchTheme() {
+    currentTheme.value = currentTheme.value == ThemeMode.light
+        ? ThemeMode.dark
+        : ThemeMode.light;
+  }
+}
 
 class GlobalController extends GetxController {
   final RxBool _isLoading = true.obs;
   final RxDouble _latitude = 0.0.obs;
   final RxDouble _longitude = 0.0.obs;
-  final RxString _theme = 'dark'.obs;
+  final MyTheme myTheme = Get.put(MyTheme());
+
 
   bool get loading => _isLoading.value;
   double get getLatitude => _latitude.value;
   double get getLongitude => _longitude.value;
-
-  Color getTextColor() => _theme.value == 'dark' ? Colors.white : Colors.black;
-  Color getThemeColor() => _theme.value == 'dark'
-      ? const Color.fromARGB(255, 31, 37, 45)
-      : Colors.white;
-  Color getTextColorTwo() =>
-      _theme.value == 'dark' ? Colors.grey.shade400 : Colors.grey.shade700;
 
   @override
   void onInit() {
@@ -23,11 +31,9 @@ class GlobalController extends GetxController {
     if (_isLoading.isTrue) getLocation();
   }
 
-  void setTheme() {
-    print(_theme.value);
-    _theme.value = _theme.value == 'dark' ? 'light' : 'dark';
-    print('** change theme **');
-    update(); // Trigger UI update
+  void switchTheme() {
+    myTheme.switchTheme();
+    Get.changeThemeMode(myTheme.currentTheme.value);
   }
 
   getLocation() async {

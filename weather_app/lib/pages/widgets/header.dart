@@ -1,4 +1,8 @@
-part of './widgets_library.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:intl/intl.dart';
+import '../../controllers/controller.dart';
 
 class Header extends StatefulWidget {
   const Header({Key? key}) : super(key: key);
@@ -12,7 +16,7 @@ class _HeaderState extends State<Header> {
   String dateTime = DateFormat('yMMMMd').format(DateTime.now());
 
   final GlobalController globalController =
-      Get.put(GlobalController(), permanent: true);
+      Get.put(GlobalController());
 
   @override
   void initState() {
@@ -40,23 +44,23 @@ class _HeaderState extends State<Header> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+          margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
           alignment: Alignment.topLeft,
           child: Text(
             _city,
             style: TextStyle(
-                color: globalController.getTextColor(),
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 35,
                 fontWeight: FontWeight.w500),
           ),
         ),
         Container(
-          margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+          margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
           alignment: Alignment.topLeft,
           child: Text(
             dateTime,
             style: TextStyle(
-                color: globalController.getTextColorTwo(),
+                color: Theme.of(context).colorScheme.tertiary,
                 fontSize: 16,
                 fontWeight: FontWeight.w500),
           ),
