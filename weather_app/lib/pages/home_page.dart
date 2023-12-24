@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/controller.dart';
-import 'widgets/header.dart';
+import 'package:weather_app/controllers/controller.dart';
+import 'package:weather_app/pages/widgets/header.dart';
+import 'package:weather_app/pages/widgets/current_weather.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -40,6 +41,9 @@ class _HomeState extends State<Home> {
                         )),
                   ),
                   const Header(),
+                  // CurrentWeather(currentDay: _controller.weatherData.current )
+                  CurrentWeather(currentDay: _controller.weatherData.current!)
+
                 ],
               ),
       ),
