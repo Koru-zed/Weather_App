@@ -64,6 +64,7 @@ class GlobalController extends GetxController {
     }
 
     // Get current Location
+    bool isDataAvailable = await checkDataAvailable();
     try {
       await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.high)
@@ -72,7 +73,7 @@ class GlobalController extends GetxController {
         _longitude.value = value.longitude;
         _latitude.value = value.latitude;
 
-        if (!checkDataAvailable()) {
+        if (isDataAvailable) {
           try {
             FetchData()
                 .processData(_latitude.value, _longitude.value)
@@ -93,8 +94,16 @@ class GlobalController extends GetxController {
     }
   }
 
-  bool checkDataAvailable() {
-    return loadFromPreferences() == null;
+  Future<bool> checkDataAvailable() async {
+    WeatherData? check;
+    print('before');
+    try {
+      check = await loadFromPreferences();
+    } catch (e) {
+      print('not safe in 102');
+    }
+    print('safe');
+    return check == null;
   }
 
   // Save WeatherData to SharedPreferences

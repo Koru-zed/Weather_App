@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/controllers/controller.dart';
+import 'package:weather_app/models/weather_data/current_day.dart';
 import 'package:weather_app/pages/widgets/header.dart';
 import 'package:weather_app/pages/widgets/current_weather.dart';
+import 'package:weather_app/pages/widgets/hourly_weather.dart';
+import 'package:weather_app/models/weather_data/current_day.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -21,12 +24,20 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
+    final CurrentDay? current = _controller.weatherData.current;
+    final CurrentWeather currentDay;
+    if (current == null) {
+      currentDay = CurrentWeather(currentDay: CurrentDay());
+    } else {
+      currentDay = CurrentWeather(currentDay: current);
+    }
+
     return Scaffold(
         body: SafeArea(
       child: Obx(
         () => _controller.loading
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(color: Colors.blue),
               )
             : Column(
@@ -42,8 +53,10 @@ class _HomeState extends State<Home> {
                   ),
                   const Header(),
                   // CurrentWeather(currentDay: _controller.weatherData.current )
-                  CurrentWeather(currentDay: _controller.weatherData.current!)
+                  currentDay,
+                  currentDay.moreDetails(context),
 
+                  // HourlyWeather(currentDay: _controller.weatherData.current!),
                 ],
               ),
       ),

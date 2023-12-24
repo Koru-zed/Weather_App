@@ -1,3 +1,4 @@
+
 class CurrentDay {
   String? datetime;
   double? temp;
@@ -9,6 +10,7 @@ class CurrentDay {
   double? windspeed;
   double? pressure;
   double? visibility;
+  double? cloudcover;
   String? conditions;
   String? icon;
   String? sunrise;
@@ -26,6 +28,7 @@ class CurrentDay {
     this.windspeed,
     this.pressure,
     this.visibility,
+    this.cloudcover,
     this.conditions,
     this.icon,
     this.sunrise,
@@ -36,7 +39,7 @@ class CurrentDay {
   factory CurrentDay.fromJson(Map<String, dynamic> json) {
     return CurrentDay(
       datetime: json['datetime'] as String?,
-      temp: _roundTemperature(json['temp'] as double?),
+      temp: json['temp'] as double?,
       humidity: json['humidity'] as double?,
       precipprob: json['precipprob'] as double?,
       snow: json['snow'] as double?,
@@ -45,6 +48,7 @@ class CurrentDay {
       windspeed: json['windspeed'] as double?,
       pressure: json['pressure'] as double?,
       visibility: json['visibility'] as double?,
+      cloudcover: json['cloudcover'] as double?,
       conditions: json['conditions'] as String?,
       icon: json['icon'] as String?,
       sunrise: json['sunrise'] as String?,
