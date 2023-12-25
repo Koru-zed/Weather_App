@@ -67,7 +67,7 @@ class _HeaderState extends State<Header> {
         ),
         Container(
           alignment: Alignment.bottomRight,
-          margin: EdgeInsets.only(right: 10),
+          margin: const EdgeInsets.only(right: 10),
           child: const ChangeUnits(),
         ),
       ],

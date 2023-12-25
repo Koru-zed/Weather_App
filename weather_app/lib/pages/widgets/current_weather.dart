@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/models/weather_data/current_day.dart';
-import 'package:flutter/material.dart';
-import 'package:weather_app/models/weather_data/current_day.dart';
 
 class CurrentWeather extends StatefulWidget {
   final CurrentDay currentDay;
