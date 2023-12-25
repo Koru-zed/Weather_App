@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
-import '../../controllers/controller.dart';
+import 'package:weather_app/controllers/controller.dart';
+import 'package:weather_app/pages/widgets/change_units.dart';
 
 class Header extends StatefulWidget {
   const Header({Key? key}) : super(key: key);
@@ -63,6 +64,11 @@ class _HeaderState extends State<Header> {
                 fontSize: 16,
                 fontWeight: FontWeight.w500),
           ),
+        ),
+        Container(
+          alignment: Alignment.bottomRight,
+          margin: EdgeInsets.only(right: 10),
+          child: const ChangeUnits(),
         ),
       ],
     );

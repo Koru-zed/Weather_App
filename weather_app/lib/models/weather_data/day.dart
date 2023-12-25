@@ -1,7 +1,3 @@
-import 'dart:ffi';
-
-import 'hour.dart';
-
 class Day {
   String? datetime;
   double? tempmax;

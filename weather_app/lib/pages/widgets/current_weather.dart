@@ -10,63 +10,17 @@ class CurrentWeather extends StatefulWidget {
 
   @override
   _CurrentWeatherState createState() => _CurrentWeatherState();
-
-  // Public method for more details
-  Widget moreDetails(BuildContext context) {
-    final items = <String>['cloudcover', 'windspeed', 'humidity'];
-
-    String getDetail(String name) {
-      switch (name) {
-        case 'cloudcover':
-          return '${currentDay.cloudcover}';
-        case 'humidity':
-          return '${currentDay.humidity}';
-        case 'windspeed':
-          return '${currentDay.windspeed}';
-        // Add more cases for other properties
-        default:
-          throw Exception('Property $name not found');
-      }
-    }
-
-    return Container(
-      margin: const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(3, (index) {
-          return Column(
-            children: [
-              Container(
-                height: 60,
-                width: 60,
-                padding: const EdgeInsets.all(13),
-                decoration: BoxDecoration(
-                    color:
-                        Theme.of(context).colorScheme.tertiary.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(
-                      20,
-                    )),
-                child: Image.asset(
-                  'assets/icons/${items[index]}.png',
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(getDetail(items[index]),
-                  style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.bold))
-            ],
-          );
-        }),
-      ),
-    );
-  }
 }
 
 class _CurrentWeatherState extends State<CurrentWeather> {
   @override
   Widget build(BuildContext context) {
+    return Column(
+      children: [currentData(), moreDetails()],
+    );
+  }
+
+  Widget currentData() {
     return Container(
         margin: const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 15),
         child: Row(
@@ -111,5 +65,56 @@ class _CurrentWeatherState extends State<CurrentWeather> {
             ),
           ],
         ));
+  }
+
+  Widget moreDetails() {
+    final items = <String>['cloudcover', 'windspeed', 'humidity'];
+
+    String getDetail(String name) {
+      switch (name) {
+        case 'cloudcover':
+          return '${widget.currentDay.cloudcover}';
+        case 'humidity':
+          return '${widget.currentDay.humidity}';
+        case 'windspeed':
+          return '${widget.currentDay.windspeed}';
+        // Add more cases for other properties
+        default:
+          throw Exception('Property $name not found');
+      }
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 2),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(3, (index) {
+          return Column(
+            children: [
+              Container(
+                height: 60,
+                width: 60,
+                padding: const EdgeInsets.all(13),
+                decoration: BoxDecoration(
+                    color:
+                        Theme.of(context).colorScheme.tertiary.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(
+                      20,
+                    )),
+                child: Image.asset(
+                  'assets/icons/${items[index]}.png',
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(getDetail(items[index]),
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold))
+            ],
+          );
+        }),
+      ),
+    );
   }
 }

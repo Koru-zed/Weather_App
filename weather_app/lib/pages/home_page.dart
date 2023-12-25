@@ -25,13 +25,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     // Size size = MediaQuery.of(context).size;
-    final CurrentDay? current = _controller.weatherData.current;
-    final CurrentWeather currentDay;
-    if (current == null) {
-      currentDay = CurrentWeather(currentDay: CurrentDay());
-    } else {
-      currentDay = CurrentWeather(currentDay: current);
-    }
 
     return Scaffold(
         body: SafeArea(
@@ -52,9 +45,7 @@ class _HomeState extends State<Home> {
                         )),
                   ),
                   const Header(),
-                  // CurrentWeather(currentDay: _controller.weatherData.current )
-                  currentDay,
-                  currentDay.moreDetails(context),
+                  CurrentWeather(currentDay: _controller.weatherData.current!)
 
                   // HourlyWeather(currentDay: _controller.weatherData.current!),
                 ],
