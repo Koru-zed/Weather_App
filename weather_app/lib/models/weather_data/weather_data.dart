@@ -45,12 +45,12 @@ factory WeatherData.fromJson(Map<String, dynamic> json) => WeatherData(
         'current': current?.toJson(),
       };
 
-  double celsiusToFahrenheit(double celsius) {
-    return (celsius * 9 / 5) + 32;
-  }
+  double celsiusToFahrenheit(double? celsius) => double.parse(((celsius! * 9 / 5) + 32).toStringAsFixed(2));
 
-  double kilometersToMiles(double kilometers) {
-    return kilometers * 0.621371;
-  }
+  double fahrenheitToCelsius(double? fahrenheit) => double.parse(((5 / 9) * (fahrenheit! - 32)).toStringAsFixed(2));
+  
+  double kilometersToMiles(double? kilometers) => double.parse((kilometers! * 0.621371).toStringAsFixed(2));
+  
+  double milesToKilometers(double? miles) => double.parse((miles! / 0.621371).toStringAsFixed(2));
 
 }

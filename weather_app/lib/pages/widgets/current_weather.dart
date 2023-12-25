@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/models/weather_data/current_day.dart';
+import 'package:get/get.dart';
+import 'package:weather_app/controllers/controller.dart';
 
 class CurrentWeather extends StatefulWidget {
   final CurrentDay currentDay;
@@ -11,6 +13,9 @@ class CurrentWeather extends StatefulWidget {
 }
 
 class _CurrentWeatherState extends State<CurrentWeather> {
+
+  final GlobalController _controller = Get.put(GlobalController());
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,7 +26,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
   Widget currentData() {
     return Container(
         margin: const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 15),
-        child: Row(
+        child: Obx(() =>  Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
@@ -41,7 +46,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
             RichText(
               text: TextSpan(children: [
                 TextSpan(
-                  text: '${widget.currentDay.temp}',
+                  text: '${_controller.temp}',
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontSize: 60,
@@ -54,7 +59,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                       fontSize: 60),
                 ),
                 TextSpan(
-                  text: '   ${widget.currentDay.conditions}',
+                  text: '  ${widget.currentDay.conditions}',
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.tertiary,
                       fontSize: 15),
@@ -62,7 +67,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
               ]),
             ),
           ],
-        ));
+        )));
   }
 
   Widget moreDetails() {
@@ -71,11 +76,11 @@ class _CurrentWeatherState extends State<CurrentWeather> {
     String getDetail(String name) {
       switch (name) {
         case 'cloudcover':
-          return '${widget.currentDay.cloudcover}';
+          return '${_controller.cloudcover}%';
         case 'humidity':
-          return '${widget.currentDay.humidity}';
+          return '${_controller.humidity}%';
         case 'windspeed':
-          return '${widget.currentDay.windspeed}';
+          return '${_controller.windspeed}${_controller.units[1]}';
         // Add more cases for other properties
         default:
           throw Exception('Property $name not found');
@@ -84,7 +89,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
 
     return Container(
       margin: const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 2),
-      child: Row(
+      child: Obx(() => Row( 
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(3, (index) {
           return Column(
@@ -103,9 +108,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                   'assets/icons/${items[index]}.png',
                 ),
               ),
-              SizedBox(
-                height: 5,
-              ),
+              const SizedBox(height: 5,),
               Text(getDetail(items[index]),
                   style: const TextStyle(
                       fontSize: 15, fontWeight: FontWeight.bold))
@@ -113,6 +116,6 @@ class _CurrentWeatherState extends State<CurrentWeather> {
           );
         }),
       ),
-    );
+    ));
   }
 }

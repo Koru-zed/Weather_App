@@ -22,8 +22,13 @@ class GlobalController extends GetxController {
   final RxBool _isLoading = true.obs;
   final RxDouble _latitude = 0.0.obs;
   final RxDouble _longitude = 0.0.obs;
+  final RxDouble temp = 0.0.obs;
+  final RxDouble humidity = 0.0.obs;
+  final RxDouble windspeed = 0.0.obs;
+  final RxDouble cloudcover = 0.0.obs;
   final MyTheme myTheme = Get.put(MyTheme());
   final _weatherData = WeatherData().obs;
+   RxList<String> units = ['C', 'km'].obs;
   static String key = 'weather_data';
 
   bool get loading => _isLoading.value;
@@ -79,6 +84,12 @@ class GlobalController extends GetxController {
                 .processData(_latitude.value, _longitude.value)
                 .then((value) async {
               _weatherData.value = value;
+              temp.value = _weatherData.value.current?.temp ?? 0.0;
+              humidity.value = _weatherData.value.current?.humidity ?? 0.0;
+              windspeed.value = _weatherData.value.current?.windspeed ?? 0.0;
+              cloudcover.value = _weatherData.value.current?.cloudcover ?? 0.0;
+              print(
+                  'celsiusToFahrenheit ${weatherData.celsiusToFahrenheit(temp.value)}');
               await saveToPreferences();
               _isLoading.value = false;
             });

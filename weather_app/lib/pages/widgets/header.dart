@@ -44,7 +44,7 @@ class _HeaderState extends State<Header> {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          margin: const EdgeInsets.only(left: 20, right: 10, top: 20),
           alignment: Alignment.topLeft,
           child: Text(
             _city,
@@ -57,18 +57,19 @@ class _HeaderState extends State<Header> {
         Container(
           margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
           alignment: Alignment.topLeft,
-          child: Text(
-            dateTime,
-            style: TextStyle(
-                color: Theme.of(context).colorScheme.tertiary,
-                fontSize: 16,
-                fontWeight: FontWeight.w500),
-          ),
-        ),
-        Container(
-          alignment: Alignment.bottomRight,
-          margin: const EdgeInsets.only(right: 10),
-          child: const ChangeUnits(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                dateTime,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
+              ),
+              const ChangeUnits()
+            ],
+          )
         ),
       ],
     );
