@@ -9,10 +9,10 @@ class FetchData {
 
   Future<WeatherData> processData(lat, log) async {
     final String url =
-        "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$lat,$log?unitGroup=metric&key=$key&contentType=json";
+        "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$lat,$log/last2days/next5days?unitGroup=metric&key=$key&contentType=json";
 
     Response response = await dio.get(url);
-    print(response.data);
+    print(url);
     wetherData = WeatherData.fromJson(response.data);
 
     return wetherData!;

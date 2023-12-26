@@ -48,8 +48,8 @@ class ChangeUnitsState extends State<ChangeUnits> {
         (int index) => MenuItemButton(
           onPressed: () {
             if (index == 0 && _selectedMenu != items[0]) {
+              _controller.units = ['C', 'km'].obs; 
               if (_selectedMenu == items[1]) {
-                _controller.units = ['C', 'km'].obs; 
                 _controller.temp.value = _controller.weatherData
                     .fahrenheitToCelsius(_controller.temp.value);
                 _controller.windspeed.value =
@@ -59,8 +59,8 @@ class ChangeUnitsState extends State<ChangeUnits> {
                     _controller.weatherData.milesToKilometers(_controller.windspeed.value);
               }
             } else if (index == 1 && _selectedMenu != items[1]) {
+              _controller.units = ['F', 'miles'].obs; 
               if (_selectedMenu == items[0]) {
-                _controller.units = ['F', 'miles'].obs; 
                 _controller.temp.value = _controller.weatherData
                     .celsiusToFahrenheit(_controller.temp.value);
                 _controller.windspeed.value =
@@ -70,8 +70,8 @@ class ChangeUnitsState extends State<ChangeUnits> {
                     .celsiusToFahrenheit(_controller.temp.value);
               }
             } else if (index == 2 && _selectedMenu != items[2]) {
+              _controller.units = ['C', 'miles'].obs; 
               if (_selectedMenu == items[0]) {
-                _controller.units = ['C', 'miles'].obs; 
                 _controller.windspeed.value =
                     _controller.weatherData.kilometersToMiles(
                         _controller.windspeed.value);

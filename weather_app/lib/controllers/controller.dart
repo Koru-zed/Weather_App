@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:weather_app/models/weather_data/weather_data.dart';
 import 'package:weather_app/api/fetch_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weather_app/models/fake_data.dart';
 
 class MyTheme extends GetxController {
   // initializing with the current theme of the device
@@ -28,7 +29,7 @@ class GlobalController extends GetxController {
   final RxDouble cloudcover = 0.0.obs;
   final MyTheme myTheme = Get.put(MyTheme());
   final _weatherData = WeatherData().obs;
-   RxList<String> units = ['C', 'km'].obs;
+  RxList<String> units = ['C', 'km'].obs;
   static String key = 'weather_data';
 
   bool get loading => _isLoading.value;
@@ -77,27 +78,31 @@ class GlobalController extends GetxController {
         // Update our data Location
         _longitude.value = value.longitude;
         _latitude.value = value.latitude;
+        print(isDataAvailable);
 
-        if (isDataAvailable) {
-          try {
-            FetchData()
-                .processData(_latitude.value, _longitude.value)
-                .then((value) async {
-              _weatherData.value = value;
+        if (!isDataAvailable) {
+          // try {
+          //   FetchData()
+          //       .processData(_latitude.value, _longitude.value)
+          //       .then((value) async {
+              print('nice');
+              _weatherData.value = WeatherData.fromJson(fake_data);
+              print('not nice');
+              // _weatherData.value = value;
               temp.value = _weatherData.value.current?.temp ?? 0.0;
               humidity.value = _weatherData.value.current?.humidity ?? 0.0;
               windspeed.value = _weatherData.value.current?.windspeed ?? 0.0;
               cloudcover.value = _weatherData.value.current?.cloudcover ?? 0.0;
               print(
                   'celsiusToFahrenheit ${weatherData.celsiusToFahrenheit(temp.value)}');
-              await saveToPreferences();
+              // await saveToPreferences();
               _isLoading.value = false;
-            });
-          } catch (e) {
-            return Future.error('Error getting weather data: $e');
-          }
-        } else {
-          loadFromPreferences();
+        //     });
+        //   } catch (e) {
+        //     return Future.error('Error getting weather data: $e');
+        //   }
+        // } else {
+        //   loadFromPreferences();
         }
       });
     } catch (e) {
@@ -114,7 +119,7 @@ class GlobalController extends GetxController {
       print('not safe in 102');
     }
     print('safe');
-    return check == null;
+    return check != null;
   }
 
   // Save WeatherData to SharedPreferences

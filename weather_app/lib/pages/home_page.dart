@@ -39,6 +39,7 @@ class _HomeState extends State<Home> {
                     alignment: Alignment.topRight,
                     child: IconButton(
                         onPressed: () => _controller.switchTheme(),
+                        tooltip: 'Change Theme',
                         icon: Icon(
                           Icons.dark_mode_outlined,
                           color: Theme.of(context).colorScheme.secondary,
