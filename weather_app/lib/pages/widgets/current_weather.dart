@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/models/weather_data/current_day.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/controllers/controller.dart';
+import 'package:weather_app/pages/widgets/hourly_weather.dart';
 
 class CurrentWeather extends StatefulWidget {
   final CurrentDay currentDay;
@@ -18,13 +19,16 @@ class _CurrentWeatherState extends State<CurrentWeather> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [currentData(), moreDetails(), HourlyDetail()],
+      children: [currentData(), moreDetails(), HourlyWeather(currentDay: _controller.weatherData.days![2])],
     );
   }
 
   Widget currentData() {
+    final double margin_hoz = MediaQuery.of(context).size.width * 0.05;
+
     return Container(
-        margin: const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 10),
+        margin: EdgeInsets.only(
+            left: margin_hoz, right: margin_hoz, top: 5, bottom: 5),
         child: Obx(() => Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -71,6 +75,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
 
   Widget moreDetails() {
     final items = <String>['cloudcover', 'windspeed', 'humidity'];
+    final double margin_hoz = MediaQuery.of(context).size.width * 0.07;
 
     String getDetail(String name) {
       switch (name) {
@@ -87,7 +92,8 @@ class _CurrentWeatherState extends State<CurrentWeather> {
     }
 
     return Container(
-        margin: const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 2),
+        margin: EdgeInsets.only(
+            left: margin_hoz, right: margin_hoz, top: 5, bottom: 2),
         child: Obx(
           () => Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,14 +103,14 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                   Tooltip(
                     message: items[index],
                     child: Container(
-                      height: 60,
-                      width: 60,
+                      height: 55,
+                      width: 55,
                       padding: const EdgeInsets.all(13),
                       decoration: BoxDecoration(
                           color: Theme.of(context)
                               .colorScheme
                               .tertiary
-                              .withOpacity(0.3),
+                              .withOpacity(0.25),
                           borderRadius: BorderRadius.circular(
                             20,
                           )),
@@ -123,30 +129,5 @@ class _CurrentWeatherState extends State<CurrentWeather> {
             }),
           ),
         ));
-  }
-
-  Widget HourlyDetail() {
-    return Container(
-        child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: 12,
-            itemBuilder: (context, index) {
-              return Obx(() => GestureDetector(
-                    child: Container(
-                      height: 90,
-                      width: 50,
-                      color: Theme.of(context).,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('$index:00'),
-                          Container(
-                            child: Image.asset('assets/icons/.png'),
-                          ),
-                          Text('10°')
-                        ],
-                      ),
-                  )));
-            }));
   }
 }

@@ -1,3 +1,5 @@
+import 'package:weather_app/models/weather_data/hour.dart';
+
 class Day {
   String? datetime;
   double? tempmax;
@@ -17,6 +19,7 @@ class Day {
   String? conditions;
   String? description;
   String? icon;
+  List<Hour>? hours;
 
   Day({
     this.datetime,
@@ -37,6 +40,7 @@ class Day {
     this.conditions,
     this.description,
     this.icon,
+    this.hours
   });
 
   factory Day.fromJson(Map<String, dynamic> json) => Day(
@@ -58,6 +62,9 @@ class Day {
         conditions: json['conditions'] as String?,
         description: json['description'] as String?,
         icon: json['icon'] as String?,
+        hours: (json['hours'] as List<dynamic>?)
+            ?.map((e) => Hour.fromJson(e as Map<String, dynamic>))
+            .toList(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -79,6 +86,7 @@ class Day {
         'conditions': conditions,
         'description': description,
         'icon': icon,
+        'hours': hours?.map((e) => e.toJson()).toList()
       };
   
   static double _roundTemperature(double? temp) => (temp != null && temp > 10) ? temp.roundToDouble() : temp ?? 0.0; 

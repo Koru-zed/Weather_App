@@ -27,6 +27,7 @@ class GlobalController extends GetxController {
   final RxDouble humidity = 0.0.obs;
   final RxDouble windspeed = 0.0.obs;
   final RxDouble cloudcover = 0.0.obs;
+  final RxInt cardIndex = 0.obs;
   final MyTheme myTheme = Get.put(MyTheme());
   final _weatherData = WeatherData().obs;
   RxList<String> units = ['C', 'km'].obs;
@@ -53,58 +54,61 @@ class GlobalController extends GetxController {
     LocationPermission locationPermission;
 
     // Check Location Service
-    isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!isLocationServiceEnabled) {
-      return Future.error('Error: Location Service not enabled');
-    }
+    // isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    // if (!isLocationServiceEnabled) {
+    //   return Future.error('Error: Location Service not enabled');
+    // }
 
     // Check permissions
-    locationPermission = await Geolocator.checkPermission();
-    if (locationPermission == LocationPermission.deniedForever) {
-      return Future.error('Error: Permissions are deniedForever');
-    } else if (locationPermission == LocationPermission.denied) {
-      locationPermission = await Geolocator.requestPermission();
-      if (locationPermission == LocationPermission.denied) {
-        return Future.error('Error: Permission is denied');
-      }
-    }
+    // locationPermission = await Geolocator.checkPermission();
+    // if (locationPermission == LocationPermission.deniedForever) {
+    //   return Future.error('Error: Permissions are deniedForever');
+    // } else if (locationPermission == LocationPermission.denied) {
+    //   locationPermission = await Geolocator.requestPermission();
+    //   if (locationPermission == LocationPermission.denied) {
+    //     return Future.error('Error: Permission is denied');
+    //   }
+    // }
 
     // Get current Location
     bool isDataAvailable = await checkDataAvailable();
     try {
-      await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.high)
-          .then((value) {
-        // Update our data Location
-        _longitude.value = value.longitude;
-        _latitude.value = value.latitude;
-        print(isDataAvailable);
+      // await Geolocator.getCurrentPosition(
+      //         desiredAccuracy: LocationAccuracy.high)
+      //     .then((value) {
+      // Update our data Location
+      //_longitude.value = value.longitude;
+      //_latitude.value = value.latitude;
 
-        if (!isDataAvailable) {
-          // try {
-          //   FetchData()
-          //       .processData(_latitude.value, _longitude.value)
-          //       .then((value) async {
-              print('nice');
-              _weatherData.value = WeatherData.fromJson(fake_data);
-              print('not nice');
-              // _weatherData.value = value;
-              temp.value = _weatherData.value.current?.temp ?? 0.0;
-              humidity.value = _weatherData.value.current?.humidity ?? 0.0;
-              windspeed.value = _weatherData.value.current?.windspeed ?? 0.0;
-              cloudcover.value = _weatherData.value.current?.cloudcover ?? 0.0;
-              print(
-                  'celsiusToFahrenheit ${weatherData.celsiusToFahrenheit(temp.value)}');
-              // await saveToPreferences();
-              _isLoading.value = false;
+      print(isDataAvailable);
+
+      if (!isDataAvailable) {
+        // try {
+        //   FetchData()
+        //       .processData(_latitude.value, _longitude.value)
+        //       .then((value) async {
+        print('nice');
+        _weatherData.value = WeatherData.fromJson(fake_data);
+        print('not nice');
+        // _weatherData.value = value;
+        _latitude.value = _weatherData.value.latitude!;
+        _longitude.value = _weatherData.value.longitude!;
+        temp.value = _weatherData.value.current?.temp ?? 0.0;
+        humidity.value = _weatherData.value.current?.humidity ?? 0.0;
+        windspeed.value = _weatherData.value.current?.windspeed ?? 0.0;
+        cloudcover.value = _weatherData.value.current?.cloudcover ?? 0.0;
+        print(
+            'celsiusToFahrenheit ${weatherData.celsiusToFahrenheit(temp.value)}');
+        // await saveToPreferences();
+        _isLoading.value = false;
         //     });
         //   } catch (e) {
         //     return Future.error('Error getting weather data: $e');
         //   }
         // } else {
         //   loadFromPreferences();
-        }
-      });
+      }
+      // });
     } catch (e) {
       return Future.error('Error getting location: $e');
     }

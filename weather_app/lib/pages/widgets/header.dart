@@ -22,9 +22,10 @@ class _HeaderState extends State<Header> {
   void initState() {
     super.initState();
     // Delay the execution of getLocation by 0 milliseconds (immediately)
-    Future.delayed(Duration(milliseconds: 0), () {
-      getLocation(globalController.getLatitude, globalController.getLongitude);
-    });
+    // Future.delayed(Duration(milliseconds: 0), () {
+    //   getLocation(globalController.getLatitude, globalController.getLongitude);
+    // });
+    _city = "London";
   }
 
   getLocation(latitude, longitude) async {
@@ -44,7 +45,7 @@ class _HeaderState extends State<Header> {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsets.only(left: 20, right: 10, top: 20),
+          margin: const EdgeInsets.only(left: 20, right: 10, top: 5),
           alignment: Alignment.topLeft,
           child: Text(
             _city,
@@ -55,22 +56,21 @@ class _HeaderState extends State<Header> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-          alignment: Alignment.topLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                dateTime,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
-              ),
-              const ChangeUnits()
-            ],
-          )
-        ),
+            margin: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
+            alignment: Alignment.topLeft,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  dateTime,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500),
+                ),
+                const ChangeUnits()
+              ],
+            )),
       ],
     );
   }
