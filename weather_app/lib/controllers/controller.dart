@@ -74,6 +74,7 @@ class GlobalController extends GetxController {
 
     // Get current Location
     bool isDataAvailable = await checkDataAvailable();
+    print('is => ${isDataAvailable}');
     try {
       // await Geolocator.getCurrentPosition(
       //         desiredAccuracy: LocationAccuracy.high)
