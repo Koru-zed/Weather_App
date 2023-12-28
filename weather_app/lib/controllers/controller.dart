@@ -21,22 +21,24 @@ class MyTheme extends GetxController {
 
 class GlobalController extends GetxController {
   final RxBool _isLoading = true.obs;
-  final RxDouble _latitude = 0.0.obs;
-  final RxDouble _longitude = 0.0.obs;
-  final RxDouble temp = 0.0.obs;
-  final RxDouble humidity = 0.0.obs;
-  final RxDouble windspeed = 0.0.obs;
-  final RxDouble cloudcover = 0.0.obs;
+  // final RxDouble _latitude = 0.0.obs;
+  // final RxDouble _longitude = 0.0.obs;
+  // final RxDouble temp = 0.0.obs;
+  // final RxDouble humidity = 0.0.obs;
+  // final RxDouble windspeed = 0.0.obs;
+  // final RxDouble cloudcover = 0.0.obs;
   final RxInt cardIndex = 0.obs;
   final MyTheme myTheme = Get.put(MyTheme());
-  final _weatherData = WeatherData().obs;
+  final Rx<DateTime> currentTime = DateTime.now().obs;
+  final Rx<WeatherData> _weatherData = WeatherData().obs;
   RxList<String> units = ['C', 'km'].obs;
   static String key = 'weather_data';
 
   bool get loading => _isLoading.value;
-  double get getLatitude => _latitude.value;
-  double get getLongitude => _longitude.value;
+  // double get getLatitude => _latitude.value;
+  // double get getLongitude => _longitude.value;
   WeatherData get weatherData => _weatherData.value;
+  int get currentHourTime => currentTime.value.hour;
 
   @override
   void onInit() {
@@ -53,13 +55,13 @@ class GlobalController extends GetxController {
     bool isLocationServiceEnabled;
     LocationPermission locationPermission;
 
-    // Check Location Service
+    // // Check Location Service
     // isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
     // if (!isLocationServiceEnabled) {
     //   return Future.error('Error: Location Service not enabled');
     // }
 
-    // Check permissions
+    // // Check permissions
     // locationPermission = await Geolocator.checkPermission();
     // if (locationPermission == LocationPermission.deniedForever) {
     //   return Future.error('Error: Permissions are deniedForever');
@@ -87,18 +89,16 @@ class GlobalController extends GetxController {
         //   FetchData()
         //       .processData(_latitude.value, _longitude.value)
         //       .then((value) async {
-        print('nice');
         _weatherData.value = WeatherData.fromJson(fake_data);
-        print('not nice');
         // _weatherData.value = value;
-        _latitude.value = _weatherData.value.latitude!;
-        _longitude.value = _weatherData.value.longitude!;
-        temp.value = _weatherData.value.current?.temp ?? 0.0;
-        humidity.value = _weatherData.value.current?.humidity ?? 0.0;
-        windspeed.value = _weatherData.value.current?.windspeed ?? 0.0;
-        cloudcover.value = _weatherData.value.current?.cloudcover ?? 0.0;
-        print(
-            'celsiusToFahrenheit ${weatherData.celsiusToFahrenheit(temp.value)}');
+        // _latitude.value = _weatherData.value.latitude!.value;
+        // _longitude.value = _weatherData.value.longitude!.value;
+        // temp.value = _weatherData.value.current?.value.temp ?? 0.0;
+        // humidity.value = _weatherData.value.current?.value.humidity ?? 0.0;
+        // windspeed.value = _weatherData.value.current?.value.windspeed ?? 0.0;
+        // cloudcover.value = _weatherData.value.current?.value.cloudcover ?? 0.0;
+        // print(
+        //     'celsiusToFahrenheit ${weatherData.celsiusToFahrenheit(temp.value)}');
         // await saveToPreferences();
         _isLoading.value = false;
         //     });

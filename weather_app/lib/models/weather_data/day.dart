@@ -1,25 +1,26 @@
-import 'package:weather_app/models/weather_data/hour.dart';
+import 'package:get/get.dart';
+import 'hour.dart';
 
 class Day {
-  String? datetime;
-  double? tempmax;
-  double? tempmin;
-  double? temp;
-  double? humidity;
-  double? precipprob;
-  double? snow;
-  double? snowdepth;
-  double? windgust;
-  double? windspeed;
-  double? pressure;
-  double? visibility;
-  String? sunrise;
-  String? sunset;
-  double? moonphase;
-  String? conditions;
-  String? description;
-  String? icon;
-  List<Hour>? hours;
+  RxString? datetime;
+  RxDouble? tempmax;
+  RxDouble? tempmin;
+  RxDouble? temp;
+  RxDouble? humidity;
+  RxDouble? precipprob;
+  RxDouble? snow;
+  RxDouble? snowdepth;
+  RxDouble? windgust;
+  RxDouble? windspeed;
+  RxDouble? pressure;
+  RxDouble? visibility;
+  RxString? sunrise;
+  RxString? sunset;
+  RxDouble? moonphase;
+  RxString? conditions;
+  RxString? description;
+  RxString? icon;
+  RxList<Hour>? hours;
 
   Day({
     this.datetime,
@@ -40,55 +41,58 @@ class Day {
     this.conditions,
     this.description,
     this.icon,
-    this.hours
+    this.hours,
   });
 
   factory Day.fromJson(Map<String, dynamic> json) => Day(
-        datetime: json['datetime'] as String?,
-        tempmax: _roundTemperature(json['tempmax'] as double?),
-        tempmin: _roundTemperature(json['tempmin'] as double?),
-        temp: _roundTemperature(json['temp'] as double?),
-        humidity: json['humidity'] as double?,
-        precipprob: json['precipprob'] as double?,
-        snow: json['snow'] as double?,
-        snowdepth: json['snowdepth'] as double?,
-        windgust: json['windgust'] as double?,
-        windspeed: json['windspeed'] as double?,
-        pressure: json['pressure'] as double?,
-        visibility: json['visibility'] as double?,
-        sunrise: json['sunrise'] as String?,
-        sunset: json['sunset'] as String?,
-        moonphase: json['moonphase'] as double?,
-        conditions: json['conditions'] as String?,
-        description: json['description'] as String?,
-        icon: json['icon'] as String?,
+        datetime: (json['datetime'] as String).obs,
+        tempmax: _roundTemperature((json['tempmax'] as double).obs),
+        tempmin: _roundTemperature((json['tempmin'] as double).obs),
+        temp: _roundTemperature((json['temp'] as double).obs),
+        humidity: (json['humidity'] as double).obs,
+        precipprob: (json['precipprob'] as double).obs,
+        snow: (json['snow'] as double).obs,
+        snowdepth: (json['snowdepth'] as double).obs,
+        windgust: (json['windgust'] as double).obs,
+        windspeed: (json['windspeed'] as double).obs,
+        pressure: (json['pressure'] as double).obs,
+        visibility: (json['visibility'] as double).obs,
+        sunrise: ((json['sunrise'] as String).substring(0, 5)).obs,
+        sunset: ((json['sunset'] as String).substring(0, 5)).obs,
+        moonphase: (json['moonphase'] as double).obs,
+        conditions: (json['conditions'] as String).obs,
+        description: (json['description'] as String).obs,
+        icon: (json['icon'] as String).obs,
         hours: (json['hours'] as List<dynamic>?)
             ?.map((e) => Hour.fromJson(e as Map<String, dynamic>))
-            .toList(),
+            .toList()
+            .obs,
       );
 
   Map<String, dynamic> toJson() => {
-        'datetime': datetime,
-        'tempmax': tempmax,
-        'tempmin': tempmin,
-        'temp': temp,
-        'humidity': humidity,
-        'precipprob': precipprob,
-        'snow': snow,
-        'snowdepth': snowdepth,
-        'windgust': windgust,
-        'windspeed': windspeed,
-        'pressure': pressure,
-        'visibility': visibility,
-        'sunrise': sunrise,
-        'sunset': sunset,
-        'moonphase': moonphase,
-        'conditions': conditions,
-        'description': description,
-        'icon': icon,
-        'hours': hours?.map((e) => e.toJson()).toList()
+        'datetime': datetime?.value,
+        'tempmax': tempmax?.value,
+        'tempmin': tempmin?.value,
+        'temp': temp?.value,
+        'humidity': humidity?.value,
+        'precipprob': precipprob?.value,
+        'snow': snow?.value,
+        'snowdepth': snowdepth?.value,
+        'windgust': windgust?.value,
+        'windspeed': windspeed?.value,
+        'pressure': pressure?.value,
+        'visibility': visibility?.value,
+        'sunrise': sunrise?.value,
+        'sunset': sunset?.value,
+        'moonphase': moonphase?.value,
+        'conditions': conditions?.value,
+        'description': description?.value,
+        'icon': icon?.value,
+        'hours': hours?.map((e) => e.toJson()).toList(),
       };
-  
-  static double _roundTemperature(double? temp) => (temp != null && temp > 10) ? temp.roundToDouble() : temp ?? 0.0; 
-  
+
+  static RxDouble? _roundTemperature(RxDouble? temp) =>
+      (temp != null && temp.value > 10)
+          ? RxDouble(temp.value.roundToDouble())
+          : temp ?? RxDouble(0.0);
 }

@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
                         )),
                   ),
                   const Header(),
-                  CurrentWeather(currentDay: _controller.weatherData.current!)
+                  const CurrentWeather()
 
                   // HourlyWeather(currentDay: _controller.weatherData.current!),
                 ],

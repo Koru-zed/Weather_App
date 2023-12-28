@@ -1,14 +1,14 @@
 import 'current_day.dart';
 import 'day.dart';
+import 'package:get/get.dart';
 
 class WeatherData {
-  double? latitude;
-  double? longitude;
-  String? resolvedAddress;
-  String? address;
-  String? timezone;
-  List<Day>? days;
-  CurrentDay? current;
+  RxDouble? latitude;
+  RxDouble? longitude;
+  RxString? resolvedAddress;
+  RxString? address;
+  RxString? timezone;
+  RxList<Day>? days;
 
   WeatherData({
     this.latitude,
@@ -17,22 +17,17 @@ class WeatherData {
     this.address,
     this.timezone,
     this.days,
-    this.current,
   });
 
   factory WeatherData.fromJson(Map<String, dynamic> json) => WeatherData(
-        latitude: json['latitude'] as double,
-        longitude: json['longitude'] as double,
-        resolvedAddress: json['resolvedAddress'] as String?,
-        address: json['address'] as String?,
-        timezone: json['timezone'] as String?,
+        latitude: (json['latitude'] as double).obs,
+        longitude: (json['longitude'] as double).obs,
+        resolvedAddress: (json['resolvedAddress'] as String).obs,
+        address: (json['address'] as String).obs,
+        timezone: (json['timezone'] as String).obs,
         days: (json['days'] as List<dynamic>?)
             ?.map((e) => Day.fromJson(e as Map<String, dynamic>))
-            .toList(),
-        current: json['currentConditions'] == null
-            ? null
-            : CurrentDay.fromJson(
-                json['currentConditions'] as Map<String, dynamic>),
+            .toList().obs,
       );
 
   Map<String, dynamic> toJson() => {
@@ -42,7 +37,6 @@ class WeatherData {
         'address': address,
         'timezone': timezone,
         'days': days?.map((e) => e.toJson()).toList(),
-        'current': current?.toJson(),
       };
 
   double celsiusToFahrenheit(double? celsius) {

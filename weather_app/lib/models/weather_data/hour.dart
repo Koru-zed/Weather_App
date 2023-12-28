@@ -1,16 +1,19 @@
+import 'package:get/get.dart';
+
 class Hour {
-  String? datetime;
-  double? temp;
-  double? humidity;
-  double? precipprob;
-  double? snow;
-  double? snowdepth;
-  double? windgust;
-  double? windspeed;
-  double? pressure;
-  double? visibility;
-  String? conditions;
-  String? icon;
+  RxString? datetime;
+  RxDouble? temp;
+  RxDouble? humidity;
+  RxDouble? precipprob;
+  RxDouble? snow;
+  RxDouble? snowdepth;
+  RxDouble? windgust;
+  RxDouble? windspeed;
+  RxDouble? pressure;
+  RxDouble? visibility;
+  RxDouble? cloudcover;
+  RxString? conditions;
+  RxString? icon;
 
   Hour({
     this.datetime,
@@ -23,23 +26,25 @@ class Hour {
     this.windspeed,
     this.pressure,
     this.visibility,
+    this.cloudcover,
     this.conditions,
     this.icon,
   });
 
   factory Hour.fromJson(Map<String, dynamic> json) => Hour(
-        datetime: json['datetime'] as String?,
-        temp: _roundTemperature(json['temp'] as double?) ,
-        humidity: json['humidity'] as double?,
-        precipprob: json['precipprob'] as double?,
-        snow: json['snow'] as double?,
-        snowdepth: json['snowdepth'] as double?,
-        windgust: json['windgust'] as double?,
-        windspeed: json['windspeed'] as double?,
-        pressure: json['pressure'] as double?,
-        visibility: json['visibility'] as double?,
-        conditions: json['conditions'] as String?,
-        icon: json['icon'] as String?,
+        datetime: (json['datetime'] as String).obs,
+        temp: _roundTemperature(json['temp'] as double).obs,
+        humidity: (json['humidity'] as double).obs,
+        precipprob: (json['precipprob'] as double).obs,
+        snow: (json['snow'] as double).obs,
+        snowdepth: (json['snowdepth'] as double).obs,
+        windgust: (json['windgust'] as double).obs,
+        windspeed: (json['windspeed'] as double).obs,
+        pressure: (json['pressure'] as double).obs,
+        visibility: (json['visibility'] as double).obs,
+        cloudcover: (json['cloudcover'] as double).obs,
+        conditions: (json['conditions'] as String).obs,
+        icon: (json['icon'] as String).obs,
       );
 
   Map<String, dynamic> toJson() => {
@@ -53,10 +58,11 @@ class Hour {
         'windspeed': windspeed,
         'pressure': pressure,
         'visibility': visibility,
+        'cloudcover': cloudcover,
         'conditions': conditions,
         'icon': icon,
       };
-  
-  static double _roundTemperature(double? temp) => (temp != null && temp > 10) ? temp.roundToDouble() : temp ?? 0.0; 
 
+  static double _roundTemperature(double? temp) =>
+      (temp != null && temp > 10) ? temp.roundToDouble() : temp ?? 0.0;
 }

@@ -13,8 +13,7 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> {
-  String _city = "";
-  String dateTime = DateFormat('yMMMMd').format(DateTime.now());
+  String? _city, _dateTime;
 
   final GlobalController globalController = Get.put(GlobalController());
 
@@ -26,6 +25,8 @@ class _HeaderState extends State<Header> {
     //   getLocation(globalController.getLatitude, globalController.getLongitude);
     // });
     _city = "London";
+    _dateTime = DateFormat('yMMMMd').format(globalController.currentTime.value);
+    globalController.cardIndex.value = globalController.currentHourTime;
   }
 
   getLocation(latitude, longitude) async {
@@ -45,10 +46,10 @@ class _HeaderState extends State<Header> {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsets.only(left: 20, right: 10, top: 5),
+          margin: const EdgeInsets.only(left: 20, right: 10, top: 20),
           alignment: Alignment.topLeft,
           child: Text(
-            _city,
+            _city!,
             style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 35,
@@ -56,21 +57,22 @@ class _HeaderState extends State<Header> {
           ),
         ),
         Container(
-            margin: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
-            alignment: Alignment.topLeft,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  dateTime,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500),
-                ),
-                const ChangeUnits()
-              ],
-            )),
+          margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+          alignment: Alignment.topLeft,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+               _dateTime!,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
+              ),
+              const ChangeUnits()
+            ],
+          )
+        ),
       ],
     );
   }
