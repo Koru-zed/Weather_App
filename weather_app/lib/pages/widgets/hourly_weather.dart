@@ -66,7 +66,7 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                     _controller.cardIndex.value = index;
 
                     // Calculate the offset to center the selected card
-                    double offset = index * 76 - widget.middleWidth + 32;
+                    double offset = index * 76.4 - widget.middleWidth + 32;
                     offset = offset.clamp(0.0, widget.maxOffset);
 
                     // Scroll to the calculated offset

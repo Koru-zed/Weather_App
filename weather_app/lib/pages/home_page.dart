@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/controllers/controller.dart';
-import 'package:weather_app/models/weather_data/current_day.dart';
+import 'package:weather_app/pages/widgets/daily_weather.dart';
 import 'package:weather_app/pages/widgets/header.dart';
 import 'package:weather_app/pages/widgets/current_weather.dart';
 import 'package:weather_app/pages/widgets/hourly_weather.dart';
-import 'package:weather_app/models/weather_data/current_day.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -33,7 +32,7 @@ class _HomeState extends State<Home> {
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.blue),
               )
-            : Column(
+            : ListView(
                 children: [
                   Container(
                     alignment: Alignment.topRight,
@@ -46,7 +45,8 @@ class _HomeState extends State<Home> {
                         )),
                   ),
                   const Header(),
-                  const CurrentWeather()
+                  const CurrentWeather(),
+                  const DailyWeather()
 
                   // HourlyWeather(currentDay: _controller.weatherData.current!),
                 ],

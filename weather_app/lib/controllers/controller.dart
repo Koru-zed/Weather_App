@@ -43,6 +43,7 @@ class GlobalController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // print('rrr = > ${currentTime.value.}');
     if (_isLoading.isTrue) getLocation();
   }
 

@@ -98,10 +98,10 @@ class _CurrentWeatherState extends State<CurrentWeather> {
           return '${currentDay.hours![_controller.currentHourTime].humidity}%';
         case 'windspeed':
           return '${currentDay.hours![_controller.currentHourTime].windspeed}${_controller.units[1]}/h';
-        case 'sunrise':
-          return '${currentDay.sunrise} PM';
-        case 'sunset':
-          return '${currentDay.sunset} AM';
+        // case 'sunrise':
+        //   return '${currentDay.sunrise} PM';
+        // case 'sunset':
+        //   return '${currentDay.sunset} AM';
         // Add more cases for other properties
         default:
           throw Exception('Property $name not found');
