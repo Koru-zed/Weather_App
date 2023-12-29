@@ -112,8 +112,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
         margin: EdgeInsets.only(
             left: margin_hoz, right: margin_hoz, top: 5, bottom: 2),
         child: Obx(
-          () => Column(children: [
-            Row(
+          () => Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(3, (index) {
                 return Column(
@@ -146,41 +145,8 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                 );
               }),
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: List.generate(2, (index) {
-            //     return Column(
-            //       children: [
-            //         Tooltip(
-            //           message: items[index + 3],
-            //           child: Container(
-            //             height: 55,
-            //             width: 55,
-            //             padding: const EdgeInsets.all(13),
-            //             decoration: BoxDecoration(
-            //                 color: Theme.of(context)
-            //                     .colorScheme
-            //                     .tertiary
-            //                     .withOpacity(0.25),
-            //                 borderRadius: BorderRadius.circular(
-            //                   20,
-            //                 )),
-            //             child: Image.asset(
-            //               'assets/icons/${items[index + 3]}.png',
-            //             ),
-            //           ),
-            //         ),
-            //         const SizedBox(
-            //           height: 5,
-            //         ),
-            //         Text(getDetail(items[index + 3]),
-            //             style: const TextStyle(fontSize: 13))
-            //       ],
-            //     );
-            //   }),
-            // )
-          ]),
-        ));
+          ),
+        );
   }
 
   Widget HourlyDetail(Day currentDay) {
