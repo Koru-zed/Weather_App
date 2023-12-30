@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/models/weather_data/day.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/controllers/controller.dart';
+import 'package:weather_app/models/weather_data/hour.dart';
 import 'package:weather_app/pages/widgets/hourly_weather.dart';
 
 class CurrentWeather extends StatefulWidget {
@@ -16,7 +17,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
 
   @override
   Widget build(BuildContext context) {
-    Day currentDay = _controller.weatherData.days![2];
+    Day currentDay = _controller.weatherData.value.days![2];
     double maxOffset = 24 * (64 + 12) - MediaQuery.of(context).size.width;
     double middelWidth = MediaQuery.of(context).size.width / 2;
 
@@ -24,7 +25,10 @@ class _CurrentWeatherState extends State<CurrentWeather> {
       children: [
         currentData(currentDay),
         moreDetails(currentDay),
-        HourlyWeather(currentDay: currentDay, maxOffset: maxOffset, middleWidth: middelWidth)
+        HourlyWeather(
+            currentDay: currentDay,
+            maxOffset: maxOffset,
+            middleWidth: middelWidth)
       ],
     );
   }
@@ -109,44 +113,44 @@ class _CurrentWeatherState extends State<CurrentWeather> {
     }
 
     return Container(
-        margin: EdgeInsets.only(
-            left: margin_hoz, right: margin_hoz, top: 5, bottom: 2),
-        child: Obx(
-          () => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(3, (index) {
-                return Column(
-                  children: [
-                    Tooltip(
-                      message: items[index],
-                      child: Container(
-                        height: 55,
-                        width: 55,
-                        padding: const EdgeInsets.all(13),
-                        decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .tertiary
-                                .withOpacity(0.25),
-                            borderRadius: BorderRadius.circular(
-                              20,
-                            )),
-                        child: Image.asset(
-                          'assets/icons/${items[index]}.png',
-                        ),
-                      ),
+      margin: EdgeInsets.only(
+          left: margin_hoz, right: margin_hoz, top: 5, bottom: 2),
+      child: Obx(
+        () => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(3, (index) {
+            return Column(
+              children: [
+                Tooltip(
+                  message: items[index],
+                  child: Container(
+                    height: 55,
+                    width: 55,
+                    padding: const EdgeInsets.all(13),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .tertiary
+                            .withOpacity(0.25),
+                        borderRadius: BorderRadius.circular(
+                          20,
+                        )),
+                    child: Image.asset(
+                      'assets/icons/${items[index]}.png',
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(getDetail(items[index]),
-                        style: const TextStyle(fontSize: 13))
-                  ],
-                );
-              }),
-            ),
-          ),
-        );
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(getDetail(items[index]),
+                    style: const TextStyle(fontSize: 13))
+              ],
+            );
+          }),
+        ),
+      ),
+    );
   }
 
   Widget HourlyDetail(Day currentDay) {
@@ -159,6 +163,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
     ScrollController scrollController = ScrollController();
     double maxOffset = 24 * (64 + 12) - MediaQuery.of(context).size.width;
     double middelWidth = MediaQuery.of(context).size.width / 2;
+    List<Hour> hours = _controller.weatherData.value.days![2].hours!;
 
     return Column(
       children: [
@@ -179,25 +184,22 @@ class _CurrentWeatherState extends State<CurrentWeather> {
               print(timeStamp);
               return Obx(
                 () => GestureDetector(
-                  
                   onTap: () {
                     // Set the card index when tapped
                     _controller.cardIndex.value = index;
 
                     // Calculate the offset to center the selected card
                     double offset = index * 76 - middelWidth + 32;
-                    print(
-                        '-offset : $offset -> $middelWidth');
-                    
+                    print('-offset : $offset -> $middelWidth');
+
                     offset = offset.clamp(0.0, maxOffset);
-                    print(
-                        '+offset : $offset -> $middelWidth');
+                    print('+offset : $offset -> $middelWidth');
                     // Scroll to the calculated offset
-                      scrollController.animateTo(
-                        offset,
-                        duration: Duration(milliseconds: 500),
-                        curve: Curves.easeInOut,
-                      );
+                    scrollController.animateTo(
+                      offset,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
                   },
                   child: Container(
                     width: 64,
@@ -232,13 +234,13 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                         Expanded(
                           flex: 7,
                           child: Image.asset(
-                            'assets/weather/${_controller.weatherData.days![2].hours![index].icon}.png',
+                            'assets/weather/${hours[index].icon}.png',
                           ),
                         ),
                         Expanded(
                           flex: 4,
                           child: Text(
-                            '${_controller.weatherData.days![2].hours![index].temp}°',
+                            '${hours[index].temp}°',
                           ),
                         ),
                       ],

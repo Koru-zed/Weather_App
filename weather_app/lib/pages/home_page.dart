@@ -5,6 +5,7 @@ import 'package:weather_app/pages/widgets/daily_weather.dart';
 import 'package:weather_app/pages/widgets/header.dart';
 import 'package:weather_app/pages/widgets/current_weather.dart';
 import 'package:weather_app/pages/widgets/hourly_weather.dart';
+import 'package:weather_app/pages/widgets/search_location.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -19,6 +20,13 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+
+    ever<bool>(_controller.changeCity, (changeCity) {
+      print('to change ----');
+      if (changeCity) {
+        _controller.getNewLocation();
+      }
+    });
   }
 
   @override
@@ -28,29 +36,29 @@ class _HomeState extends State<Home> {
     return Scaffold(
         body: SafeArea(
       child: Obx(
-        () => _controller.loading
+        () => _controller.isLoading.value
             ? const Center(
                 child: CircularProgressIndicator(color: Colors.blue),
               )
-            : ListView(
-                children: [
-                  Container(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                        onPressed: () => _controller.switchTheme(),
-                        tooltip: 'Change Theme',
-                        icon: Icon(
-                          Icons.dark_mode_outlined,
-                          color: Theme.of(context).colorScheme.secondary,
-                        )),
-                  ),
-                  const Header(),
-                  const CurrentWeather(),
-                  const DailyWeather()
-                ],
+            : RefreshIndicator(
+                color: Theme.of(context).colorScheme.secondary,
+                onRefresh: () => _controller.fetchData(
+                    _controller.weatherData.value.latitude!.value,
+                    _controller.weatherData.value.longitude!.value),
+                child: _buildContent(),
               ),
       ),
     ));
+  }
+
+  Widget _buildContent() {
+    return ListView(
+      children: const [
+        Header(),
+        CurrentWeather(),
+        DailyWeather(),
+      ],
+    );
   }
 
   @override

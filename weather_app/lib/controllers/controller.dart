@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather_app/models/geonames.dart';
 import 'package:weather_app/models/weather_data/weather_data.dart';
 import 'package:weather_app/api/fetch_data.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/models/fake_data.dart';
 
@@ -20,31 +22,23 @@ class MyTheme extends GetxController {
 }
 
 class GlobalController extends GetxController {
-  final RxBool _isLoading = true.obs;
-  // final RxDouble _latitude = 0.0.obs;
-  // final RxDouble _longitude = 0.0.obs;
-  // final RxDouble temp = 0.0.obs;
-  // final RxDouble humidity = 0.0.obs;
-  // final RxDouble windspeed = 0.0.obs;
-  // final RxDouble cloudcover = 0.0.obs;
+  final RxBool isLoading = true.obs;
+  final RxBool changeCity = false.obs;
   final RxInt cardIndex = 0.obs;
   final MyTheme myTheme = Get.put(MyTheme());
   final Rx<DateTime> currentTime = DateTime.now().obs;
-  final Rx<WeatherData> _weatherData = WeatherData().obs;
+  final Rx<WeatherData> weatherData = WeatherData().obs;
   RxList<String> units = ['C', 'km'].obs;
+  final RxString city = ''.obs;
+  final Rx<Geoname> newcity = Geoname().obs;
   static String key = 'weather_data';
 
-  bool get loading => _isLoading.value;
-  // double get getLatitude => _latitude.value;
-  // double get getLongitude => _longitude.value;
-  WeatherData get weatherData => _weatherData.value;
   int get currentHourTime => currentTime.value.hour;
 
   @override
   void onInit() {
     super.onInit();
-    // print('rrr = > ${currentTime.value.}');
-    if (_isLoading.isTrue) getLocation();
+    if (isLoading.isTrue) getLocation();
   }
 
   void switchTheme() {
@@ -56,82 +50,91 @@ class GlobalController extends GetxController {
     bool isLocationServiceEnabled;
     LocationPermission locationPermission;
 
-    // // Check Location Service
-    // isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    // if (!isLocationServiceEnabled) {
-    //   return Future.error('Error: Location Service not enabled');
-    // }
+    // Check Location Service
+    isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!isLocationServiceEnabled) {
+      return Future.error('Error: Location Service not enabled');
+    }
 
-    // // Check permissions
-    // locationPermission = await Geolocator.checkPermission();
-    // if (locationPermission == LocationPermission.deniedForever) {
-    //   return Future.error('Error: Permissions are deniedForever');
-    // } else if (locationPermission == LocationPermission.denied) {
-    //   locationPermission = await Geolocator.requestPermission();
-    //   if (locationPermission == LocationPermission.denied) {
-    //     return Future.error('Error: Permission is denied');
-    //   }
-    // }
+    // Check permissions
+    locationPermission = await Geolocator.checkPermission();
+    if (locationPermission == LocationPermission.deniedForever) {
+      return Future.error('Error: Permissions are deniedForever');
+    } else if (locationPermission == LocationPermission.denied) {
+      locationPermission = await Geolocator.requestPermission();
+      if (locationPermission == LocationPermission.denied) {
+        return Future.error('Error: Permission is denied');
+      }
+    }
 
     // Get current Location
     bool isDataAvailable = await checkDataAvailable();
     print('is => ${isDataAvailable}');
     try {
-      // await Geolocator.getCurrentPosition(
-      //         desiredAccuracy: LocationAccuracy.high)
-      //     .then((value) {
-      // Update our data Location
-      //_longitude.value = value.longitude;
-      //_latitude.value = value.latitude;
+      print('yyyyyyyyyyyyyyyyyyy');
+      await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.high)
+          .then((value) {
+        // Update our data Location
 
-      print(isDataAvailable);
+        print('isDataAvailable = $isDataAvailable');
 
-      if (!isDataAvailable) {
-        // try {
-        //   FetchData()
-        //       .processData(_latitude.value, _longitude.value)
-        //       .then((value) async {
-        _weatherData.value = WeatherData.fromJson(fake_data);
-        // _weatherData.value = value;
-        // _latitude.value = _weatherData.value.latitude!.value;
-        // _longitude.value = _weatherData.value.longitude!.value;
-        // temp.value = _weatherData.value.current?.value.temp ?? 0.0;
-        // humidity.value = _weatherData.value.current?.value.humidity ?? 0.0;
-        // windspeed.value = _weatherData.value.current?.value.windspeed ?? 0.0;
-        // cloudcover.value = _weatherData.value.current?.value.cloudcover ?? 0.0;
-        // print(
-        //     'celsiusToFahrenheit ${weatherData.celsiusToFahrenheit(temp.value)}');
-        // await saveToPreferences();
-        _isLoading.value = false;
-        //     });
-        //   } catch (e) {
-        //     return Future.error('Error getting weather data: $e');
-        //   }
-        // } else {
-        //   loadFromPreferences();
-      }
-      // });
+        if (!isDataAvailable) {
+          fetchData(value.latitude, value.longitude);
+        } else {
+          loadFromPreferences();
+        }
+      });
     } catch (e) {
       return Future.error('Error getting location: $e');
     }
   }
 
+  getNewLocation() async {
+    fetchData(newcity.value.lat!, newcity.value.lng!);
+  }
+
   Future<bool> checkDataAvailable() async {
-    WeatherData? check;
-    print('before');
     try {
-      check = await loadFromPreferences();
+      WeatherData? check = await loadFromPreferences();
+      print('WeatherData');
+      return check != null;
     } catch (e) {
-      print('not safe in 102');
+      // Log or handle the error
+      print('Error checking data availability: $e');
+      return false;
     }
-    print('safe');
-    return check != null;
+  }
+
+  Future<void> fetchData(double lat, double log) async {
+    try {
+      FetchData().processData(lat, log).then((value) async {
+        weatherData.value = value;
+        try {
+          List<Placemark> location = await placemarkFromCoordinates(lat, log);
+          city.value = location[0].locality!;
+        } catch (e) {
+          print("Error getting location: $e");
+        }
+        try {
+          await saveToPreferences();
+          print('save data');
+        } catch (e) {
+          print('Error saving data : $e');
+        }
+        isLoading.value = false;
+        print('isLoading.value  = ${isLoading.value}');
+      });
+    } catch (e) {
+      return Future.error('Error getting weather data: $e');
+    }
+    return Future.delayed(const Duration(seconds: 0));
   }
 
   // Save WeatherData to SharedPreferences
   Future<void> saveToPreferences() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, _weatherData.toJson().toString());
+    prefs.setString(key, weatherData.toJson().toString());
   }
 
   // Load WeatherData from SharedPreferences

@@ -21,7 +21,7 @@ class ChangeUnitsState extends State<ChangeUnits> {
 
   @override
   Widget build(BuildContext context) {
-    List<Day> days = _controller.weatherData.days!;
+    List<Day> days = _controller.weatherData.value.days!;
 
     return MenuAnchor(
       builder:
@@ -57,21 +57,21 @@ class ChangeUnitsState extends State<ChangeUnits> {
               _controller.units.value = ['C', 'km'];
               if (_selectedMenu == items[1]) {
                 days.forEach((Day day) {
-                  day.tempmax!.value = _controller.weatherData
+                  day.tempmax!.value = _controller.weatherData.value
                       .fahrenheitToCelsius(day.tempmax!.value);
-                  day.tempmin!.value = _controller.weatherData
+                  day.tempmin!.value = _controller.weatherData.value
                       .fahrenheitToCelsius(day.tempmin!.value);
                   day.hours!.forEach((Hour hour) {
-                    hour.temp!.value = _controller.weatherData
+                    hour.temp!.value = _controller.weatherData.value
                         .fahrenheitToCelsius(hour.temp!.value);
-                    hour.windspeed!.value = _controller.weatherData
+                    hour.windspeed!.value = _controller.weatherData.value
                         .milesToKilometers(hour.windspeed!.value);
                   });
                 });
               } else if (_selectedMenu == items[2]) {
                 days.forEach((Day day) {
                   day.hours!.forEach((Hour hour) {
-                    hour.windspeed!.value = _controller.weatherData
+                    hour.windspeed!.value = _controller.weatherData.value
                         .milesToKilometers(hour.windspeed!.value);
                   });
                 });
@@ -79,15 +79,15 @@ class ChangeUnitsState extends State<ChangeUnits> {
             } else if (index == 1 && _selectedMenu != items[1]) {
               _controller.units.value = ['F', 'miles'];
                 days.forEach((Day day) {
-                  day.tempmax!.value = _controller.weatherData
+                  day.tempmax!.value = _controller.weatherData.value
                       .celsiusToFahrenheit(day.tempmax!.value);
-                  day.tempmin!.value = _controller.weatherData
+                  day.tempmin!.value = _controller.weatherData.value
                       .celsiusToFahrenheit(day.tempmin!.value);
                   day.hours!.forEach((Hour hour) {
-                    hour.temp!.value = _controller.weatherData
+                    hour.temp!.value = _controller.weatherData.value
                         .celsiusToFahrenheit(hour.temp!.value);
                     if (_selectedMenu == items[2]) {
-                      hour.windspeed!.value = _controller.weatherData
+                      hour.windspeed!.value = _controller.weatherData.value
                           .kilometersToMiles(hour.windspeed!.value);
                     }
                   });
@@ -97,18 +97,18 @@ class ChangeUnitsState extends State<ChangeUnits> {
               if (_selectedMenu == items[0]) {
                 days.forEach((Day day) {
                   day.hours!.forEach((Hour hour) {
-                    hour.windspeed!.value = _controller.weatherData
+                    hour.windspeed!.value = _controller.weatherData.value
                         .kilometersToMiles(hour.windspeed!.value);
                   });
                 });
               } else if (_selectedMenu == items[1]) {
                 days.forEach((Day day) {
-                  day.tempmax!.value = _controller.weatherData
+                  day.tempmax!.value = _controller.weatherData.value
                       .fahrenheitToCelsius(day.tempmax!.value);
-                  day.tempmin!.value = _controller.weatherData
+                  day.tempmin!.value = _controller.weatherData.value
                       .fahrenheitToCelsius(day.tempmin!.value);
                   day.hours!.forEach((Hour hour) {
-                    hour.temp!.value = _controller.weatherData
+                    hour.temp!.value = _controller.weatherData.value
                         .fahrenheitToCelsius(hour.temp!.value);
                   });
                 });

@@ -38,7 +38,7 @@ class _DailyWeatherState extends State<DailyWeather> {
           ),
           child: Obx(() => Column(
               children: List.generate(7, (index) {
-                Day day = _controller.weatherData.days![index + 1];
+                Day day = _controller.weatherData.value.days![index + 1];
                 return Column(
                   children: [
                     Container(
