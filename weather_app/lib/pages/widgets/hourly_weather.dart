@@ -90,15 +90,23 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                         ),
                       ],
                       borderRadius: BorderRadius.circular(10),
-                      gradient: _controller.currentHourTime == index ? LinearGradient(colors: [
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.secondary,
-                            ]) : _controller.cardIndex.value == index
+                      gradient: _controller.currentHourTime == index
                           ? LinearGradient(colors: [
-                              Theme.of(context).colorScheme.secondary.withOpacity(0.5),
-                              Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.secondary,
                             ])
-                          : null,
+                          : _controller.cardIndex.value == index
+                              ? LinearGradient(colors: [
+                                  Theme.of(context)
+                                      .colorScheme
+                                      .secondary
+                                      .withOpacity(0.5),
+                                  Theme.of(context)
+                                      .colorScheme
+                                      .secondary
+                                      .withOpacity(0.5),
+                                ])
+                              : null,
                     ),
                     child: Column(
                       children: [
@@ -106,7 +114,11 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                           flex: 4,
                           child: Text(
                             '${index > 9 ? '' : '0'}$index:00 $timeStamp',
-                            style: TextStyle(fontSize: 12, color: _controller.currentHourTime == index ? Theme.of(context).colorScheme.background : textColor),
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: _controller.currentHourTime == index
+                                    ? Theme.of(context).colorScheme.background
+                                    : textColor),
                           ),
                         ),
                         Expanded(
@@ -119,7 +131,10 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                           flex: 4,
                           child: Text(
                             '${widget.currentDay.hours![index].temp}°',
-                            style: TextStyle(color: _controller.currentHourTime == index ? Theme.of(context).colorScheme.background : textColor),
+                            style: TextStyle(
+                                color: _controller.currentHourTime == index
+                                    ? Theme.of(context).colorScheme.background
+                                    : textColor),
                           ),
                         ),
                       ],

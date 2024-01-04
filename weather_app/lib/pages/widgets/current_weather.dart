@@ -18,8 +18,11 @@ class _CurrentWeatherState extends State<CurrentWeather> {
   @override
   Widget build(BuildContext context) {
     Day currentDay = _controller.weatherData.value.days![2];
-    double maxOffset = 24 * (64 + 12) - MediaQuery.of(context).size.width;
-    double middelWidth = MediaQuery.of(context).size.width / 2;
+    double width = MediaQuery.of(context).size.width > 600
+        ? 600
+        : MediaQuery.of(context).size.width;
+    double maxOffset = 24 * (64 + 12) - width;
+    double middelWidth = width / 2;
 
     return Column(
       children: [
@@ -71,7 +74,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                     ),
                     TextSpan(
                       text:
-                          '${currentDay.hours![_controller.currentHourTime].conditions}',
+                          '${currentDay.hours![_controller.currentHourTime].icon}',
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.tertiary,
                           fontSize: 13.5),

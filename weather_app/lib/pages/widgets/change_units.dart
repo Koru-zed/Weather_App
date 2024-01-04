@@ -78,20 +78,20 @@ class ChangeUnitsState extends State<ChangeUnits> {
               }
             } else if (index == 1 && _selectedMenu != items[1]) {
               _controller.units.value = ['F', 'miles'];
-                days.forEach((Day day) {
-                  day.tempmax!.value = _controller.weatherData.value
-                      .celsiusToFahrenheit(day.tempmax!.value);
-                  day.tempmin!.value = _controller.weatherData.value
-                      .celsiusToFahrenheit(day.tempmin!.value);
-                  day.hours!.forEach((Hour hour) {
-                    hour.temp!.value = _controller.weatherData.value
-                        .celsiusToFahrenheit(hour.temp!.value);
-                    if (_selectedMenu == items[2]) {
-                      hour.windspeed!.value = _controller.weatherData.value
-                          .kilometersToMiles(hour.windspeed!.value);
-                    }
-                  });
+              days.forEach((Day day) {
+                day.tempmax!.value = _controller.weatherData.value
+                    .celsiusToFahrenheit(day.tempmax!.value);
+                day.tempmin!.value = _controller.weatherData.value
+                    .celsiusToFahrenheit(day.tempmin!.value);
+                day.hours!.forEach((Hour hour) {
+                  hour.temp!.value = _controller.weatherData.value
+                      .celsiusToFahrenheit(hour.temp!.value);
+                  if (_selectedMenu == items[2]) {
+                    hour.windspeed!.value = _controller.weatherData.value
+                        .kilometersToMiles(hour.windspeed!.value);
+                  }
                 });
+              });
             } else if (index == 2 && _selectedMenu != items[2]) {
               _controller.units.value = ['C', 'miles'];
               if (_selectedMenu == items[0]) {

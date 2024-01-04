@@ -24,6 +24,8 @@ class MyTheme extends GetxController {
 class GlobalController extends GetxController {
   final RxBool isLoading = true.obs;
   final RxBool changeCity = false.obs;
+  final RxBool isDark = false.obs;
+  final RxDouble width = 0.0.obs;
   final RxInt cardIndex = 0.obs;
   final MyTheme myTheme = Get.put(MyTheme());
   final Rx<DateTime> currentTime = DateTime.now().obs;
@@ -32,13 +34,17 @@ class GlobalController extends GetxController {
   final RxString city = ''.obs;
   final Rx<Geoname> newcity = Geoname().obs;
   static String key = 'weather_data';
+  final Rx<GlobalKey<ScaffoldState>> scaffoldKey =
+      GlobalKey<ScaffoldState>().obs;
 
   int get currentHourTime => currentTime.value.hour;
 
   @override
   void onInit() {
     super.onInit();
-    if (isLoading.isTrue) getLocation();
+    // weatherData.value = WeatherData.fromJson(fake_data);
+    // isLoading.value = false;
+    // if (isLoading.isTrue) getLocation();
   }
 
   void switchTheme() {
@@ -75,22 +81,26 @@ class GlobalController extends GetxController {
       await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.high)
           .then((value) {
-        // Update our data Location
+      // Update our data Location
 
-        print('isDataAvailable = $isDataAvailable');
+      print('isDataAvailable = $isDataAvailable');
 
-        if (!isDataAvailable) {
-          fetchData(value.latitude, value.longitude);
-        } else {
-          loadFromPreferences();
-        }
-      });
+      if (!isDataAvailable) {
+        // fetchData(51.5072, 0.1276);
+        print('lat : ${value.latitude} | log : ${value.longitude}');
+        fetchData(value.latitude, value.longitude);
+      } else {
+        loadFromPreferences();
+      }
+        });
     } catch (e) {
       return Future.error('Error getting location: $e');
     }
   }
 
   getNewLocation() async {
+    print('object new +++');
+    print('lat : ${newcity.value.lat!}, log : ${newcity.value.lng!}');
     fetchData(newcity.value.lat!, newcity.value.lng!);
   }
 
@@ -113,6 +123,7 @@ class GlobalController extends GetxController {
         try {
           List<Placemark> location = await placemarkFromCoordinates(lat, log);
           city.value = location[0].locality!;
+          print('city : ${city.value}');
         } catch (e) {
           print("Error getting location: $e");
         }

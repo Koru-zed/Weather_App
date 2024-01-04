@@ -13,66 +13,84 @@ class DailyWeather extends StatefulWidget {
 
 class _DailyWeatherState extends State<DailyWeather> {
   GlobalController _controller = Get.put(GlobalController());
-  
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
+    return Container(
+      // constraints: BoxConstraints(
+      //   maxWidth: 200.0, // Set your maximum width here
+      // ),
+      child: Column(children: [
         Container(
-          margin: EdgeInsets.only(top: 10),
-          child: Text('Next Days', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),)),
+            margin: EdgeInsets.only(top: 10),
+            child: Text(
+              'Next Days',
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+            )),
         Container(
           margin: const EdgeInsets.fromLTRB(30, 20, 30, 60),
           padding: const EdgeInsets.only(top: 4, bottom: 4),
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context)
-                    .colorScheme
-                    .tertiary
-                    .withOpacity(0.15),
+                color: Theme.of(context).colorScheme.tertiary.withOpacity(0.15),
               ),
             ],
             borderRadius: BorderRadius.circular(15),
           ),
-          child: Obx(() => Column(
+          child: Obx(
+            () => Column(
               children: List.generate(7, (index) {
                 Day day = _controller.weatherData.value.days![index + 1];
-                return Column(
-                  children: [
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
+                return Column(children: [
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: _controller.currentTime.value.day == DateTime.parse(day.datetime!.value).day ? Theme.of(context).colorScheme.secondary.withOpacity(0.2) : null
-                      ),
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text('${day.nameday}', style: TextStyle(fontWeight: FontWeight.w500),),
-                          Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: Image.asset(
-                                  'assets/weather/${day.icon}.png',),
+                        color: _controller.currentTime.value.day ==
+                                DateTime.parse(day.datetime!.value).day
+                            ? Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(0.2)
+                            : null),
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          '${day.nameday}',
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: Image.asset(
+                            'assets/weather/${day.icon}.png',
                           ),
-                          Text('${(day.tempmax!.value.toInt())}° / ${day.tempmin!.value.toInt()}°', style: TextStyle(fontWeight: FontWeight.w500),),
-                        ],
-                      ),
+                        ),
+                        Text(
+                          '${(day.tempmax!.value.toInt())}° / ${day.tempmin!.value.toInt()}°',
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                      ],
                     ),
-                    if (index < 6) Container(
+                  ),
+                  if (index < 6)
+                    Container(
                       height: 1,
-                      margin: const EdgeInsets.only(top: 6, left: 20, right: 20, bottom: 6),
-                      color: Theme.of(context).colorScheme.secondary.withOpacity(0.7),
+                      margin: const EdgeInsets.only(
+                          top: 6, left: 20, right: 20, bottom: 6),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(0.7),
                     )
-                  ]
-                );
+                ]);
               }),
             ),
           ),
         ),
-      ]
+      ]),
     );
   }
 }

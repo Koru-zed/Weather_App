@@ -20,11 +20,10 @@ class _HeaderState extends State<Header> {
   @override
   void initState() {
     super.initState();
+    _controller.city.value = _controller.weatherData.value.timezone!.value;
     _dateTime = DateFormat('yMMMMd').format(_controller.currentTime.value);
     _controller.cardIndex.value = _controller.currentHourTime;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -33,53 +32,58 @@ class _HeaderState extends State<Header> {
         Container(
           alignment: Alignment.topRight,
           child: IconButton(
-            onPressed: () => _controller.switchTheme(),
+            onPressed: () =>
+                _controller.scaffoldKey.value.currentState?.openDrawer(),
             tooltip: 'Change Theme',
             icon: Icon(
-              Icons.dark_mode_outlined,
+              Icons.menu,
               color: Theme.of(context).colorScheme.secondary,
             ),
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(left: 20, right: 10, top: 20),
+          margin: const EdgeInsets.only(
+            left: 20,
+            right: 10,
+          ),
           alignment: Alignment.topLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                _controller.city.value,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 35,
-                    fontWeight: FontWeight.w500),
-              ),
-              Container(
-                child: IconButton(
-                  onPressed: () => Get.to(SearchLocation()),
-                  icon: Icon(Icons.location_searching_outlined, color: Theme.of(context).colorScheme.tertiary),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              _controller.city.value,
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontSize: 35,
+                  fontWeight: FontWeight.w500),
+            ),
+            Container(
+              child: IconButton(
+                onPressed: () =>
+                    _controller.scaffoldKey.value.currentState?.openDrawer(),
+                icon: Icon(
+                  Icons.location_searching_outlined,
+                  color: Theme.of(context).colorScheme.tertiary,
+                  size: 18,
                 ),
               ),
-            ]
-          ),
+            ),
+          ]),
         ),
         Container(
-          margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-          alignment: Alignment.topLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-               _dateTime!,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
-              ),
-              const ChangeUnits()
-            ],
-          )
-        ),
+            margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            alignment: Alignment.topLeft,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  _dateTime!,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500),
+                ),
+                const ChangeUnits()
+              ],
+            )),
       ],
     );
   }

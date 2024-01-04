@@ -12,6 +12,9 @@ class CustomTheme {
         tertiary: Colors.grey.shade700,
         background: Colors.white),
     useMaterial3: true,
+    drawerTheme: const DrawerThemeData(
+      backgroundColor: Color.fromARGB(255, 136, 148, 157),
+    )
   );
 
   // dark theme
@@ -23,5 +26,8 @@ class CustomTheme {
         tertiary: Colors.grey.shade400,
         background: const Color.fromARGB(255, 31, 37, 45)),
     useMaterial3: true,
+    drawerTheme: const DrawerThemeData(
+      backgroundColor: Color.fromARGB(255, 39, 41, 44),
+    )
   );
 }
