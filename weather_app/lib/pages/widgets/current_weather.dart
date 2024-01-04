@@ -54,7 +54,6 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                   height: 50,
                   width: 1.5,
                   color: Theme.of(context).colorScheme.secondary,
-                  // decoration: BoxDecoration(borderRadius: BorderRadius.circular(1)),
                 ),
                 RichText(
                   text: TextSpan(children: [
@@ -74,7 +73,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                     ),
                     TextSpan(
                       text:
-                          '${currentDay.hours![_controller.currentHourTime].icon}',
+                          '${currentDay.hours![_controller.currentHourTime].icon!.value.replaceAll('-', ' ')}',
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.tertiary,
                           fontSize: 13.5),
@@ -94,9 +93,6 @@ class _CurrentWeatherState extends State<CurrentWeather> {
       'sunset'
     ];
     final double margin_hoz = MediaQuery.of(context).size.width * 0.07;
-    // print(widget.currentHour.datetime);
-    // print(widget.currentHour.date);
-    // print(widget.currentHour.windspeed);
     String getDetail(String name) {
       switch (name) {
         case 'cloudcover':
@@ -105,11 +101,10 @@ class _CurrentWeatherState extends State<CurrentWeather> {
           return '${currentDay.hours![_controller.currentHourTime].humidity}%';
         case 'windspeed':
           return '${currentDay.hours![_controller.currentHourTime].windspeed}${_controller.units[1]}/h';
-        // case 'sunrise':
-        //   return '${currentDay.sunrise} PM';
-        // case 'sunset':
-        //   return '${currentDay.sunset} AM';
-        // Add more cases for other properties
+        case 'sunrise':
+          return '${currentDay.sunrise} PM';
+        case 'sunset':
+          return '${currentDay.sunset} AM';
         default:
           throw Exception('Property $name not found');
       }
@@ -170,33 +165,27 @@ class _CurrentWeatherState extends State<CurrentWeather> {
 
     return Column(
       children: [
-        SizedBox(height: 7),
-        Text(
+        const SizedBox(height: 7),
+        const Text(
           'Today',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
         ),
-        SizedBox(height: 5),
-        Container(
+        const SizedBox(height: 5),
+        SizedBox(
           height: 110,
           child: ListView.builder(
-            controller: scrollController, // Set the controller here
+            controller: scrollController, // Set the controller 
             scrollDirection: Axis.horizontal,
             itemCount: 24,
             itemBuilder: (context, index) {
               index > 12 ? timeStamp = 'AM' : timeStamp = 'PM';
-              print(timeStamp);
               return Obx(
                 () => GestureDetector(
                   onTap: () {
-                    // Set the card index when tapped
                     _controller.cardIndex.value = index;
-
                     // Calculate the offset to center the selected card
                     double offset = index * 76 - middelWidth + 32;
-                    print('-offset : $offset -> $middelWidth');
-
                     offset = offset.clamp(0.0, maxOffset);
-                    print('+offset : $offset -> $middelWidth');
                     // Scroll to the calculated offset
                     scrollController.animateTo(
                       offset,

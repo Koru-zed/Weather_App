@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/controllers/controller.dart';
 import 'package:weather_app/pages/widgets/change_units.dart';
-import 'package:weather_app/pages/widgets/search_location.dart';
 
 class Header extends StatefulWidget {
   const Header({Key? key}) : super(key: key);
@@ -16,14 +15,15 @@ class _HeaderState extends State<Header> {
   String? _dateTime;
 
   final GlobalController _controller = Get.put(GlobalController());
+  
 
   @override
   void initState() {
     super.initState();
-    _controller.city.value = _controller.weatherData.value.timezone!.value;
     _dateTime = DateFormat('yMMMMd').format(_controller.currentTime.value);
     _controller.cardIndex.value = _controller.currentHourTime;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,10 @@ class _HeaderState extends State<Header> {
         Container(
           alignment: Alignment.topRight,
           child: IconButton(
-            onPressed: () =>
-                _controller.scaffoldKey.value.currentState?.openDrawer(),
+            onPressed: () {
+              _controller.scaffoldKey.value.currentState?.openDrawer();
+              FocusManager.instance.primaryFocus?.nextFocus();
+            },
             tooltip: 'Change Theme',
             icon: Icon(
               Icons.menu,
@@ -47,7 +49,8 @@ class _HeaderState extends State<Header> {
             right: 10,
           ),
           alignment: Alignment.topLeft,
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
               _controller.city.value,
               style: TextStyle(
@@ -55,8 +58,7 @@ class _HeaderState extends State<Header> {
                   fontSize: 35,
                   fontWeight: FontWeight.w500),
             ),
-            Container(
-              child: IconButton(
+            IconButton(
                 onPressed: () =>
                     _controller.scaffoldKey.value.currentState?.openDrawer(),
                 icon: Icon(
@@ -65,7 +67,6 @@ class _HeaderState extends State<Header> {
                   size: 18,
                 ),
               ),
-            ),
           ]),
         ),
         Container(

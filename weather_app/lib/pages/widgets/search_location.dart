@@ -48,6 +48,7 @@ class _SearchLocationState extends State<SearchLocation> {
   List<Geoname> _searchcities = [];
   GlobalController _controller = Get.put(GlobalController());
 
+
   void _searchCities(String query) async {
     if (query.isNotEmpty) {
       final cities = await cityService.searchCities(query);
@@ -68,9 +69,10 @@ class _SearchLocationState extends State<SearchLocation> {
         margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: 37,
               child: TextField(
+                onTap: () => print('object'),
                 controller: _searchController,
                 onSubmitted: _searchCities,
                 decoration: InputDecoration(
@@ -82,22 +84,19 @@ class _SearchLocationState extends State<SearchLocation> {
                   hintText: 'location',
                   hintStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
                   suffixIcon: Container(
-                    margin: EdgeInsets.all(1),
+                    margin: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withOpacity(0.8),
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(3),
-                        bottomRight: Radius.circular(3),
+                      borderRadius: const BorderRadius.only(topRight: Radius.circular(3), bottomRight: Radius.circular(3)),
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    child: IconButton(
+                      onPressed: () => _searchCities(_searchController.text),
+                      icon: const Icon(
+                        Icons.search_sharp,
+                        size: 20,
                       ),
                     ),
-                    child: const Icon(
-                      Icons.search_sharp,
-                      size: 20,
-                    ),
-                  ),
+                  )
                 ),
               ),
             ),
@@ -122,10 +121,12 @@ class _SearchLocationState extends State<SearchLocation> {
                         }
                         _controller.scaffoldKey.value.currentState?.closeDrawer();
                       },
-                      title: Text(_searchcities[index].name!, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),),
+                      title: Text(_searchcities[index].name!,
+                       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),),
                       subtitle: Padding(
                         padding: const EdgeInsets.only(left: 10,),
-                        child: Text(_searchcities[index].countryName!, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
+                        child: Text(_searchcities[index].countryName ?? '',
+                         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
                       ),
                     );
                   },

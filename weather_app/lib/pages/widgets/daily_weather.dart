@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:weather_app/controllers/controller.dart';
 import 'package:weather_app/models/weather_data/day.dart';
 
@@ -16,14 +15,10 @@ class _DailyWeatherState extends State<DailyWeather> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // constraints: BoxConstraints(
-      //   maxWidth: 200.0, // Set your maximum width here
-      // ),
-      child: Column(children: [
+    return  Column(children: [
         Container(
-            margin: EdgeInsets.only(top: 10),
-            child: Text(
+            margin: const EdgeInsets.only(top: 10),
+            child: const Text(
               'Next Days',
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
             )),
@@ -60,7 +55,7 @@ class _DailyWeatherState extends State<DailyWeather> {
                       children: [
                         Text(
                           '${day.nameday}',
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                          style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(6),
@@ -70,7 +65,7 @@ class _DailyWeatherState extends State<DailyWeather> {
                         ),
                         Text(
                           '${(day.tempmax!.value.toInt())}° / ${day.tempmin!.value.toInt()}°',
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                          style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -90,7 +85,7 @@ class _DailyWeatherState extends State<DailyWeather> {
             ),
           ),
         ),
-      ]),
+      ],
     );
   }
 }

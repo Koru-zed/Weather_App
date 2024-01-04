@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:weather_app/controllers/controller.dart';
 import 'package:weather_app/models/weather_data/day.dart';
 import 'package:weather_app/models/weather_data/hour.dart';

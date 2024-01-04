@@ -45,13 +45,13 @@ class _HourlyWeatherState extends State<HourlyWeather> {
 
     return Column(
       children: [
-        SizedBox(height: 7),
-        Text(
+        const SizedBox(height: 7),
+        const Text(
           'Today',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
         ),
-        SizedBox(height: 5),
-        Container(
+        const SizedBox(height: 5),
+        SizedBox(
           height: 110,
           child: ListView.builder(
             controller: scrollController, // Set the controller here
@@ -68,7 +68,6 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                     // Calculate the offset to center the selected card
                     double offset = index * 76.4 - widget.middleWidth + 32;
                     offset = offset.clamp(0.0, widget.maxOffset);
-
                     // Scroll to the calculated offset
                     scrollController.animateTo(
                       offset,

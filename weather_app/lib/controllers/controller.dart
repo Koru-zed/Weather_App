@@ -36,15 +36,13 @@ class GlobalController extends GetxController {
   static String key = 'weather_data';
   final Rx<GlobalKey<ScaffoldState>> scaffoldKey =
       GlobalKey<ScaffoldState>().obs;
+  
 
   int get currentHourTime => currentTime.value.hour;
 
   @override
   void onInit() {
     super.onInit();
-    // weatherData.value = WeatherData.fromJson(fake_data);
-    // isLoading.value = false;
-    // if (isLoading.isTrue) getLocation();
   }
 
   void switchTheme() {
@@ -61,7 +59,6 @@ class GlobalController extends GetxController {
     if (!isLocationServiceEnabled) {
       return Future.error('Error: Location Service not enabled');
     }
-
     // Check permissions
     locationPermission = await Geolocator.checkPermission();
     if (locationPermission == LocationPermission.deniedForever) {
@@ -72,7 +69,6 @@ class GlobalController extends GetxController {
         return Future.error('Error: Permission is denied');
       }
     }
-
     // Get current Location
     bool isDataAvailable = await checkDataAvailable();
     print('is => ${isDataAvailable}');
@@ -81,27 +77,22 @@ class GlobalController extends GetxController {
       await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.high)
           .then((value) {
-      // Update our data Location
+        print('isDataAvailable = $isDataAvailable');
 
-      print('isDataAvailable = $isDataAvailable');
-
-      if (!isDataAvailable) {
-        // fetchData(51.5072, 0.1276);
-        print('lat : ${value.latitude} | log : ${value.longitude}');
-        fetchData(value.latitude, value.longitude);
-      } else {
-        loadFromPreferences();
-      }
-        });
+        if (!isDataAvailable) {
+          fetchData(value.latitude, value.longitude);
+        } else {
+          loadFromPreferences();
+        }
+      });
     } catch (e) {
       return Future.error('Error getting location: $e');
     }
   }
 
   getNewLocation() async {
-    print('object new +++');
-    print('lat : ${newcity.value.lat!}, log : ${newcity.value.lng!}');
     fetchData(newcity.value.lat!, newcity.value.lng!);
+    city.value = newcity.value.name!;
   }
 
   Future<bool> checkDataAvailable() async {
@@ -121,13 +112,6 @@ class GlobalController extends GetxController {
       FetchData().processData(lat, log).then((value) async {
         weatherData.value = value;
         try {
-          List<Placemark> location = await placemarkFromCoordinates(lat, log);
-          city.value = location[0].locality!;
-          print('city : ${city.value}');
-        } catch (e) {
-          print("Error getting location: $e");
-        }
-        try {
           await saveToPreferences();
           print('save data');
         } catch (e) {
@@ -138,6 +122,18 @@ class GlobalController extends GetxController {
       });
     } catch (e) {
       return Future.error('Error getting weather data: $e');
+    }
+    try {
+      if (changeCity.isFalse) {
+        List<Placemark> location = await placemarkFromCoordinates(
+            weatherData.value.latitude!.value,
+            weatherData.value.longitude!.value);
+        if (location.isNotEmpty) {
+          city.value = location[0].locality!;
+        }
+      }
+    } catch (e) {
+      return Future.error('Error getting location name: $e');
     }
     return Future.delayed(const Duration(seconds: 0));
   }
