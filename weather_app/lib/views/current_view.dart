@@ -17,7 +17,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
 
   @override
   Widget build(BuildContext context) {
-    print('length : ${_controller.weatherData.value.days!.length}');
+    // print('length : ${_controller.weatherData.value.days!.length}');
     Day currentDay = _controller.weatherData.value.days![2];
     double width = MediaQuery.of(context).size.width > 600
         ? 600

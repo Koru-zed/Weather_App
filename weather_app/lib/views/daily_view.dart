@@ -11,7 +11,7 @@ class DailyWeather extends StatefulWidget {
 }
 
 class _DailyWeatherState extends State<DailyWeather> {
-  GlobalController _controller = Get.put(GlobalController());
+  final GlobalController _controller = Get.put(GlobalController());
 
   @override
   Widget build(BuildContext context) {

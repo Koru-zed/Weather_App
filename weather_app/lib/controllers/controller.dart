@@ -1,25 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather_app/controllers/theme_controller.dart';
+import 'package:weather_app/models/city_service.dart';
 import 'package:weather_app/models/geonames.dart';
 import 'package:weather_app/models/weather_data/weather_data.dart';
-import 'package:weather_app/api/fetch_data.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weather_app/models/fake_data.dart';
-
-class MyTheme extends GetxController {
-  // initializing with the current theme of the device
-  Rx<ThemeMode> currentTheme = ThemeMode.system.obs;
-
-  // function to switch between themes
-  void switchTheme() {
-    currentTheme.value = currentTheme.value == ThemeMode.light
-        ? ThemeMode.dark
-        : ThemeMode.light;
-  }
-}
+import 'package:weather_app/pages/widgets/change_units.dart';
 
 class GlobalController extends GetxController {
   final RxBool isLoading = true.obs;
@@ -30,13 +16,14 @@ class GlobalController extends GetxController {
   final MyTheme myTheme = Get.put(MyTheme());
   final Rx<DateTime> currentTime = DateTime.now().obs;
   final Rx<WeatherData> weatherData = WeatherData().obs;
-  RxList<String> units = ['C', 'km'].obs;
+  final RxList<String> units = ['C', 'km'].obs;
+  // final ChangeUnits changeUnit = Get.put(ChangeUnits());
   final RxString city = ''.obs;
   final Rx<Geoname> newcity = Geoname().obs;
   static String key = 'weather_data';
+  final cityService = CityService('koruzed');
   final Rx<GlobalKey<ScaffoldState>> scaffoldKey =
       GlobalKey<ScaffoldState>().obs;
-  
 
   int get currentHourTime => currentTime.value.hour;
 
@@ -70,20 +57,21 @@ class GlobalController extends GetxController {
       }
     }
     // Get current Location
-    bool isDataAvailable = await checkDataAvailable();
-    print('is => ${isDataAvailable}');
+    // bool isDataAvailable = await checkDataAvailable();
+    // print('is => ${isDataAvailable}');
     try {
-      print('yyyyyyyyyyyyyyyyyyy');
+      // print('yyyyyyyyyyyyyyyyyyy');
       await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.high)
           .then((value) {
-        print('isDataAvailable = $isDataAvailable');
+        // print('isDataAvailable = $isDataAvailable');
 
-        if (!isDataAvailable) {
-          fetchData(value.latitude, value.longitude);
-        } else {
-          loadFromPreferences();
-        }
+        // if (!isDataAvailable) {
+        fetchData(value.latitude, value.longitude);
+        //     // fetchData(32.6507792,-8.4242087);
+        //   } else {
+        //     loadFromPreferences();
+        //   }
       });
     } catch (e) {
       return Future.error('Error getting location: $e');
@@ -93,66 +81,61 @@ class GlobalController extends GetxController {
   getNewLocation() async {
     fetchData(newcity.value.lat!, newcity.value.lng!);
     city.value = newcity.value.name!;
+    changeCity.value = false;
+    // print('----- city : ${newcity.value.name}');
   }
 
-  Future<bool> checkDataAvailable() async {
-    try {
-      WeatherData? check = await loadFromPreferences();
-      print('WeatherData');
-      return check != null;
-    } catch (e) {
-      // Log or handle the error
-      print('Error checking data availability: $e');
-      return false;
-    }
-  }
+  // Future<bool> checkDataAvailable() async {
+  //   try {
+  //     WeatherData? check = await loadFromPreferences();
+  //     print('WeatherData');
+  //     return check != null;
+  //   } catch (e) {
+  //     // Log or handle the error
+  //     print('Error checking data availability: $e');
+  //     return false;
+  //   }
+  // }
 
   Future<void> fetchData(double lat, double log) async {
+    // print('object fetch');
+    // isLoading.value = true;
     try {
-      FetchData().processData(lat, log).then((value) async {
+      weatherData.value.processData(lat, log).then((value) async {
         weatherData.value = value;
-        try {
-          await saveToPreferences();
-          print('save data');
-        } catch (e) {
-          print('Error saving data : $e');
-        }
+        // try {
+        //   await saveToPreferences();
+        //   print('save data');
+        // } catch (e) {
+        //   print('Error saving data : $e');
+        // }
         isLoading.value = false;
-        print('isLoading.value  = ${isLoading.value}');
+        // print('isLoading.value  = ${isLoading.value}');
       });
     } catch (e) {
       return Future.error('Error getting weather data: $e');
     }
-    try {
-      if (changeCity.isFalse) {
-        List<Placemark> location = await placemarkFromCoordinates(
-            weatherData.value.latitude!.value,
-            weatherData.value.longitude!.value);
-        if (location.isNotEmpty) {
-          city.value = location[0].locality!;
-        }
-      }
-    } catch (e) {
-      return Future.error('Error getting location name: $e');
-    }
+    // getLocationName(lat, log);
+    if (changeCity.value == true)
+      city.value = await cityService.searchCitiesByLatLog(lat, log);
     return Future.delayed(const Duration(seconds: 0));
   }
 
-  // Save WeatherData to SharedPreferences
-  Future<void> saveToPreferences() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, weatherData.toJson().toString());
-  }
+  // // Save WeatherData to SharedPreferences
+  // Future<void> saveToPreferences() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.setString(key, weatherData.toJson().toString());
+  // }
 
-  // Load WeatherData from SharedPreferences
-  static Future<WeatherData?> loadFromPreferences() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final jsonString = prefs.getString(key);
-    if (jsonString != null) {
-      final Map<String, dynamic> map =
-          Map<String, dynamic>.from(json.decode(jsonString));
-      return WeatherData.fromJson(map);
-    }
-    return null;
-  }
+  // // Load WeatherData from SharedPreferences
+  // static Future<WeatherData?> loadFromPreferences() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   final jsonString = prefs.getString(key);
+  //   if (jsonString != null) {
+  //     final Map<String, dynamic> map =
+  //         Map<String, dynamic>.from(json.decode(jsonString));
+  //     return WeatherData.fromJson(map);
+  //   }
+  //   return null;
+  // }
 }
