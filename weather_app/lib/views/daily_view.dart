@@ -28,7 +28,7 @@ class _DailyWeatherState extends State<DailyWeather> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).colorScheme.tertiary.withOpacity(0.15),
+                color: Theme.of(context).colorScheme.tertiary.withOpacity(0.25),
               ),
             ],
             borderRadius: BorderRadius.circular(15),

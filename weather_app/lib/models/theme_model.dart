@@ -8,12 +8,12 @@ class CustomTheme {
     colorScheme: ColorScheme.light(
         brightness: Brightness.light,
         primary: Colors.black,
-        secondary: Colors.blue.shade300,
-        tertiary: Colors.grey.shade700,
-        background: Colors.white),
+        secondary: Colors.blue.shade700,
+        tertiary: Color.fromARGB(255, 39, 41, 44),
+        background: Color.fromARGB(255, 213, 218, 222)),
     useMaterial3: true,
     drawerTheme: const DrawerThemeData(
-      backgroundColor: Color.fromARGB(255, 136, 148, 157),
+      backgroundColor: Color.fromARGB(255, 124, 127, 130),
     )
   );
 

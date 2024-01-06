@@ -32,19 +32,19 @@ class CityService {
     }
   }
 
-
   Future<String> searchCitiesByLatLog(double lat, log) async {
-      const String apiUrl = 'http://api.geonames.org/findNearbyJSON';
-      final response =
-          await dio.get('$apiUrl?lat=$lat&lng=$log&username=$apiKey');
+    print('object -> lat : $lat | log : $log');
+    const String apiUrl = 'http://api.geonames.org/findNearbyJSON';
+    print('$apiUrl?lat=$lat&lng=$log&username=$apiKey');
+    final response =
+        await dio.get('$apiUrl?lat=$lat&lng=$log&username=$apiKey');
+    print('response.statusCode == 200  - > ${response.statusCode == 200}');
+    if (response.statusCode == 200) {
+      Geonames data = Geonames.fromJson(response.data);
 
-      if (response.statusCode == 200) {
-        Geonames data = Geonames.fromJson(response.data);
-
-        return data.geonames![0].name!;
-      } else {
-        throw Exception('Failed to load city data');
-      }
+      return data.geonames![0].name!;
+    } else {
+      return Future.error('Failed to load city data');
+    }
   }
-
 }

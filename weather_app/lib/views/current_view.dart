@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/models/weather_data/day.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/controllers/controller.dart';
-import 'package:weather_app/models/weather_data/hour.dart';
-import 'package:weather_app/pages/widgets/hourly_weather.dart';
+import 'package:weather_app/views/hourly_view.dart';
 
 class CurrentWeather extends StatefulWidget {
   const CurrentWeather({Key? key}) : super(key: key);
@@ -149,102 +148,6 @@ class _CurrentWeatherState extends State<CurrentWeather> {
           }),
         ),
       ),
-    );
-  }
-
-  Widget HourlyDetail(Day currentDay) {
-    String timeStamp;
-    Color textColor = _controller.myTheme.currentTheme.value == ThemeMode.light
-        ? Colors.black
-        : Colors.white;
-
-    // Create a ScrollController
-    ScrollController scrollController = ScrollController();
-    double maxOffset = 24 * (64 + 12) - MediaQuery.of(context).size.width;
-    double middelWidth = MediaQuery.of(context).size.width / 2;
-    List<Hour> hours = _controller.weatherData.value.days![2].hours!;
-
-    return Column(
-      children: [
-        const SizedBox(height: 7),
-        const Text(
-          'Today',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-        ),
-        const SizedBox(height: 5),
-        SizedBox(
-          height: 110,
-          child: ListView.builder(
-            controller: scrollController, // Set the controller
-            scrollDirection: Axis.horizontal,
-            itemCount: 24,
-            itemBuilder: (context, index) {
-              index > 12 ? timeStamp = 'AM' : timeStamp = 'PM';
-              return Obx(
-                () => GestureDetector(
-                  onTap: () {
-                    _controller.cardIndex.value = index;
-                    // Calculate the offset to center the selected card
-                    double offset = index * 76 - middelWidth + 32;
-                    offset = offset.clamp(0.0, maxOffset);
-                    // Scroll to the calculated offset
-                    scrollController.animateTo(
-                      offset,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  child: Container(
-                    width: 64,
-                    padding: const EdgeInsets.only(top: 6, bottom: 4),
-                    margin: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .tertiary
-                              .withOpacity(0.15),
-                        )
-                      ],
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: _controller.cardIndex.value == index
-                          ? LinearGradient(colors: [
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.secondary,
-                            ])
-                          : null,
-                    ),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: Text(
-                            '${index > 9 ? '' : '0'}$index:00 $timeStamp',
-                            style: TextStyle(fontSize: 12, color: textColor),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 7,
-                          child: Image.asset(
-                            'assets/weather/${hours[index].icon}.png',
-                          ),
-                        ),
-                        Expanded(
-                          flex: 4,
-                          child: Text(
-                            '${hours[index].temp}°',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
     );
   }
 }

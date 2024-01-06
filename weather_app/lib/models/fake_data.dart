@@ -1,4 +1,3 @@
-import 'package:weather_app/models/weather_data/weather_data.dart';
 
 var fake_data = {
   "queryCost": 73,

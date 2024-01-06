@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/controllers/controller.dart';
-import 'package:weather_app/pages/widgets/search_location.dart';
+import 'package:weather_app/views/search_view.dart';
 
 
 class MyDrawer extends StatefulWidget {

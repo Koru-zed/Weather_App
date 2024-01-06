@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:weather_app/controllers/controller.dart';
-import 'package:weather_app/pages/widgets/change_units.dart';
+import 'package:weather_app/views/change_unit_view.dart';
 
 class Header extends StatefulWidget {
   const Header({Key? key}) : super(key: key);
@@ -12,7 +11,6 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> {
-  String? _dateTime;
 
   final GlobalController _controller = Get.put(GlobalController());
   
@@ -20,8 +18,6 @@ class _HeaderState extends State<Header> {
   @override
   void initState() {
     super.initState();
-    _dateTime = DateFormat('yMMMMd').format(_controller.currentTime.value);
-    _controller.cardIndex.value = _controller.currentHourTime;
   }
 
 
@@ -76,7 +72,7 @@ class _HeaderState extends State<Header> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  _dateTime!,
+                  _controller.dateTime.value,
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.tertiary,
                       fontSize: 16,

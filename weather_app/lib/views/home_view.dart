@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/controllers/controller.dart';
-import 'package:weather_app/models/fake_data.dart';
-import 'package:weather_app/models/weather_data/weather_data.dart';
-import 'package:weather_app/pages/widgets/daily_weather.dart';
-import 'package:weather_app/pages/widgets/get_data.dart';
-import 'package:weather_app/pages/widgets/header.dart';
-import 'package:weather_app/pages/widgets/current_weather.dart';
+// import 'package:weather_app/models/fake_data.dart';
+// import 'package:weather_app/models/weather_data/weather_data.dart';
+import 'package:weather_app/views/daily_view.dart';
+import 'package:weather_app/views/header.dart';
+import 'package:weather_app/views/current_view.dart';
 import 'package:weather_app/views/drawer_view.dart';
 
 class Home extends StatefulWidget {
@@ -22,10 +21,10 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _controller.weatherData.value = WeatherData.fromJson(fake_data);
-    _controller.isLoading.value = false;
-    _controller.city.value = 'London';
-    // if (_controller.isLoading.isTrue) _controller.getLocation();
+    // _controller.weatherData.value = WeatherData.fromJson(fake_data);
+    // _controller.isLoading.value = false;
+    // _controller.city.value = 'London';
+    if (_controller.isLoading.isTrue) _controller.getLocation();
   }
 
   @override
@@ -38,10 +37,11 @@ class _HomeState extends State<Home> {
 
     return SafeArea(
       child: Scaffold(
+        key: _controller.scaffoldKey.value,
         drawer: const MyDrawer(),
         body: Obx(
           () => _controller.isLoading.value
-              ? const GetData()
+              ? checkData()
               : RefreshIndicator(
                   color: Theme.of(context).colorScheme.secondary,
                   onRefresh: () => _controller.fetchData(
@@ -51,6 +51,14 @@ class _HomeState extends State<Home> {
                 ),
         ),
       ),
+    );
+  }
+
+  Widget checkData() {
+    if (_controller.isLoading.isTrue) _controller.getNewLocation();
+
+    return const Center(
+      child: CircularProgressIndicator(color: Colors.blue),
     );
   }
 
@@ -71,6 +79,7 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
 
   @override
   void dispose() {

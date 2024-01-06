@@ -46,8 +46,8 @@ class WeatherData {
 
   Future<WeatherData> processData(lat, log) async {
     // const String key = "7797XW76GKVKRG7AG67P9GMK3";
-    // const String key = "XKCNZRNRMCFAXW6JSVFA52K6W";
-    const String key = "4DLCXUEL7VD69K8R5FHAW4CEK";
+    const String key = "XKCNZRNRMCFAXW6JSVFA52K6W";
+    // const String key = "4DLCXUEL7VD69K8R5FHAW4CEK";
 
     final String url =
         "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$lat,$log/last1days/next5days?unitGroup=metric&key=$key&contentType=json";
@@ -56,7 +56,6 @@ class WeatherData {
 
     return WeatherData.fromJson(response.data);
   }
-
 
   double celsiusToFahrenheit(double? celsius) {
     double fahrenheit = (celsius! * 9 / 5) + 32;
@@ -90,28 +89,29 @@ class WeatherData {
         : double.parse(kilometeres.toStringAsFixed(1));
   }
 
-
-    void updateUnitsToUS(String unit) {
+  void updateUnitsToUS(String state) {
+    print('F/miles');
     days!.forEach((Day day) {
       day.tempmax!.value = celsiusToFahrenheit(day.tempmax!.value);
       day.tempmin!.value = celsiusToFahrenheit(day.tempmin!.value);
       day.hours!.forEach((Hour hour) {
         hour.temp!.value = celsiusToFahrenheit(hour.temp!.value);
-        if (unit == 'UK') {
+        if (state == '°C/km') {
           hour.windspeed!.value = kilometersToMiles(hour.windspeed!.value);
         }
       });
     });
   }
 
-  void updateUnitsToUk(String unit) {
-    if (unit == 'Metric') {
+  void updateUnitsToUk(String state) {
+    print('C/miles');
+    if (state == '°C/km') {
       days!.forEach((Day day) {
         day.hours!.forEach((Hour hour) {
           hour.windspeed!.value = kilometersToMiles(hour.windspeed!.value);
         });
       });
-    } else if (unit == 'US') {
+    } else if (state == '°F/miles') {
       days!.forEach((Day day) {
         day.tempmax!.value = fahrenheitToCelsius(day.tempmax!.value);
         day.tempmin!.value = fahrenheitToCelsius(day.tempmin!.value);
@@ -122,8 +122,9 @@ class WeatherData {
     }
   }
 
-  void updateUnitsToMetric(String unit) {
-    if (unit == 'US') {
+  void updateUnitsToMetric(String state) {
+    print('C/km');
+    if (state == '°F/miles') {
       days!.forEach((Day day) {
         day.tempmax!.value = fahrenheitToCelsius(day.tempmax!.value);
         day.tempmin!.value = fahrenheitToCelsius(day.tempmin!.value);
@@ -132,7 +133,7 @@ class WeatherData {
           hour.windspeed!.value = milesToKilometers(hour.windspeed!.value);
         });
       });
-    } else if (unit == 'UK') {
+    } else if (state == '°C/miles') {
       days!.forEach((Day day) {
         day.hours!.forEach((Hour hour) {
           hour.windspeed!.value = milesToKilometers(hour.windspeed!.value);
@@ -142,8 +143,10 @@ class WeatherData {
   }
 
   void updateUnits(String unit, String state) {
-    if (unit == 'Metric' && state != unit) updateUnitsToMetric(unit);
-    if (unit == 'US' && state != unit) updateUnitsToUS(unit);
-    if (unit == 'UK' && state != unit) updateUnitsToUk(unit);
+    print('unit : $unit | state : $state');
+
+    if (unit == '°C/km' && state != unit) updateUnitsToMetric(state);
+    if (unit == '°F/miles' && state != unit) updateUnitsToUS(state);
+    if (unit == '°C/miles' && state != unit) updateUnitsToUk(state);
   }
 }
