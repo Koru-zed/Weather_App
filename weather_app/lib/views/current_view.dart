@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/models/weather_data/day.dart';
 import 'package:get/get.dart';
-import 'package:weather_app/controllers/controller.dart';
+import 'package:weather_app/presenter/presenter.dart';
 import 'package:weather_app/views/hourly_view.dart';
 
 class CurrentWeather extends StatefulWidget {
@@ -12,12 +13,11 @@ class CurrentWeather extends StatefulWidget {
 }
 
 class _CurrentWeatherState extends State<CurrentWeather> {
-  final GlobalController _controller = Get.put(GlobalController());
+  final GlobalPresenter _presenter = Get.put(GlobalPresenter());
 
   @override
   Widget build(BuildContext context) {
-    // print('length : ${_controller.weatherData.value.days!.length}');
-    Day currentDay = _controller.weatherData.value.days![2];
+    Day currentDay = _presenter.weatherData.value.days![2];
     double width = MediaQuery.of(context).size.width > 600
         ? 600
         : MediaQuery.of(context).size.width;
@@ -47,7 +47,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                   width: 70,
                   padding: const EdgeInsets.all(3),
                   child: Image.asset(
-                    'assets/weather/${currentDay.hours![_controller.currentHourTime].icon}.png',
+                    'assets/weather/${currentDay.hours![_presenter.currentHourTime].icon}.png',
                   ),
                 ),
                 Container(
@@ -59,22 +59,23 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                   text: TextSpan(children: [
                     TextSpan(
                       text:
-                          '${currentDay.hours![_controller.currentHourTime].temp}',
-                      style: TextStyle(
+                          '${currentDay.hours![_presenter.currentHourTime].temp}',
+                      style: GoogleFonts.saira(
                           color: Theme.of(context).colorScheme.primary,
                           fontSize: 60,
                           fontWeight: FontWeight.w600),
                     ),
                     TextSpan(
                       text: '°',
-                      style: TextStyle(
+                      style: GoogleFonts.saira(
                           color: Theme.of(context).colorScheme.secondary,
                           fontSize: 60),
                     ),
                     TextSpan(
-                      text:
-                          '${currentDay.hours![_controller.currentHourTime].icon!.value.replaceAll('-', ' ')}',
-                      style: TextStyle(
+                      text: currentDay
+                          .hours![_presenter.currentHourTime].icon!.value
+                          .replaceAll('-', ' '),
+                      style: GoogleFonts.saira(
                           color: Theme.of(context).colorScheme.tertiary,
                           fontSize: 13.5),
                     )
@@ -85,6 +86,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
   }
 
   Widget moreDetails(Day currentDay) {
+    final double marginHoz = MediaQuery.of(context).size.width * 0.07;
     final items = <String>[
       'cloudcover',
       'windspeed',
@@ -92,27 +94,23 @@ class _CurrentWeatherState extends State<CurrentWeather> {
       'sunrise',
       'sunset'
     ];
-    final double margin_hoz = MediaQuery.of(context).size.width * 0.07;
+
     String getDetail(String name) {
       switch (name) {
         case 'cloudcover':
-          return '${currentDay.hours![_controller.currentHourTime].cloudcover}%';
+          return '${currentDay.hours![_presenter.currentHourTime].cloudcover}%';
         case 'humidity':
-          return '${currentDay.hours![_controller.currentHourTime].humidity}%';
+          return '${currentDay.hours![_presenter.currentHourTime].humidity}%';
         case 'windspeed':
-          return '${currentDay.hours![_controller.currentHourTime].windspeed}${_controller.units[1]}/h';
-        case 'sunrise':
-          return '${currentDay.sunrise} PM';
-        case 'sunset':
-          return '${currentDay.sunset} AM';
+          return '${currentDay.hours![_presenter.currentHourTime].windspeed}${_presenter.unit[1]}/h';
         default:
           throw Exception('Property $name not found');
       }
     }
 
     return Container(
-      margin: EdgeInsets.only(
-          left: margin_hoz, right: margin_hoz, top: 5, bottom: 2),
+      margin:
+          EdgeInsets.only(left: marginHoz, right: marginHoz, top: 5, bottom: 2),
       child: Obx(
         () => Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,7 +127,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                         color: Theme.of(context)
                             .colorScheme
                             .tertiary
-                            .withOpacity(0.25),
+                            .withOpacity(0.15),
                         borderRadius: BorderRadius.circular(
                           20,
                         )),
@@ -142,7 +140,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                   height: 5,
                 ),
                 Text(getDetail(items[index]),
-                    style: const TextStyle(fontSize: 13))
+                    style: GoogleFonts.saira(fontSize: 13))
               ],
             );
           }),

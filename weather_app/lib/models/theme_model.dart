@@ -5,29 +5,27 @@ class CustomTheme {
 
   // light theme
   static final lightTheme = ThemeData(
-    colorScheme: ColorScheme.light(
-        brightness: Brightness.light,
-        primary: Colors.black,
-        secondary: Colors.blue.shade700,
-        tertiary: Color.fromARGB(255, 39, 41, 44),
-        background: Color.fromARGB(255, 213, 218, 222)),
-    useMaterial3: true,
-    drawerTheme: const DrawerThemeData(
-      backgroundColor: Color.fromARGB(255, 124, 127, 130),
-    )
-  );
+      colorScheme: ColorScheme.light(
+          brightness: Brightness.light,
+          primary: Colors.black,
+          secondary: Colors.blue.shade700,
+          tertiary: const Color.fromARGB(255, 0, 0, 0),
+          background:const Color.fromARGB(255, 234, 234, 234)),
+      useMaterial3: true,
+      drawerTheme: DrawerThemeData(
+        backgroundColor: const Color.fromARGB(255, 234, 234, 234).withOpacity(0.95),
+      ));
 
   // dark theme
   static final darkTheme = ThemeData(
-    colorScheme: ColorScheme.dark(
-        brightness: Brightness.dark,
-        primary: Colors.white,
-        secondary: Colors.blue.shade300,
-        tertiary: Colors.grey.shade400,
-        background: const Color.fromARGB(255, 31, 37, 45)),
-    useMaterial3: true,
-    drawerTheme: const DrawerThemeData(
-      backgroundColor: Color.fromARGB(255, 39, 41, 44),
-    )
-  );
+      colorScheme: ColorScheme.dark(
+          brightness: Brightness.dark,
+          primary: Colors.white,
+          secondary: Colors.blue.shade300,
+          tertiary: Colors.grey.shade400,
+          background: const Color.fromARGB(255, 31, 37, 45)),
+      useMaterial3: true,
+      drawerTheme: DrawerThemeData(
+        backgroundColor:const Color.fromARGB(255, 31, 37, 45).withOpacity(0.95),
+      ));
 }

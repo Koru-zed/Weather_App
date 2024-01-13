@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather_app/controllers/controller.dart';
-
-final List<String> items = ['°C/km', '°F/miles', '°C/miles'];
+import 'package:google_fonts/google_fonts.dart';
+import 'package:weather_app/presenter/presenter.dart';
 
 class ChangeUnits extends StatefulWidget {
   const ChangeUnits({super.key});
@@ -12,21 +11,18 @@ class ChangeUnits extends StatefulWidget {
 }
 
 class ChangeUnitsState extends State<ChangeUnits> {
-  String _selectedMenu = items[0];
-
-  final GlobalController _controller = Get.put(GlobalController());
+  final GlobalPresenter _presenter = Get.put(GlobalPresenter());
 
   @override
   Widget build(BuildContext context) {
-
     return MenuAnchor(
       builder:
           (BuildContext context, MenuController controller, Widget? child) {
         return Row(
           children: [
             Text(
-              _selectedMenu,
-              style: TextStyle(
+              '°${_presenter.unit[0]}/${_presenter.unit[1]}',
+              style: GoogleFonts.saira(
                   color: Theme.of(context).colorScheme.secondary,
                   fontWeight: FontWeight.bold),
             ),
@@ -49,13 +45,17 @@ class ChangeUnitsState extends State<ChangeUnits> {
         3,
         (int index) => MenuItemButton(
           onPressed: () {
-            _controller.weatherData.value.updateUnits(items[index], _selectedMenu);
-            setState(() => _selectedMenu = items[index]);
+            _presenter.weatherData.value.updateUnits(
+                _presenter.weatherData.value.units[index], _presenter.unit);
+            setState(() => _presenter.unit.value =
+                _presenter.weatherData.value.units[index]);
+            _presenter.unit.value = _presenter.weatherData.value.units[index];
           },
           child: Container(
             margin: const EdgeInsets.all(4), // Add margin here
             child: Text(
-              items[index],
+              '°${_presenter.weatherData.value.units[index][0]}/${_presenter.weatherData.value.units[index][1]}',
+              style: GoogleFonts.saira(),
             ),
           ),
         ),

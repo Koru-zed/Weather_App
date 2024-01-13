@@ -8,13 +8,24 @@ dependencies:
     dio: ^5.4.0
     flutter:
         sdk: flutter
+    flutter_launcher_icons: ^0.13.1
     geolocator: ^10.1.0
     get: ^4.6.6
+    google_fonts: ^6.1.0
     intl: ^0.19.0
+flutter_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/icons/Ixon.png"
+  image_path_ios: "assets/icons/Ixon.png"
+
+
 dev_dependencies:
     flutter_test:
         sdk: flutter
-    flutter_lints: ^2.0.0
+    flutter_lints: ^3.0.1
+
+
 flutter:
     uses-material-design: true
     assets:

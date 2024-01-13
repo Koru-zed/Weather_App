@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather_app/controllers/controller.dart';
-// import 'package:weather_app/models/fake_data.dart';
-// import 'package:weather_app/models/weather_data/weather_data.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:weather_app/presenter/presenter.dart';
 import 'package:weather_app/views/daily_view.dart';
 import 'package:weather_app/views/header.dart';
 import 'package:weather_app/views/current_view.dart';
 import 'package:weather_app/views/drawer_view.dart';
+import 'package:weather_app/views/search_view.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -16,38 +16,40 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final GlobalController _controller = Get.put(GlobalController());
+  final GlobalPresenter _presenter = Get.put(GlobalPresenter());
 
   @override
   void initState() {
     super.initState();
-    // _controller.weatherData.value = WeatherData.fromJson(fake_data);
-    // _controller.isLoading.value = false;
-    // _controller.city.value = 'London';
-    if (_controller.isLoading.isTrue) _controller.getLocation();
+    if (_presenter.isLoading.isTrue) _presenter.getLocation();
+  }
+
+  Future<void> onRefresh() {
+    if (_presenter.checkRefresh() == false) return Future(() => null);
+    return _presenter.fetchData(_presenter.weatherData.value.latitude!.value,
+        _presenter.weatherData.value.longitude!.value);
   }
 
   @override
   Widget build(BuildContext context) {
-    _controller.width.value = MediaQuery.of(context).size.width;
-    _controller.isDark.value =
+    _presenter.width.value = MediaQuery.of(context).size.width;
+    _presenter.isDark.value =
         Theme.of(context).colorScheme.brightness == Brightness.light
             ? false
             : true;
-
     return SafeArea(
       child: Scaffold(
-        key: _controller.scaffoldKey.value,
+        key: _presenter.scaffoldKey.value,
         drawer: const MyDrawer(),
         body: Obx(
-          () => _controller.isLoading.value
+          () => _presenter.isLoading.value || _presenter.nowCity.isFalse
               ? checkData()
               : RefreshIndicator(
                   color: Theme.of(context).colorScheme.secondary,
-                  onRefresh: () => _controller.fetchData(
-                      _controller.weatherData.value.latitude!.value,
-                      _controller.weatherData.value.longitude!.value),
-                  child: _buildContent(),
+                  onRefresh: () => onRefresh(),
+                  child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: _buildContent()),
                 ),
         ),
       ),
@@ -55,37 +57,61 @@ class _HomeState extends State<Home> {
   }
 
   Widget checkData() {
-    if (_controller.isLoading.isTrue) _controller.getNewLocation();
-
-    return const Center(
+    Widget widget = const Center(
       child: CircularProgressIndicator(color: Colors.blue),
     );
+    if (_presenter.nowCity.isFalse) {
+      widget = Center(
+        child: Container(
+          constraints: const BoxConstraints(maxHeight: 500),
+          child: Column(
+            children: [
+              Image.asset('assets/icons/Ixon.png'),
+              Text(
+                'Weather',
+                style: GoogleFonts.saira(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                    color: Theme.of(context).colorScheme.secondary),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              const Expanded(child: SearchLocation()),
+            ],
+          ),
+        ),
+      );
+    }
+    if (_presenter.isLoading.isTrue) {
+      _presenter.getNewLocation();
+    }
+
+    return widget;
   }
 
   Widget _buildContent() {
     return Align(
       alignment: Alignment.center,
       child: Container(
-        constraints: const BoxConstraints(
+        constraints: BoxConstraints(
           maxWidth: 600.0,
+          maxHeight: MediaQuery.of(context).size.height - 25,
         ),
-        child: ListView(
-          children: const [
+        child: const Column(
+          children: [
             Header(),
             CurrentWeather(),
-            DailyWeather(),
+            Expanded(child: DailyWeather()),
           ],
         ),
       ),
     );
   }
 
-
   @override
   void dispose() {
-    _controller.dispose();
+    _presenter.dispose();
     super.dispose();
   }
 }
-
-

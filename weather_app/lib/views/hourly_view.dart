@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/controllers/controller.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:weather_app/presenter/presenter.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/models/weather_data/day.dart';
 
@@ -22,14 +23,14 @@ class HourlyWeather extends StatefulWidget {
 class _HourlyWeatherState extends State<HourlyWeather> {
   String? timeStamp;
   ScrollController scrollController = ScrollController();
-  GlobalController _controller = Get.put(GlobalController());
+  GlobalPresenter _presenter = Get.put(GlobalPresenter());
 
   @override
   void initState() {
     super.initState();
 
     // Set the initial scroll position to center the selected card
-    int initialIndex = _controller.cardIndex.value;
+    int initialIndex = _presenter.cardIndex.value;
     double initialOffset = initialIndex * 76.5 - widget.middleWidth + 32;
     initialOffset = initialOffset.clamp(0.0, widget.maxOffset);
 
@@ -39,16 +40,16 @@ class _HourlyWeatherState extends State<HourlyWeather> {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor = _controller.myTheme.currentTheme.value == ThemeMode.light
+    Color textColor = _presenter.myTheme.currentTheme.value == ThemeMode.light
         ? Colors.black
         : Colors.white;
 
     return Column(
       children: [
         const SizedBox(height: 7),
-        const Text(
+        Text(
           'Today',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          style: GoogleFonts.saira(fontSize: 20, fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 5),
         SizedBox(
@@ -63,7 +64,7 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                 () => GestureDetector(
                   onTap: () {
                     // Set the card index when tapped
-                    _controller.cardIndex.value = index;
+                    _presenter.cardIndex.value = index;
 
                     // Calculate the offset to center the selected card
                     double offset = index * 76.4 - widget.middleWidth + 32;
@@ -89,12 +90,12 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                         ),
                       ],
                       borderRadius: BorderRadius.circular(10),
-                      gradient: _controller.currentHourTime == index
+                      gradient: _presenter.currentHourTime == index
                           ? LinearGradient(colors: [
                               Theme.of(context).colorScheme.secondary,
                               Theme.of(context).colorScheme.secondary,
                             ])
-                          : _controller.cardIndex.value == index
+                          : _presenter.cardIndex.value == index
                               ? LinearGradient(colors: [
                                   Theme.of(context)
                                       .colorScheme
@@ -113,9 +114,9 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                           flex: 4,
                           child: Text(
                             '${index > 9 ? '' : '0'}$index:00 $timeStamp',
-                            style: TextStyle(
+                            style: GoogleFonts.saira(
                                 fontSize: 12,
-                                color: _controller.currentHourTime == index
+                                color: _presenter.currentHourTime == index
                                     ? Theme.of(context).colorScheme.background
                                     : textColor),
                           ),
@@ -130,8 +131,8 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                           flex: 4,
                           child: Text(
                             '${widget.currentDay.hours![index].temp}°',
-                            style: TextStyle(
-                                color: _controller.currentHourTime == index
+                            style: GoogleFonts.saira(
+                                color: _presenter.currentHourTime == index
                                     ? Theme.of(context).colorScheme.background
                                     : textColor),
                           ),

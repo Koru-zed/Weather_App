@@ -1,6 +1,7 @@
+import 'package:weather_app/models/fake_data.dart';
 import 'package:weather_app/models/weather_data/hour.dart';
-
 import 'day.dart';
+// import 'package:weather_app/models/fake_data.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +14,11 @@ class WeatherData {
   RxString? address;
   RxString? timezone;
   RxList<Day>? days;
+  final List<List<String>> units = [
+    ['C', 'km'],
+    ['F', 'miles'],
+    ['C', 'miles']
+  ];
 
   WeatherData({
     this.latitude,
@@ -44,17 +50,23 @@ class WeatherData {
         'days': days?.map((e) => e.toJson()).toList(),
       };
 
-  Future<WeatherData> processData(lat, log) async {
-    // const String key = "7797XW76GKVKRG7AG67P9GMK3";
-    const String key = "XKCNZRNRMCFAXW6JSVFA52K6W";
-    // const String key = "4DLCXUEL7VD69K8R5FHAW4CEK";
+  Future<WeatherData> processData(lat, log, int k) async {
+    List<String> keys = [
+      "7797XW76GKVKRG7AG67P9GMK3",
+      "XKCNZRNRMCFAXW6JSVFA52K6W",
+      "4DLCXUEL7VD69K8R5FHAW4CEK"
+    ];
+    // return WeatherData.fromJson(fake_data);////////
 
     final String url =
-        "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$lat,$log/last1days/next5days?unitGroup=metric&key=$key&contentType=json";
-
-    final response = await dio.get(url);
-
-    return WeatherData.fromJson(response.data);
+        "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$lat,$log/last1days/next5days?unitGroup=metric&key=${keys[k % 3]}&contentType=json";
+    try {
+      final response = await dio.get(url);
+      return WeatherData.fromJson(response.data);
+    } catch (err) {
+      if (k == 3) return WeatherData.fromJson(fake_data);
+      return processData(lat, log, k + 1);
+    }
   }
 
   double celsiusToFahrenheit(double? celsius) {
@@ -89,29 +101,27 @@ class WeatherData {
         : double.parse(kilometeres.toStringAsFixed(1));
   }
 
-  void updateUnitsToUS(String state) {
-    print('F/miles');
+  void updateUnitsToUS(List<String> state) {
     days!.forEach((Day day) {
       day.tempmax!.value = celsiusToFahrenheit(day.tempmax!.value);
       day.tempmin!.value = celsiusToFahrenheit(day.tempmin!.value);
       day.hours!.forEach((Hour hour) {
         hour.temp!.value = celsiusToFahrenheit(hour.temp!.value);
-        if (state == '°C/km') {
+        if (state == units[0]) {
           hour.windspeed!.value = kilometersToMiles(hour.windspeed!.value);
         }
       });
     });
   }
 
-  void updateUnitsToUk(String state) {
-    print('C/miles');
-    if (state == '°C/km') {
+  void updateUnitsToUk(List<String> state) {
+    if (state == units[0]) {
       days!.forEach((Day day) {
         day.hours!.forEach((Hour hour) {
           hour.windspeed!.value = kilometersToMiles(hour.windspeed!.value);
         });
       });
-    } else if (state == '°F/miles') {
+    } else if (state == units[1]) {
       days!.forEach((Day day) {
         day.tempmax!.value = fahrenheitToCelsius(day.tempmax!.value);
         day.tempmin!.value = fahrenheitToCelsius(day.tempmin!.value);
@@ -122,9 +132,8 @@ class WeatherData {
     }
   }
 
-  void updateUnitsToMetric(String state) {
-    print('C/km');
-    if (state == '°F/miles') {
+  void updateUnitsToMetric(List<String> state) {
+    if (state == units[1]) {
       days!.forEach((Day day) {
         day.tempmax!.value = fahrenheitToCelsius(day.tempmax!.value);
         day.tempmin!.value = fahrenheitToCelsius(day.tempmin!.value);
@@ -133,7 +142,7 @@ class WeatherData {
           hour.windspeed!.value = milesToKilometers(hour.windspeed!.value);
         });
       });
-    } else if (state == '°C/miles') {
+    } else if (state == units[2]) {
       days!.forEach((Day day) {
         day.hours!.forEach((Hour hour) {
           hour.windspeed!.value = milesToKilometers(hour.windspeed!.value);
@@ -142,11 +151,10 @@ class WeatherData {
     }
   }
 
-  void updateUnits(String unit, String state) {
-    print('unit : $unit | state : $state');
-
-    if (unit == '°C/km' && state != unit) updateUnitsToMetric(state);
-    if (unit == '°F/miles' && state != unit) updateUnitsToUS(state);
-    if (unit == '°C/miles' && state != unit) updateUnitsToUk(state);
+  void updateUnits(List<String> unit, List<String> state) {
+    
+    if (unit == units[0] && state != unit) updateUnitsToMetric(state);
+    if (unit == units[1] && state != unit) updateUnitsToUS(state);
+    if (unit == units[2] && state != unit) updateUnitsToUk(state);
   }
 }

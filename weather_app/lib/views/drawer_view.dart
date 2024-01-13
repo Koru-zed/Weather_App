@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather_app/controllers/controller.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:weather_app/presenter/presenter.dart';
 import 'package:weather_app/views/search_view.dart';
-
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -11,43 +11,59 @@ class MyDrawer extends StatefulWidget {
   _MyDrawerState createState() => _MyDrawerState();
 }
 
-
 class _MyDrawerState extends State<MyDrawer> {
-  final GlobalController _controller = Get.put(GlobalController());
-
+  final GlobalPresenter _presenter = Get.put(GlobalPresenter());
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
         backgroundColor: Theme.of(context).drawerTheme.backgroundColor,
-        width: _controller.width.value / 1.6,
+        width: _presenter.width.value / 1.6,
         child: Obx(
           () => Column(
             children: [
-              DrawerHeader(child: Image.asset('assets/icons/weather-icon.png')),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 60),
+                child: Column(children: [
+                  Image.asset('assets/icons/Ixon.png'),
+                  Text(
+                    'Weather',
+                    style: GoogleFonts.saira(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                        color: Theme.of(context).colorScheme.secondary),
+                  ),
+                ]),
+              ),
               Container(
-                margin: const EdgeInsets.only(
-                    top: 40, left: 15, bottom: 15, right: 10),
+                decoration: BoxDecoration(
+                    border: Border(
+                        top: BorderSide(
+                            width: 1,
+                            color: Theme.of(context).colorScheme.secondary))),
+                padding: const EdgeInsets.only(
+                    top: 20, left: 15, bottom: 15, right: 10),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Dark Mode',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: GoogleFonts.saira(fontWeight: FontWeight.bold),
                       ),
                       Transform.scale(
                         scale: 0.6,
                         child: Switch(
-                            value: _controller.isDark.value,
+                            value: _presenter.isDark.value,
                             hoverColor: Theme.of(context).colorScheme.secondary,
                             onChanged: (value) {
-                              _controller.switchTheme();
-                              _controller.isDark.value = value;
+                              _presenter.switchTheme();
+                              _presenter.isDark.value = value;
                             }),
                       ),
                     ]),
               ),
-              const SearchLocation(),
+              const Expanded(child: SearchLocation()),
             ],
           ),
         ));

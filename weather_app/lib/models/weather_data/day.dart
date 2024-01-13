@@ -49,7 +49,9 @@ class Day {
 
   factory Day.fromJson(Map<String, dynamic> json) => Day(
         datetime: (json['datetime'] as String).obs,
-        nameday: DateFormat('EEEE').format(DateTime.parse(json['datetime'] as String)).obs,
+        nameday: DateFormat('EEEE')
+            .format(DateTime.parse(json['datetime'] as String))
+            .obs,
         tempmax: _roundTemperature((json['tempmax'] as double).obs),
         tempmin: _roundTemperature((json['tempmin'] as double).obs),
         temp: _roundTemperature((json['temp'] as double).obs),
