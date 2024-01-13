@@ -51,7 +51,4 @@ Weather App is a Flutter-based mobile application that provides current weather 
 
 Feel free to contribute to the project by opening issues, submitting pull requests, or suggesting enhancements. For major changes, please open an issue first to discuss what you would like to change.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
