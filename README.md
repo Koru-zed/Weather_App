@@ -1,6 +1,6 @@
 # Weather App
 
-Weather App is a Flutter-based mobile application that provides current weather information based on user location. It utilizes geolocation, GetX state management, Dio for network requests, Google Fonts for font customization, Intl for internationalization, and follows an MVP (Model-View-Presenter) architecture pattern.
+The Weather App is a mobile application built using Flutter. It provides users with the current weather information based on their location, along with the weather forecast for the previous 2 days and the next 5 days. The app uses geolocation to determine the user's location, GetX state management to manage the app's state, Dio for network requests, Google Fonts for font customization, Intl for internationalization, and follows the MVP (Model-View-Presenter) architecture pattern.
 
 ## Features
 
@@ -10,7 +10,7 @@ Weather App is a Flutter-based mobile application that provides current weather 
 - **Custom Fonts:** Use beautiful Google Fonts to enhance the app's visual appeal.
 - **Efficient State Management:** Leverage GetX for efficient and reactive state management.
 - **Network Requests:** Utilize Dio for making network requests for weather data.
-- **Dark/Light Theme:** Provides a customizable interface with support for dark and light themes.
+- **Dark/Light Theme:** Provides a customizable interface supporting dark and light themes.
 
 ## Tech Stack
 
