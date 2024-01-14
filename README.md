@@ -23,9 +23,11 @@ Weather App is a Flutter-based mobile application that provides current weather 
 
 ## Getting Started
 
-# Prerequisites
+### Prerequisites
  - Flutter SDK: Installation Guide
  - Dart: Should be included with Flutter SDK.
+
+### Installation
 
 1. **Clone the Repository:**
     ```bash
