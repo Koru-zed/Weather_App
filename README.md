@@ -44,7 +44,6 @@ Weather App is a Flutter-based mobile application that provides current weather 
 
 ## Configuration
 
-- Configure your Google Fonts API key in the appropriate file.
 - Make sure location services are enabled on the device or emulator.
 
 ## Contributing
