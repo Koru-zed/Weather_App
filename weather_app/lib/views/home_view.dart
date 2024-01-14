@@ -98,11 +98,13 @@ class _HomeState extends State<Home> {
           maxWidth: 600.0,
           maxHeight: MediaQuery.of(context).size.height - 25,
         ),
-        child: const Column(
+        child: Column(
           children: [
-            Header(),
-            CurrentWeather(),
-            Expanded(child: DailyWeather()),
+            const Header(),
+            const CurrentWeather(),
+            _presenter.showMore.isFalse 
+              ? const SizedBox(height: 270, child: DailyWeather()) 
+              : Container(),
           ],
         ),
       ),

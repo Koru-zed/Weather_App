@@ -1,7 +1,7 @@
 import 'package:weather_app/models/fake_data.dart';
 import 'package:weather_app/models/weather_data/hour.dart';
 import 'day.dart';
-// import 'package:weather_app/models/fake_data.dart';
+import 'package:weather_app/models/fake_data.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
@@ -56,7 +56,10 @@ class WeatherData {
       "XKCNZRNRMCFAXW6JSVFA52K6W",
       "4DLCXUEL7VD69K8R5FHAW4CEK"
     ];
-    // return WeatherData.fromJson(fake_data);////////
+
+    // var wa = WeatherData.fromJson(fake_data);
+    // print('object');
+    // return wa; ////////
 
     final String url =
         "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$lat,$log/last1days/next5days?unitGroup=metric&key=${keys[k % 3]}&contentType=json";
@@ -102,6 +105,8 @@ class WeatherData {
   }
 
   void updateUnitsToUS(List<String> state) {
+    // print("F/miles");
+
     days!.forEach((Day day) {
       day.tempmax!.value = celsiusToFahrenheit(day.tempmax!.value);
       day.tempmin!.value = celsiusToFahrenheit(day.tempmin!.value);
@@ -115,6 +120,7 @@ class WeatherData {
   }
 
   void updateUnitsToUk(List<String> state) {
+    // print("C/miles");
     if (state == units[0]) {
       days!.forEach((Day day) {
         day.hours!.forEach((Hour hour) {
@@ -133,6 +139,8 @@ class WeatherData {
   }
 
   void updateUnitsToMetric(List<String> state) {
+    // print("C/km");
+
     if (state == units[1]) {
       days!.forEach((Day day) {
         day.tempmax!.value = fahrenheitToCelsius(day.tempmax!.value);
@@ -152,7 +160,6 @@ class WeatherData {
   }
 
   void updateUnits(List<String> unit, List<String> state) {
-    
     if (unit == units[0] && state != unit) updateUnitsToMetric(state);
     if (unit == units[1] && state != unit) updateUnitsToUS(state);
     if (unit == units[2] && state != unit) updateUnitsToUk(state);

@@ -5,12 +5,16 @@ import 'package:get/get.dart';
 import 'package:weather_app/models/weather_data/day.dart';
 
 class HourlyWeather extends StatefulWidget {
+  final String text;
+  final double fontSizeText;
   final Day currentDay;
   final double maxOffset;
   final double middleWidth;
 
   const HourlyWeather({
     Key? key,
+    required this.text,
+    required this.fontSizeText,
     required this.currentDay,
     required this.maxOffset,
     required this.middleWidth,
@@ -30,8 +34,8 @@ class _HourlyWeatherState extends State<HourlyWeather> {
     super.initState();
 
     // Set the initial scroll position to center the selected card
-    int initialIndex = _presenter.cardIndex.value;
-    double initialOffset = initialIndex * 76.5 - widget.middleWidth + 32;
+;
+    double initialOffset = _presenter.cardHourIndex.value * 76.5 - widget.middleWidth + 32;
     initialOffset = initialOffset.clamp(0.0, widget.maxOffset);
 
     // Scroll to the initial offset
@@ -48,8 +52,9 @@ class _HourlyWeatherState extends State<HourlyWeather> {
       children: [
         const SizedBox(height: 7),
         Text(
-          'Today',
-          style: GoogleFonts.saira(fontSize: 20, fontWeight: FontWeight.w500),
+          widget.text,
+          style: GoogleFonts.saira(
+              fontSize: widget.fontSizeText, fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 5),
         SizedBox(
@@ -64,7 +69,7 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                 () => GestureDetector(
                   onTap: () {
                     // Set the card index when tapped
-                    _presenter.cardIndex.value = index;
+                    _presenter.cardHourIndex.value = index;
 
                     // Calculate the offset to center the selected card
                     double offset = index * 76.4 - widget.middleWidth + 32;
@@ -95,7 +100,7 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                               Theme.of(context).colorScheme.secondary,
                               Theme.of(context).colorScheme.secondary,
                             ])
-                          : _presenter.cardIndex.value == index
+                          : _presenter.cardHourIndex.value == index
                               ? LinearGradient(colors: [
                                   Theme.of(context)
                                       .colorScheme

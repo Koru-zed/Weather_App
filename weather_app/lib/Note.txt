@@ -1,0 +1,77 @@
+
+import 'package:flutter/material.dart';
+
+class CenteredElementListView extends StatefulWidget {
+  @override
+  _CenteredElementListViewState createState() =>
+      _CenteredElementListViewState();
+}
+
+class _CenteredElementListViewState extends State<CenteredElementListView> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Centered Element in ListView'),
+      ),
+      body: Center(
+        child: Container(
+          height: 200, // Set the desired height of the container
+          child: ListView.builder(
+            controller: _scrollController,
+            itemCount: 10,
+            itemBuilder: (context, index) {
+              // The element you want to center (e.g., at index 5)
+              if (index == 5) {
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  // Scroll to make the element visible and centered
+                  _scrollToCenteredElement(index);
+                });
+
+                return Container(
+                  height: 50, // Set the height of the centered element
+                  color: Colors.blue,
+                  child: Center(
+                    child: Text(
+                      'Centered Element',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                );
+              }
+
+              // Other list items
+              return ListTile(
+                title: Text('Item $index'),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _scrollToCenteredElement(int index) {
+    // Calculate the scroll offset to center the element
+    final double itemHeight = 50; // Set the height of the centered element
+    final double containerHeight = 200; // Set the height of the ListView container
+    final double targetOffset =
+        (index * itemHeight) - (containerHeight - itemHeight) / 2;
+
+    // Scroll to make the element visible and centered
+    _scrollController.animateTo(
+      targetOffset,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: CenteredElementListView(),
+  ));
+}
+

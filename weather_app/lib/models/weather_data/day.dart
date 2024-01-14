@@ -5,17 +5,9 @@ import 'hour.dart';
 class Day {
   RxString? datetime;
   RxString? nameday;
-  RxDouble? tempmax;
-  RxDouble? tempmin;
+  RxDouble? tempmax;//
+  RxDouble? tempmin;//
   RxDouble? temp;
-  RxDouble? humidity;
-  RxDouble? precipprob;
-  RxDouble? snow;
-  RxDouble? snowdepth;
-  RxDouble? windgust;
-  RxDouble? windspeed;
-  RxDouble? pressure;
-  RxDouble? visibility;
   RxString? sunrise;
   RxString? sunset;
   RxDouble? moonphase;
@@ -30,14 +22,6 @@ class Day {
     this.tempmax,
     this.tempmin,
     this.temp,
-    this.humidity,
-    this.precipprob,
-    this.snow,
-    this.snowdepth,
-    this.windgust,
-    this.windspeed,
-    this.pressure,
-    this.visibility,
     this.sunrise,
     this.sunset,
     this.moonphase,
@@ -55,14 +39,6 @@ class Day {
         tempmax: _roundTemperature((json['tempmax'] as double).obs),
         tempmin: _roundTemperature((json['tempmin'] as double).obs),
         temp: _roundTemperature((json['temp'] as double).obs),
-        humidity: (json['humidity'] as double).obs,
-        precipprob: (json['precipprob'] as double).obs,
-        snow: (json['snow'] as double).obs,
-        snowdepth: (json['snowdepth'] as double).obs,
-        windgust: (json['windgust'] as double).obs,
-        windspeed: (json['windspeed'] as double).obs,
-        pressure: (json['pressure'] as double).obs,
-        visibility: (json['visibility'] as double).obs,
         sunrise: ((json['sunrise'] as String).substring(0, 5)).obs,
         sunset: ((json['sunset'] as String).substring(0, 5)).obs,
         moonphase: (json['moonphase'] as double).obs,
@@ -80,14 +56,6 @@ class Day {
         'tempmax': tempmax?.value,
         'tempmin': tempmin?.value,
         'temp': temp?.value,
-        'humidity': humidity?.value,
-        'precipprob': precipprob?.value,
-        'snow': snow?.value,
-        'snowdepth': snowdepth?.value,
-        'windgust': windgust?.value,
-        'windspeed': windspeed?.value,
-        'pressure': pressure?.value,
-        'visibility': visibility?.value,
         'sunrise': sunrise?.value,
         'sunset': sunset?.value,
         'moonphase': moonphase?.value,

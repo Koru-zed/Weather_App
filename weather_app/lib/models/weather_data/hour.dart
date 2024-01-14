@@ -3,15 +3,16 @@ import 'package:get/get.dart';
 class Hour {
   RxString? datetime;
   RxDouble? temp;
-  RxDouble? humidity;
+  RxDouble? humidity; //
   RxDouble? precipprob;
   RxDouble? snow;
   RxDouble? snowdepth;
-  RxDouble? windgust;
-  RxDouble? windspeed;
-  RxDouble? pressure;
+  RxDouble? solarradiation;
+  RxDouble? solarenergy;
+  RxDouble? winddir;
+  RxDouble? windspeed; //
   RxDouble? visibility;
-  RxDouble? cloudcover;
+  RxDouble? cloudcover; //
   RxString? conditions;
   RxString? icon;
 
@@ -22,9 +23,10 @@ class Hour {
     this.precipprob,
     this.snow,
     this.snowdepth,
-    this.windgust,
+    this.solarradiation,
+    this.solarenergy,
+    this.winddir,
     this.windspeed,
-    this.pressure,
     this.visibility,
     this.cloudcover,
     this.conditions,
@@ -38,9 +40,10 @@ class Hour {
         precipprob: (json['precipprob'] as double).obs,
         snow: (json['snow'] as double).obs,
         snowdepth: (json['snowdepth'] as double).obs,
-        windgust: (json['windgust'] as double).obs,
+        solarradiation: (json['solarradiation'] as double).obs,
+        solarenergy: (json['solarenergy'] as double).obs,
+        winddir: (json['winddir'] as double).obs,
         windspeed: (json['windspeed'] as double).obs,
-        pressure: (json['pressure'] as double).obs,
         visibility: (json['visibility'] as double).obs,
         cloudcover: (json['cloudcover'] as double).obs,
         conditions: (json['conditions'] as String).obs,
@@ -54,9 +57,10 @@ class Hour {
         'precipprob': precipprob,
         'snow': snow,
         'snowdepth': snowdepth,
-        'windgust': windgust,
+        'solarradiation': solarradiation,
+        'solarenergy': solarenergy,
+        'winddir': winddir,
         'windspeed': windspeed,
-        'pressure': pressure,
         'visibility': visibility,
         'cloudcover': cloudcover,
         'conditions': conditions,

@@ -4,6 +4,7 @@ import 'package:weather_app/models/weather_data/day.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/presenter/presenter.dart';
 import 'package:weather_app/views/hourly_view.dart';
+import 'package:weather_app/views/more_detail.dart';
 
 class CurrentWeather extends StatefulWidget {
   const CurrentWeather({Key? key}) : super(key: key);
@@ -27,11 +28,13 @@ class _CurrentWeatherState extends State<CurrentWeather> {
     return Column(
       children: [
         currentData(currentDay),
-        moreDetails(currentDay),
+        MoreDetail(currentDay: currentDay, showMore: false),
         HourlyWeather(
-            currentDay: currentDay,
-            maxOffset: maxOffset,
-            middleWidth: middelWidth)
+          text: 'Today',
+          fontSizeText: 20,
+          currentDay: currentDay,
+          maxOffset: maxOffset,
+          middleWidth: middelWidth)
       ],
     );
   }
@@ -85,67 +88,4 @@ class _CurrentWeatherState extends State<CurrentWeather> {
             )));
   }
 
-  Widget moreDetails(Day currentDay) {
-    final double marginHoz = MediaQuery.of(context).size.width * 0.07;
-    final items = <String>[
-      'cloudcover',
-      'windspeed',
-      'humidity',
-      'sunrise',
-      'sunset'
-    ];
-
-    String getDetail(String name) {
-      switch (name) {
-        case 'cloudcover':
-          return '${currentDay.hours![_presenter.currentHourTime].cloudcover}%';
-        case 'humidity':
-          return '${currentDay.hours![_presenter.currentHourTime].humidity}%';
-        case 'windspeed':
-          return '${currentDay.hours![_presenter.currentHourTime].windspeed}${_presenter.unit[1]}/h';
-        default:
-          throw Exception('Property $name not found');
-      }
-    }
-
-    return Container(
-      margin:
-          EdgeInsets.only(left: marginHoz, right: marginHoz, top: 5, bottom: 2),
-      child: Obx(
-        () => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(3, (index) {
-            return Column(
-              children: [
-                Tooltip(
-                  message: items[index],
-                  child: Container(
-                    height: 55,
-                    width: 55,
-                    padding: const EdgeInsets.all(13),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .tertiary
-                            .withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(
-                          20,
-                        )),
-                    child: Image.asset(
-                      'assets/icons/${items[index]}.png',
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text(getDetail(items[index]),
-                    style: GoogleFonts.saira(fontSize: 13))
-              ],
-            );
-          }),
-        ),
-      ),
-    );
-  }
 }

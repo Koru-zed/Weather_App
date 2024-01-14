@@ -13,8 +13,10 @@ class GlobalPresenter extends GetxController {
   final RxBool nowCity = true.obs;
   final RxBool changeCity = false.obs;
   final RxBool isDark = false.obs;
+  final RxBool showMore = false.obs;
   final RxDouble width = 0.0.obs;
-  final RxInt cardIndex = 0.obs;
+  final RxInt cardHourIndex = 0.obs;
+  final RxInt cardDayIndex = 0.obs;
   final MyTheme myTheme = Get.put(MyTheme());
   final Rx<DateTime> currentTime = DateTime.now().obs;
   final Rx<WeatherData> weatherData = WeatherData().obs;
@@ -32,7 +34,7 @@ class GlobalPresenter extends GetxController {
   void onInit() {
     super.onInit();
     dateTime.value = DateFormat('yMMMMd').format(currentTime.value);
-    cardIndex.value = currentHourTime;
+    cardHourIndex.value = currentHourTime;
   }
 
   void switchTheme() {
