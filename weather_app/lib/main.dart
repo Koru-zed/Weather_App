@@ -23,12 +23,11 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/', page: () => const Home()),
         GetPage(
-          name: '/detail_day', 
+          name: '/detail_day',
           page: () => const DetailOfDay(),
-          transition: Transition.cupertino 
+          transition: Transition.cupertino
         ),
       ],
     );
   }
 }
-

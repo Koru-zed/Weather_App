@@ -32,6 +32,7 @@ class CityService {
     final response =
         await dio.get('$apiUrl?lat=$lat&lng=$log&username=$apiKey');
     if (response.statusCode == 200) {
+      print(response.data);
       Geonames data = Geonames.fromJson(response.data);
       return data.geonames![0].name!;
     } else {

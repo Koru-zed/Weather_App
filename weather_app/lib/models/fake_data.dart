@@ -9,7 +9,7 @@ var fake_data = {
   "tzoffset": 0.0,
   "days": [
     {
-      "datetime": "2024-01-10",
+      "datetime": "2024-01-08",
       "datetimeEpoch": 1703548800,
       "tempmax": 10.6,
       "tempmin": 5.3,
@@ -698,7 +698,7 @@ var fake_data = {
       ]
     },
     {
-      "datetime": "2024-01-11",
+      "datetime": "2024-01-09",
       "datetimeEpoch": 1703635200,
       "tempmax": 12.0,
       "tempmin": 6.2,
@@ -1387,7 +1387,7 @@ var fake_data = {
       ]
     },
     {
-      "datetime": "2024-01-12",
+      "datetime": "2024-01-10",
       "datetimeEpoch": 1703721600,
       "tempmax": 12.6,
       "tempmin": 10.6,
@@ -2075,7 +2075,7 @@ var fake_data = {
       ]
     },
     {
-      "datetime": "2024-01-13",
+      "datetime": "2024-01-11",
       "datetimeEpoch": 1703808000,
       "tempmax": 10.6,
       "tempmin": 7.3,
@@ -2763,7 +2763,7 @@ var fake_data = {
       ]
     },
     {
-      "datetime": "2024-01-14",
+      "datetime": "2024-01-12",
       "datetimeEpoch": 1703894400,
       "tempmax": 11.5,
       "tempmin": 6.6,
@@ -3451,7 +3451,7 @@ var fake_data = {
       ]
     },
     {
-      "datetime": "2024-01-15",
+      "datetime": "2024-01-13",
       "datetimeEpoch": 1703980800,
       "tempmax": 9.6,
       "tempmin": 7.0,
@@ -4140,7 +4140,7 @@ var fake_data = {
       ]
     },
     {
-      "datetime": "2024-01-16",
+      "datetime": "2024-01-14",
       "datetimeEpoch": 1704067200,
       "tempmax": 7.7,
       "tempmin": 5.4,
@@ -4828,7 +4828,7 @@ var fake_data = {
       ]
     },
     {
-      "datetime": "2024-01-17",
+      "datetime": "2024-01-15",
       "datetimeEpoch": 1704153600,
       "tempmax": 11.0,
       "tempmin": 5.4,

@@ -102,9 +102,9 @@ class _HomeState extends State<Home> {
           children: [
             const Header(),
             const CurrentWeather(),
-            _presenter.showMore.isFalse 
-              ? const SizedBox(height: 270, child: DailyWeather()) 
-              : Container(),
+            _presenter.showMore.isFalse
+                ? const SizedBox(height: 270, child: DailyWeather())
+                : Container(),
           ],
         ),
       ),

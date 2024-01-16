@@ -47,12 +47,13 @@ class _HeaderState extends State<Header> {
           alignment: Alignment.topLeft,
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(
-              _presenter.city.value,
-              style: GoogleFonts.saira(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontSize: 35,
-                  fontWeight: FontWeight.w500),
+            Obx(() => Text(
+                _presenter.city.value,
+                style: GoogleFonts.saira(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 35,
+                    fontWeight: FontWeight.w500),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 15.0),

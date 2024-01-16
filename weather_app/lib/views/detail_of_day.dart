@@ -31,7 +31,10 @@ class _DetailOfDayState extends State<DetailOfDay> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           leading: InkWell(
-            onTap: () => Get.back(),
+            onTap: () {
+              _presenter.showMore.value = false;
+              Get.back();
+            },
             child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
@@ -48,7 +51,9 @@ class _DetailOfDayState extends State<DetailOfDay> {
             Container(
               margin: const EdgeInsets.only(right: 20),
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(30), topRight: Radius.circular(30)),
+                borderRadius: const BorderRadius.only(
+                    bottomRight: Radius.circular(30),
+                    topRight: Radius.circular(30)),
                 color: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
               ),
               child: Row(
@@ -57,57 +62,68 @@ class _DetailOfDayState extends State<DetailOfDay> {
                   Container(
                     padding: const EdgeInsets.only(left: 40, right: 40),
                     decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(bottomRight: Radius.circular(30), topRight: Radius.circular(30)),
-                      color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
+                      borderRadius: const BorderRadius.only(
+                          bottomRight: Radius.circular(30),
+                          topRight: Radius.circular(30)),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(0.4),
                     ),
                     child: Column(children: [
                       Container(
-                        padding: const EdgeInsets.only(bottom: 12, top: 6),
-                        decoration: BoxDecoration(
-                          border: Border(bottom: BorderSide(width: 2 ,color: Theme.of(context).colorScheme.background))
-                        ),
-                        child: Image.asset('assets/weather/${_presenter.weatherData.value.days![index].icon}.png')
-                      ),
+                          padding: const EdgeInsets.only(bottom: 12, top: 6),
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      width: 2,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background))),
+                          child: Image.asset(
+                              'assets/weather/${_presenter.weatherData.value.days![index].icon}.png')),
                       Container(
                         height: 40,
                         margin: const EdgeInsets.only(top: 6, bottom: 6),
                         child: Text(
                           '${(_presenter.weatherData.value.days![index].tempmax!.value)}° / ${_presenter.weatherData.value.days![index].tempmin!.value}°',
                           style: GoogleFonts.saira(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600
-                          ),
+                              fontSize: 25, fontWeight: FontWeight.w600),
                         ),
                       )
                     ]),
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(right: 20),
+                  SizedBox(
+                    width: 154,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${_presenter.weatherData.value.days![index].nameday}', 
-                          style: GoogleFonts.saira(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontSize: 20.5, fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          '${_presenter.weatherData.value.days![index].datetime}', 
-                          style: GoogleFonts.saira(fontSize: 13.5, fontWeight: FontWeight.w600),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30.0),
-                          child: Text(_presenter.weatherData.value.days![index].icon!.value.replaceAll('-', ' '),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${_presenter.weatherData.value.days![index].nameday}',
                             style: GoogleFonts.saira(
-                              color: Theme.of(context).colorScheme.tertiary, 
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600
-                              ),   
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 20.5,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            '${_presenter.weatherData.value.days![index].datetime}',
+                            style: GoogleFonts.saira(
+                                fontSize: 13.5, fontWeight: FontWeight.w600),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30.0),
+                            child: Text(
+                              _presenter
+                                  .weatherData.value.days![index].icon!.value
+                                  .replaceAll('-', ' '),
+                              style: GoogleFonts.saira(
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600),
                             ),
-                        ),
-                      ]
-                    ),
+                          ),
+                        ]),
                   ),
                 ],
               ),
@@ -117,10 +133,14 @@ class _DetailOfDayState extends State<DetailOfDay> {
                 fontSizeText: 20,
                 currentDay: _presenter.weatherData.value.days![index],
                 maxOffset: maxOffset,
-                middleWidth: middelWidth
+                middleWidth: middelWidth),
+            const SizedBox(
+              height: 20,
             ),
-            const SizedBox(height: 20,),
-            MoreDetail(currentDay: _presenter.weatherData.value.days![index], showMore: true,)
+            MoreDetail(
+              indexDay: index,
+              showMore: true,
+            )
           ],
         ));
   }

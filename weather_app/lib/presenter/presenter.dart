@@ -17,6 +17,7 @@ class GlobalPresenter extends GetxController {
   final RxDouble width = 0.0.obs;
   final RxInt cardHourIndex = 0.obs;
   final RxInt cardDayIndex = 0.obs;
+  // final RxInt index = 0.obs;
   final MyTheme myTheme = Get.put(MyTheme());
   final Rx<DateTime> currentTime = DateTime.now().obs;
   final Rx<WeatherData> weatherData = WeatherData().obs;
@@ -78,6 +79,7 @@ class GlobalPresenter extends GetxController {
       nowCity.value = false;
       return print('Error getting location: $e');
     }
+    print('all good');
   }
 
   getNewLocation() async {
@@ -112,8 +114,9 @@ class GlobalPresenter extends GetxController {
     } catch (err) {
       print('Error getting weather data: $err');
     }
-    if (changeCity.value == false)
+    if (changeCity.value == false) {
       city.value = await cityService.searchCitiesByLatLog(lat, log);
+    }
     return Future.delayed(const Duration(seconds: 0));
   }
 }

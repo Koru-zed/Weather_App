@@ -12,22 +12,36 @@ class DailyWeather extends StatefulWidget {
 }
 
 class _DailyWeatherState extends State<DailyWeather> {
-  ScrollController scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   final GlobalPresenter _presenter = Get.put(GlobalPresenter());
+
+  void _scrollToCenteredElement(int index) {
+    const double itemHeight = 80; // Set the height of each list item
+    const double containerHeight = 270;
+    const double maxScrollExtent = (8 * itemHeight) - containerHeight;
+
+    // Calculate the target offset to center the element, but ensure that the last
+    // element is fully visible at the bottom
+    double targetOffset = (index * itemHeight) - containerHeight / 2 + 30;
+    targetOffset = targetOffset.clamp(0, maxScrollExtent);
+
+    // Scroll to make the element visible and centered
+    _scrollController.animateTo(
+      targetOffset,
+      duration: const Duration(milliseconds: 1500),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    // Set the initial scroll position to center the selected card
-    // int initialIndex = _presenter.cardDayIndex.value;
-    // print('initialIndex : $initialIndex');
-    double initialOffset = _presenter.cardDayIndex.value * 46.5 - 103;
-    initialOffset = initialOffset.clamp(0.0, 270);
-
-    // Scroll to the initial offset
-    scrollController = ScrollController(initialScrollOffset: initialOffset);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToCenteredElement(_presenter.weatherData.value
+          .getIndexofDay(_presenter.currentTime.value));
+      // _scrollToCenteredElement(_index);
+    });
   }
 
   @override
@@ -56,70 +70,75 @@ class _DailyWeatherState extends State<DailyWeather> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15),
               child: ListView.builder(
-                controller: scrollController, // Set the controller here
-                scrollDirection: Axis.vertical,
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  Day day = _presenter.weatherData.value.days![index];
-                  return GestureDetector(
+                  controller: _scrollController, // Set the controller here
+                  scrollDirection: Axis.vertical,
+                  itemCount: 8,
+                  itemBuilder: (context, index) {
+                    Day day = _presenter.weatherData.value.days![index];
 
-                    child: Column(children: [
-                      InkWell(
-                        onTap: () =>
-                            Get.toNamed("/detail_day", arguments: index),
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: _presenter.currentTime.value.day ==
-                                    DateTime.parse(day.datetime!.value).day
-                                ? Theme.of(context)
-                                    .colorScheme
-                                    .secondary
-                                    .withOpacity(0.2)
-                                : null,
-                          ),
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                '${day.nameday}',
-                                style: GoogleFonts.saira(
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(6),
-                                child: Image.asset(
-                                  'assets/weather/${day.icon}.png',
-                                ),
-                              ),
-                              Obx(
-                                () => Text(
-                                  '${(day.tempmax!.value.toInt())}° / ${day.tempmin!.value.toInt()}°',
+                    return GestureDetector(
+                      child: Column(children: [
+                        InkWell(
+                          onTap: () {
+                            if (_presenter.currentTime.value.day !=
+                                DateTime.parse(day.datetime!.value).day) {
+                              _presenter.showMore.value = true;
+                              Get.toNamed("/detail_day", arguments: index);
+                            }
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: _presenter.currentTime.value.day ==
+                                      DateTime.parse(day.datetime!.value).day
+                                  ? Theme.of(context)
+                                      .colorScheme
+                                      .secondary
+                                      .withOpacity(0.2)
+                                  : null,
+                            ),
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  '${day.nameday}',
                                   style: GoogleFonts.saira(
                                       fontWeight: FontWeight.w500),
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.all(6),
+                                  child: Image.asset(
+                                    'assets/weather/${day.icon}.png',
+                                  ),
+                                ),
+                                Obx(
+                                  () => Text(
+                                    '${(day.tempmax!.value.toInt())}° / ${day.tempmin!.value.toInt()}°',
+                                    style: GoogleFonts.saira(
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      if (index < 7)
-                        Container(
-                          height: 1,
-                          margin: const EdgeInsets.only(
-                              top: 6, left: 20, right: 20, bottom: 6),
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondary
-                              .withOpacity(0.7),
-                        )
-                    ]),
-                  );
-                }),
-              ),
+                        if (index < 7)
+                          Container(
+                            height: 1,
+                            margin: const EdgeInsets.only(
+                                top: 6, left: 20, right: 20, bottom: 6),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(0.7),
+                          )
+                      ]),
+                    );
+                  }),
             ),
           ),
+        ),
         // ),
       ],
     );

@@ -18,17 +18,17 @@ class _CurrentWeatherState extends State<CurrentWeather> {
 
   @override
   Widget build(BuildContext context) {
-    Day currentDay = _presenter.weatherData.value.days![2];
-    double width = MediaQuery.of(context).size.width > 600
+    final Day currentDay = _presenter.weatherData.value.days![2];
+    final double width = MediaQuery.of(context).size.width > 600
         ? 600
         : MediaQuery.of(context).size.width;
-    double maxOffset = 24 * (64 + 12) - width;
-    double middelWidth = width / 2;
+    final double maxOffset = 24 * (64 + 12) - width;
+    final double middelWidth = width / 2;
 
     return Column(
       children: [
         currentData(currentDay),
-        MoreDetail(currentDay: currentDay, showMore: false),
+        const MoreDetail(indexDay: 2, showMore: false),
         HourlyWeather(
           text: 'Today',
           fontSizeText: 20,

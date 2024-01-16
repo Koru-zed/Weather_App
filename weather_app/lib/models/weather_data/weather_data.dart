@@ -1,7 +1,7 @@
 import 'package:weather_app/models/fake_data.dart';
 import 'package:weather_app/models/weather_data/hour.dart';
 import 'day.dart';
-import 'package:weather_app/models/fake_data.dart';
+// import 'package:weather_app/models/fake_data.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
@@ -70,6 +70,16 @@ class WeatherData {
       if (k == 3) return WeatherData.fromJson(fake_data);
       return processData(lat, log, k + 1);
     }
+  }
+
+  int getIndexofDay(DateTime currentTime) {
+    int index = 2;
+    for (int i = 0; i < 8; i++) {
+      if (DateTime.parse(days![i].datetime!.value).day == currentTime.day)
+        index =  i;
+    }
+
+    return index;
   }
 
   double celsiusToFahrenheit(double? celsius) {

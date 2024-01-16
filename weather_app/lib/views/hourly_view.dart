@@ -26,20 +26,24 @@ class HourlyWeather extends StatefulWidget {
 
 class _HourlyWeatherState extends State<HourlyWeather> {
   String? timeStamp;
-  ScrollController scrollController = ScrollController();
-  GlobalPresenter _presenter = Get.put(GlobalPresenter());
+  final ScrollController scrollController = ScrollController();
+  final GlobalPresenter _presenter = Get.put(GlobalPresenter());
 
   @override
   void initState() {
     super.initState();
 
     // Set the initial scroll position to center the selected card
-;
-    double initialOffset = _presenter.cardHourIndex.value * 76.5 - widget.middleWidth + 32;
-    initialOffset = initialOffset.clamp(0.0, widget.maxOffset);
+    // ;
+    // double initialOffset =
+    //     _presenter.cardHourIndex.value * 76.5 - widget.middleWidth + 32;
+    // initialOffset = initialOffset.clamp(0.0, widget.maxOffset);
 
-    // Scroll to the initial offset
-    scrollController = ScrollController(initialScrollOffset: initialOffset);
+    // // Scroll to the initial offset
+    // scrollController = ScrollController(initialScrollOffset: initialOffset);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+    _scrollToElement(_presenter.cardHourIndex.value, 1500);
+    });
   }
 
   @override
@@ -67,20 +71,7 @@ class _HourlyWeatherState extends State<HourlyWeather> {
               index > 12 ? timeStamp = 'AM' : timeStamp = 'PM';
               return Obx(
                 () => GestureDetector(
-                  onTap: () {
-                    // Set the card index when tapped
-                    _presenter.cardHourIndex.value = index;
-
-                    // Calculate the offset to center the selected card
-                    double offset = index * 76.4 - widget.middleWidth + 32;
-                    offset = offset.clamp(0.0, widget.maxOffset);
-                    // Scroll to the calculated offset
-                    scrollController.animateTo(
-                      offset,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.easeInOut,
-                    );
-                  },
+                  onTap: () => _scrollToElement(index, 500),
                   child: Container(
                     width: 64,
                     padding: const EdgeInsets.only(top: 6, bottom: 4),
@@ -151,6 +142,21 @@ class _HourlyWeatherState extends State<HourlyWeather> {
           ),
         ),
       ],
+    );
+  }
+
+  void _scrollToElement(int index, int milliseconds) {
+    // Set the card index when tapped
+    _presenter.cardHourIndex.value = index;
+
+    // Calculate the offset to center the selected card
+    double offset = index * 76.4 - widget.middleWidth + 32;
+    offset = offset.clamp(0.0, widget.maxOffset);
+    // Scroll to the calculated offset
+    scrollController.animateTo(
+      offset,
+      duration: Duration(milliseconds: milliseconds),
+      curve: Curves.easeInOut,
     );
   }
 }
