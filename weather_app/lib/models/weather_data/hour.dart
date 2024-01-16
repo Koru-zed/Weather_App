@@ -51,20 +51,20 @@ class Hour {
       );
 
   Map<String, dynamic> toJson() => {
-        'datetime': datetime,
-        'temp': temp,
-        'humidity': humidity,
-        'precipprob': precipprob,
-        'snow': snow,
-        'snowdepth': snowdepth,
-        'solarradiation': solarradiation,
-        'solarenergy': solarenergy,
-        'winddir': winddir,
-        'windspeed': windspeed,
-        'visibility': visibility,
-        'cloudcover': cloudcover,
-        'conditions': conditions,
-        'icon': icon,
+        'datetime': datetime!.value,
+        'temp': temp!.value,
+        'humidity': humidity!.value,
+        'precipprob': precipprob!.value,
+        'snow': snow!.value,
+        'snowdepth': snowdepth!.value,
+        'solarradiation': solarradiation!.value,
+        'solarenergy': solarenergy!.value,
+        'winddir': winddir!.value,
+        'windspeed': windspeed!.value,
+        'visibility': visibility!.value,
+        'cloudcover': cloudcover!.value,
+        'conditions': conditions!.value,
+        'icon': icon!.value,
       };
 
   static double _roundTemperature(double? temp) =>

@@ -48,7 +48,7 @@ class _HeaderState extends State<Header> {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Obx(() => Text(
-                _presenter.city.value,
+                _presenter.weatherData.value.address!.value,
                 style: GoogleFonts.saira(
                     color: Theme.of(context).colorScheme.primary,
                     fontSize: 35,

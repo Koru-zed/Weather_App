@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/presenter/presenter.dart';
 import 'package:weather_app/views/daily_view.dart';
@@ -21,7 +22,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    if (_presenter.isLoading.isTrue) _presenter.getLocation();
+    // if (_presenter.isLoading.isTrue)
   }
 
   Future<void> onRefresh() {
@@ -41,6 +42,14 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         key: _presenter.scaffoldKey.value,
         drawer: const MyDrawer(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _presenter.saveWeatherData(),
+          backgroundColor: Colors.blue.shade300,
+          child: Icon(
+            Icons.save,
+            color: Colors.pink,
+          ),
+        ),
         body: Obx(
           () => _presenter.isLoading.value || _presenter.nowCity.isFalse
               ? checkData()
@@ -85,6 +94,19 @@ class _HomeState extends State<Home> {
     }
     if (_presenter.isLoading.isTrue) {
       _presenter.getNewLocation();
+    }
+
+    if (_presenter.isConnect.value == false) {
+      widget = Center(
+        child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+            color: Theme.of(context).colorScheme.secondary,
+            child: Text(
+              'No Connection',
+              style:
+                  GoogleFonts.saira(fontSize: 30, fontWeight: FontWeight.bold),
+            )),
+      );
     }
 
     return widget;

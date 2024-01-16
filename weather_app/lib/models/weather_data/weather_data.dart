@@ -42,11 +42,11 @@ class WeatherData {
       );
 
   Map<String, dynamic> toJson() => {
-        'latitude': latitude,
-        'longitude': longitude,
-        'resolvedAddress': resolvedAddress,
-        'address': address,
-        'timezone': timezone,
+        'latitude': latitude!.value,
+        'longitude': longitude!.value,
+        'resolvedAddress': resolvedAddress!.value,
+        'address': address!.value,
+        'timezone': timezone!.value,
         'days': days?.map((e) => e.toJson()).toList(),
       };
 
@@ -57,9 +57,7 @@ class WeatherData {
       "4DLCXUEL7VD69K8R5FHAW4CEK"
     ];
 
-    // var wa = WeatherData.fromJson(fake_data);
-    // print('object');
-    // return wa; ////////
+    return  WeatherData.fromJson(fake_data);
 
     final String url =
         "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$lat,$log/last1days/next5days?unitGroup=metric&key=${keys[k % 3]}&contentType=json";
@@ -76,7 +74,7 @@ class WeatherData {
     int index = 2;
     for (int i = 0; i < 8; i++) {
       if (DateTime.parse(days![i].datetime!.value).day == currentTime.day)
-        index =  i;
+        index = i;
     }
 
     return index;

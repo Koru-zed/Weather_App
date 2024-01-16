@@ -34,7 +34,7 @@ class CityService {
     if (response.statusCode == 200) {
       print(response.data);
       Geonames data = Geonames.fromJson(response.data);
-      return data.geonames![0].name!;
+      return data.geonames![0].name![0].toUpperCase() + data.geonames![0].name!.substring(1);
     } else {
       return Future.error('Failed to load city data');
     }

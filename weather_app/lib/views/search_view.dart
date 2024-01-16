@@ -90,7 +90,7 @@ class _SearchLocationState extends State<SearchLocation> {
                         return ListTile(
                           onTap: () {
                             if (_searchcities[index].name !=
-                                _presenter.city.value) {
+                                _presenter.weatherData.value.address!.value) {
                               _presenter.isLoading.value = true;
                               _presenter.changeCity.value = true;
 
