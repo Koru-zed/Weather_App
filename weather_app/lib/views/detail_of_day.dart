@@ -1,8 +1,10 @@
+import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/presenter/presenter.dart';
 // import 'package:weather_app/views/current_view.dart';
+
 import 'package:weather_app/views/hourly_view.dart';
 import 'package:weather_app/views/more_detail.dart';
 
@@ -25,7 +27,7 @@ class _DetailOfDayState extends State<DetailOfDay> {
     double maxOffset = 24 * (64 + 12) - width;
     double middelWidth = width / 2;
 
-    print('index : $index');
+    developer.log('index : $index');
 
     return Scaffold(
         appBar: AppBar(

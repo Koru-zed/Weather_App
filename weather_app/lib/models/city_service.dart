@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'dart:developer' as developer;
 import 'package:weather_app/models/geonames.dart';
 
 final dio = Dio();
@@ -15,6 +16,7 @@ class CityService {
         await dio.get('$apiUrl?q=$query&maxRows=20&username=$apiKey');
 
     if (response.statusCode == 200) {
+      // developer.log('4444444444444444444');
       Geonames data = Geonames.fromJson(response.data);
       List<Geoname> filteredGeonames = data.geonames!
           .where((geoname) =>
@@ -32,9 +34,10 @@ class CityService {
     final response =
         await dio.get('$apiUrl?lat=$lat&lng=$log&username=$apiKey');
     if (response.statusCode == 200) {
-      print(response.data);
+      // developer.log(response.data);
       Geonames data = Geonames.fromJson(response.data);
-      return data.geonames![0].name![0].toUpperCase() + data.geonames![0].name!.substring(1);
+      return data.geonames![0].name![0].toUpperCase() +
+          data.geonames![0].name!.substring(1);
     } else {
       return Future.error('Failed to load city data');
     }

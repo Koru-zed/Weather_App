@@ -15,13 +15,13 @@ import 'package:weather_app/models/weather_data/weather_data.dart';
 
 class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   // Check Conection
+  final RxBool isConnect = false.obs;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   // Storage
   final GetStorage box = GetStorage();
 
-  final RxBool isConnect = true.obs;
   final RxBool isLoading = true.obs;
   final RxBool isEnable = true.obs;
   final RxBool nowCity = true.obs;
@@ -46,19 +46,26 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   void onInit() {
     super.onInit();
 
-    WidgetsBinding.instance.addObserver(this);
-    if (loadWeatherData() == false) {
-      print('hadaaaaaaaaaaaf');
-      getLocation();
-    }
+    // developer.log('ggggggggggggg');
 
     dateTime.value = DateFormat('yMMMMd').format(currentTime.value);
     cardHourIndex.value = currentHourTime;
 
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen((event) {
+      // developer.log('1 object : ${event.toString()}');
+
+      // connectionStatus.value = event;
       isConnect.value = checkConnection(event);
     });
+
+    // developer.log('####################33');
+
+    WidgetsBinding.instance.addObserver(this);
+    if (loadWeatherData() == false) {
+      developer.log('hadaaaaaaaaaaaf');
+      getLocation();
+    }
   }
 
   @override
@@ -81,41 +88,34 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   }
 
   // Check Connection
-  bool checkConnection(ConnectivityResult connectionStatus) {
-    print('object : ${connectionStatus.toString()}');
-    if (connectionStatus.toString() == 'ConnectionStatus.none' ||
-        connectionStatus.toString() == 'ConnectionStatus.bluetooth') {
-      print('hlwa');
+  bool checkConnection(ConnectivityResult connectivityResult) {
+    // developer.log('2 object : ${connectivityResult.toString()}');
+    if (connectivityResult == ConnectivityResult.none ||
+        connectivityResult == ConnectivityResult.bluetooth) {
+      developer.log('hlwa');
       return false;
     }
     return true;
   }
 
-  Future<void> initConnectivity() async {
-    late ConnectivityResult result;
-    try {
-      result = await _connectivity.checkConnectivity();
-      isConnect.value = checkConnection(result);
-    } on PlatformException catch (e) {
-      developer.log('Couldn\'t check connectivity status', error: e);
-    }
-  }
-
-
   // Save Weather Data
   void saveWeatherData() {
     box.write('weatherData', weatherData.value.toJson());
-    print('save Data');
+    developer.log('save Data');
   }
 
   // Load Weather Data
   bool loadWeatherData() {
-    print('goooooooool');
+    developer.log('goooooooool');
     final Map<String, dynamic>? json =
         box.read<Map<String, dynamic>>('weatherData');
     if (json != null) {
       weatherData.value = WeatherData.fromJson(json);
-      print(weatherData.value.address!.value);
+      developer.log(weatherData.value.address!.value);
+      if (weatherData.value.getIndexofDay(currentTime.value) == -1) {
+        developer.log('no data');
+        return false;
+      }
       isLoading.value = false;
       return true;
     }
@@ -130,6 +130,8 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   getLocation() async {
     bool isLocationServiceEnabled;
     LocationPermission locationPermission;
+
+    if (isConnect.value == false) return;
 
     // Check Location Service
     isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -167,6 +169,7 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   }
 
   getNewLocation() async {
+    if (isConnect.value == false) return;
     if (newcity.value.countryName != null) {
       await fetchData(newcity.value.lat!, newcity.value.lng!);
       weatherData.value.address!.value = newcity.value.name![0].toLowerCase() +
@@ -185,10 +188,12 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
       developer.log(' no my friend object');
       return false;
     }
+    if (isConnect.value == false) return false;
     return true;
   }
 
   Future<void> fetchData(double lat, double log) async {
+    if (isConnect.value == false) return;
     try {
       await weatherData.value.processData(lat, log, 0).then((value) async {
         weatherData.value = value;

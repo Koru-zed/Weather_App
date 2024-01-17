@@ -57,7 +57,7 @@ class WeatherData {
       "4DLCXUEL7VD69K8R5FHAW4CEK"
     ];
 
-    return  WeatherData.fromJson(fake_data);
+    // return WeatherData.fromJson(fake_data);
 
     final String url =
         "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/$lat,$log/last1days/next5days?unitGroup=metric&key=${keys[k % 3]}&contentType=json";
@@ -71,12 +71,13 @@ class WeatherData {
   }
 
   int getIndexofDay(DateTime currentTime) {
-    int index = 2;
-    for (int i = 0; i < 8; i++) {
-      if (DateTime.parse(days![i].datetime!.value).day == currentTime.day)
-        index = i;
+    int index = -1;
+    if (days != null) {
+      for (int i = 0; i < 8; i++) {
+        if (DateTime.parse(days![i].datetime!.value).day == currentTime.day)
+          index = i;
+      }
     }
-
     return index;
   }
 
@@ -113,7 +114,7 @@ class WeatherData {
   }
 
   void updateUnitsToUS(List<String> state) {
-    // print("F/miles");
+    // developer.log("F/miles");
 
     days!.forEach((Day day) {
       day.tempmax!.value = celsiusToFahrenheit(day.tempmax!.value);
@@ -128,7 +129,7 @@ class WeatherData {
   }
 
   void updateUnitsToUk(List<String> state) {
-    // print("C/miles");
+    // developer.log("C/miles");
     if (state == units[0]) {
       days!.forEach((Day day) {
         day.hours!.forEach((Hour hour) {
@@ -147,7 +148,7 @@ class WeatherData {
   }
 
   void updateUnitsToMetric(List<String> state) {
-    // print("C/km");
+    // developer.log("C/km");
 
     if (state == units[1]) {
       days!.forEach((Day day) {

@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/models/geonames.dart';
@@ -61,8 +62,9 @@ class _SearchLocationState extends State<SearchLocation> {
                     ),
                     child: IconButton(
                       onPressed: () {
-                        if (_searchController.text.isNotEmpty)
-                          _searchCities(_searchController.text);
+                        if (_searchController.text.isNotEmpty &&
+                            _presenter.isConnect.value == true) {                          _searchCities(_searchController.text);
+                        }
                       },
                       icon: const Icon(
                         Icons.search_sharp,
@@ -82,7 +84,8 @@ class _SearchLocationState extends State<SearchLocation> {
                     .backgroundColor!
                     .withOpacity(0.5),
               ),
-              child: _searchcities.length > 0
+              child: _searchcities.length > 0 &&
+                      _presenter.isConnect.value == true
                   ? ListView.builder(
                       shrinkWrap: true, // Add this line
                       itemCount: _searchcities.length,
@@ -118,21 +121,24 @@ class _SearchLocationState extends State<SearchLocation> {
                       },
                     )
                   : Center(
-                      child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset('assets/icons/map-location.gif'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          _searchController.text.isNotEmpty
-                              ? 'No Location..'
-                              : '',
-                          style: GoogleFonts.saira(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        )
-                      ],
+                      child: Obx(
+                      () => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                              'assets/icons/${_presenter.isConnect.value == false ? 'no-internet.png' : 'map-location.gif'}'),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            _searchController.text.isNotEmpty
+                                ? 'No ${_presenter.isConnect.value == false ? 'Internet' : 'Location'}..'
+                                : '',
+                            style: GoogleFonts.saira(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          )
+                        ],
+                      ),
                     )),
             ),
           ),

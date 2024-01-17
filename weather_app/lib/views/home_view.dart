@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:developer' as developer;
 // import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/presenter/presenter.dart';
@@ -42,14 +43,17 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         key: _presenter.scaffoldKey.value,
         drawer: const MyDrawer(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _presenter.saveWeatherData(),
-          backgroundColor: Colors.blue.shade300,
-          child: Icon(
-            Icons.save,
-            color: Colors.pink,
-          ),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () => _presenter.saveWeatherData(),
+        //   backgroundColor: Colors.blue.shade300,
+        //   child: Icon(
+        //     Icons.save,
+        //     color: Colors.pink,
+        //   ),
+        // ),
+        // body: Obx(() => Center(
+        //     child: Text(
+        //         'Connection Status: ${_presenter.isConnect.value}')),
         body: Obx(
           () => _presenter.isLoading.value || _presenter.nowCity.isFalse
               ? checkData()
@@ -93,19 +97,43 @@ class _HomeState extends State<Home> {
       );
     }
     if (_presenter.isLoading.isTrue) {
-      _presenter.getNewLocation();
+          developer.log('----------------------');
+      if (_presenter.weatherData.value
+              .getIndexofDay(_presenter.currentTime.value) ==
+          -1) {
+          developer.log('getLocation');
+        _presenter.getLocation();
+      } else {
+        developer.log('getNewLocation');
+        _presenter.getNewLocation();
+      }
     }
 
     if (_presenter.isConnect.value == false) {
       widget = Center(
-        child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-            color: Theme.of(context).colorScheme.secondary,
-            child: Text(
-              'No Connection',
-              style:
-                  GoogleFonts.saira(fontSize: 30, fontWeight: FontWeight.bold),
-            )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/icons/no-internet1.png',
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                child: Text(
+                  'No Connection..',
+                  style: GoogleFonts.saira(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                )),
+          ],
+        ),
       );
     }
 
