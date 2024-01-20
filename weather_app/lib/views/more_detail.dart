@@ -8,7 +8,8 @@ import 'package:weather_app/presenter/presenter.dart';
 class MoreDetail extends StatefulWidget {
   final int indexDay;
   final bool showMore;
-  const MoreDetail({required this.indexDay, required this.showMore, Key? key}) : super(key: key);
+  const MoreDetail({required this.indexDay, required this.showMore, Key? key})
+      : super(key: key);
 
   @override
   _MoreDetailState createState() => _MoreDetailState();
@@ -57,22 +58,27 @@ class _MoreDetailState extends State<MoreDetail> {
           text = '${(currentDay.moonphase! * 100).toStringAsFixed(2)}%';
           break;
         case 'visibility':
-          text = '${currentDay.hours![_presenter.currentHourTime].visibility}${_presenter.unit[1]}';
+          text =
+              '${currentDay.hours![_presenter.currentHourTime].visibility}${_presenter.unit[1]}';
           break;
         case 'windspeed':
-          text = '${currentDay.hours![_presenter.currentHourTime].windspeed}${_presenter.unit[1]}/h';
+          text =
+              '${currentDay.hours![_presenter.currentHourTime].windspeed}${_presenter.unit[1]}/h';
           break;
         case 'winddir':
           text = '${currentDay.hours![_presenter.currentHourTime].winddir}°';
           break;
         case 'snow':
-          text = '${currentDay.hours![_presenter.currentHourTime].snow}${_presenter.unit[1] == 'km' ? 'cm' : 'inch'}';
+          text =
+              '${currentDay.hours![_presenter.currentHourTime].snow}${_presenter.unit[1] == 'km' ? 'cm' : 'inch'}';
           break;
         case 'solarradiation':
-          text = '${currentDay.hours![_presenter.currentHourTime].solarradiation}W/m2';
+          text =
+              '${currentDay.hours![_presenter.currentHourTime].solarradiation}W/m2';
           break;
         case 'solarenergy':
-          text = '${currentDay.hours![_presenter.currentHourTime].solarenergy}MJ/m2';
+          text =
+              '${currentDay.hours![_presenter.currentHourTime].solarenergy}MJ/m2';
           break;
 
         default:
@@ -82,16 +88,15 @@ class _MoreDetailState extends State<MoreDetail> {
       return Text(text, style: GoogleFonts.saira(fontSize: 13));
     }
 
-
     return Obx(
       () => Column(
         children: [
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
+            margin: const EdgeInsets.symmetric(vertical: 5),
             height: widget.showMore
-                ? 400
+                ? MediaQuery.of(context).size.height * 0.39
                 : _presenter.showMore.isTrue
-                    ? 320
+                    ? MediaQuery.of(context).size.height * 0.29
                     : 80,
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -103,7 +108,8 @@ class _MoreDetailState extends State<MoreDetail> {
                   ? const BouncingScrollPhysics()
                   : const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                return Obx(() => Column(
+                return Obx(
+                  () => Column(
                     children: [
                       Tooltip(
                         message: items[index],
@@ -126,7 +132,8 @@ class _MoreDetailState extends State<MoreDetail> {
                       const SizedBox(
                         height: 5,
                       ),
-                      getDetail(items[index], _presenter.weatherData.value.days![widget.indexDay]),
+                      getDetail(items[index],
+                          _presenter.weatherData.value.days![widget.indexDay]),
                     ],
                   ),
                 );
@@ -158,6 +165,5 @@ class _MoreDetailState extends State<MoreDetail> {
         ],
       ),
     );
-
   }
 }

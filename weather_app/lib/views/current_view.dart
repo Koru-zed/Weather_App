@@ -41,14 +41,15 @@ class _CurrentWeatherState extends State<CurrentWeather> {
 
   Widget currentData(Day currentDay) {
     return Container(
-        margin: const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 10),
+        margin: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
         child: Obx(() => Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  height: 70,
-                  width: 70,
-                  padding: const EdgeInsets.all(3),
+                SizedBox(
+                  height: 80,
+                  width: 80,
+                  // color: Colors.pink,
+                  // padding: const EdgeInsets.all(3),
                   child: Image.asset(
                     'assets/weather/${currentDay.hours![_presenter.currentHourTime].icon}.png',
                   ),

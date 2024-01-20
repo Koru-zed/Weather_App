@@ -60,9 +60,7 @@ class _HomeState extends State<Home> {
               : RefreshIndicator(
                   color: Theme.of(context).colorScheme.secondary,
                   onRefresh: () => onRefresh(),
-                  child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: _buildContent()),
+                  child: _buildContent(),
                 ),
         ),
       ),
@@ -100,7 +98,7 @@ class _HomeState extends State<Home> {
           developer.log('----------------------');
       if (_presenter.weatherData.value
               .getIndexofDay(_presenter.currentTime.value) ==
-          -1) {
+          -1 && _presenter.getGeoLocatore()) {
           developer.log('getLocation');
         _presenter.getLocation();
       } else {
@@ -148,7 +146,8 @@ class _HomeState extends State<Home> {
           maxWidth: 600.0,
           maxHeight: MediaQuery.of(context).size.height - 25,
         ),
-        child: Column(
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
           children: [
             const Header(),
             const CurrentWeather(),

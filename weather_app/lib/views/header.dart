@@ -25,19 +25,18 @@ class _HeaderState extends State<Header> {
       children: [
         Align(
           alignment: Alignment.topLeft,
-          child: InkWell(
-            onTap: () =>
+          child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color:
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.25),
+              ),
+              padding: const EdgeInsets.all(2),
+              margin: const EdgeInsets.only(top: 3, left: 18, bottom: 8, right: 18),
+              child: InkWell(
+                onTap: () =>
                 _presenter.scaffoldKey.value.currentState?.openDrawer(),
-            child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color:
-                      Theme.of(context).colorScheme.secondary.withOpacity(0.25),
-                ),
-                padding: const EdgeInsets.all(2),
-                margin: const EdgeInsets.only(top: 15, left: 18, bottom: 10),
-                child: Image.asset(height: 30, 'assets/icons/menu.png')),
-          ),
+                child: Image.asset(height: 30, 'assets/icons/menu.png'))),
         ),
         Container(
           margin: const EdgeInsets.only(
@@ -45,8 +44,7 @@ class _HeaderState extends State<Header> {
             right: 10,
           ),
           alignment: Alignment.topLeft,
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Obx(() => Text(
                 _presenter.weatherData.value.address!.value,
                 style: GoogleFonts.saira(
@@ -55,11 +53,11 @@ class _HeaderState extends State<Header> {
                     fontWeight: FontWeight.w500),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 15.0),
-              child: InkWell(
-                onTap: () =>
-                    _presenter.scaffoldKey.value.currentState?.openDrawer(),
+            InkWell(
+              onTap: () =>
+                  _presenter.scaffoldKey.value.currentState?.openDrawer(),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Image.asset(height: 20, 'assets/icons/navigation.png'),
               ),
             ),

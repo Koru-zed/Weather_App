@@ -18,14 +18,11 @@ class _SearchLocationState extends State<SearchLocation> {
   final GlobalPresenter _presenter = Get.put(GlobalPresenter());
 
   void _searchCities(String query) async {
-    if (query.isNotEmpty) {
+    if (_searchController.text.isNotEmpty &&
+        _presenter.isConnect.value == true) {
       final cities = await _presenter.cityService.searchCities(query);
       setState(() {
         _searchcities = cities;
-      });
-    } else {
-      setState(() {
-        _searchcities = [];
       });
     }
   }
@@ -61,11 +58,7 @@ class _SearchLocationState extends State<SearchLocation> {
                       color: Colors.blue.shade400,
                     ),
                     child: IconButton(
-                      onPressed: () {
-                        if (_searchController.text.isNotEmpty &&
-                            _presenter.isConnect.value == true) {                          _searchCities(_searchController.text);
-                        }
-                      },
+                      onPressed: () => _searchCities(_searchController.text),
                       icon: const Icon(
                         Icons.search_sharp,
                         size: 20,
@@ -75,54 +68,64 @@ class _SearchLocationState extends State<SearchLocation> {
             ),
           ),
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius:
-                    const BorderRadius.only(bottomRight: Radius.circular(10)),
-                color: Theme.of(context)
-                    .drawerTheme
-                    .backgroundColor!
-                    .withOpacity(0.5),
-              ),
-              child: _searchcities.length > 0 &&
-                      _presenter.isConnect.value == true
-                  ? ListView.builder(
-                      shrinkWrap: true, // Add this line
-                      itemCount: _searchcities.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          onTap: () {
-                            if (_searchcities[index].name !=
-                                _presenter.weatherData.value.address!.value) {
+            child: Obx(
+              () => Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      const BorderRadius.only(bottomRight: Radius.circular(10)),
+                  color: Theme.of(context)
+                      .drawerTheme
+                      .backgroundColor!
+                      .withOpacity(0.5),
+                ),
+                child: _searchcities.length > 0 &&
+                        _presenter.isConnect.value == true
+                    ? ListView.builder(
+                        shrinkWrap: true, // Add this line
+                        itemCount: _searchcities.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            onTap: () {
+                              developer.log(
+                                  'change location to : ${_searchcities[index].name}');
+                              if (_presenter.weatherData.value.address !=
+                                      null &&
+                                  _searchcities[index].name ==
+                                      _presenter
+                                          .weatherData.value.address!.value) {
+                                _presenter.scaffoldKey.value.currentState
+                                    ?.closeDrawer();
+                                return;
+                              }
                               _presenter.isLoading.value = true;
                               _presenter.changeCity.value = true;
 
                               ///
                               _presenter.nowCity.value = true;
                               _presenter.newcity.value = _searchcities[index];
-                            }
-                            _presenter.scaffoldKey.value.currentState
-                                ?.closeDrawer();
-                          },
-                          title: Text(
-                            _searchcities[index].name!,
-                            style: GoogleFonts.saira(
-                                fontSize: 16, fontWeight: FontWeight.w400),
-                          ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 10,
+                              _presenter.scaffoldKey.value.currentState
+                                  ?.closeDrawer();
+                            },
+                            title: Text(
+                              _searchcities[index].name!,
+                              style: GoogleFonts.saira(
+                                  fontSize: 16, fontWeight: FontWeight.w400),
                             ),
-                            child: Text(_searchcities[index].countryName ?? '',
-                                style: GoogleFonts.saira(
-                                    fontSize: 12, fontWeight: FontWeight.w400)),
-                          ),
-                        );
-                      },
-                    )
-                  : Center(
-                      child: Obx(
-                      () => Column(
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 10,
+                              ),
+                              child: Text(
+                                  _searchcities[index].countryName ?? '',
+                                  style: GoogleFonts.saira(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400)),
+                            ),
+                          );
+                        },
+                      )
+                    : Center(
+                        child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Image.asset(
@@ -138,8 +141,8 @@ class _SearchLocationState extends State<SearchLocation> {
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           )
                         ],
-                      ),
-                    )),
+                      )),
+              ),
             ),
           ),
         ],

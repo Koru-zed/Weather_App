@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:developer' as developer;
-// import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';
@@ -15,7 +14,7 @@ import 'package:weather_app/models/weather_data/weather_data.dart';
 
 class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   // Check Conection
-  final RxBool isConnect = false.obs;
+  final RxBool isConnect = true.obs;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
@@ -46,25 +45,23 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   void onInit() {
     super.onInit();
 
-    // developer.log('ggggggggggggg');
 
     dateTime.value = DateFormat('yMMMMd').format(currentTime.value);
     cardHourIndex.value = currentHourTime;
 
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen((event) {
-      // developer.log('1 object : ${event.toString()}');
-
-      // connectionStatus.value = event;
       isConnect.value = checkConnection(event);
     });
-
-    // developer.log('####################33');
 
     WidgetsBinding.instance.addObserver(this);
     if (loadWeatherData() == false) {
       developer.log('hadaaaaaaaaaaaf');
-      getLocation();
+      if (getGeoLocatore()){
+        getLocation();
+      } else {
+        nowCity.value = false;
+      }
     }
   }
 
@@ -86,6 +83,18 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
     // TODO: implement didChangeAppLifecycleState
     super.didChangeAppLifecycleState(state);
   }
+
+  // Check type of device 
+  bool getGeoLocatore() => kIsWeb
+    ? true
+    : switch (defaultTargetPlatform) {
+        TargetPlatform.android => true,
+        TargetPlatform.iOS => true,
+        TargetPlatform.linux => false,
+        TargetPlatform.windows => true,
+        TargetPlatform.macOS => true,
+        TargetPlatform.fuchsia => false
+  };
 
   // Check Connection
   bool checkConnection(ConnectivityResult connectivityResult) {
@@ -172,7 +181,7 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
     if (isConnect.value == false) return;
     if (newcity.value.countryName != null) {
       await fetchData(newcity.value.lat!, newcity.value.lng!);
-      weatherData.value.address!.value = newcity.value.name![0].toLowerCase() +
+      weatherData.value.address!.value = newcity.value.name![0].toUpperCase() +
           newcity.value.name!.substring(1);
       changeCity.value = false;
     }
