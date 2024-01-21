@@ -1,7 +1,7 @@
 import 'package:weather_app/models/fake_data.dart';
 import 'package:weather_app/models/weather_data/hour.dart';
 import 'day.dart';
-// import 'package:weather_app/models/fake_data.dart';
+import 'package:weather_app/models/fake_data.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 

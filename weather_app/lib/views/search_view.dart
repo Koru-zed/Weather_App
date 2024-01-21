@@ -101,10 +101,11 @@ class _SearchLocationState extends State<SearchLocation> {
                               _presenter.changeCity.value = true;
 
                               ///
-                              _presenter.nowCity.value = true;
+                              _presenter.isEnable.value = true;
                               _presenter.newcity.value = _searchcities[index];
                               _presenter.scaffoldKey.value.currentState
                                   ?.closeDrawer();
+                              _presenter.getNewLocation();
                             },
                             title: Text(
                               _searchcities[index].name!,

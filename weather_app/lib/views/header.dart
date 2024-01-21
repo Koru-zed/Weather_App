@@ -32,7 +32,7 @@ class _HeaderState extends State<Header> {
                     Theme.of(context).colorScheme.secondary.withOpacity(0.25),
               ),
               padding: const EdgeInsets.all(2),
-              margin: const EdgeInsets.only(top: 3, left: 18, bottom: 8, right: 18),
+              margin: const EdgeInsets.only(top: 30, left: 18, bottom: 8, right: 18),
               child: InkWell(
                 onTap: () =>
                 _presenter.scaffoldKey.value.currentState?.openDrawer(),
@@ -64,7 +64,7 @@ class _HeaderState extends State<Header> {
           ]),
         ),
         Container(
-            margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            margin: const EdgeInsets.only(left: 20, right: 20),
             alignment: Alignment.topLeft,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

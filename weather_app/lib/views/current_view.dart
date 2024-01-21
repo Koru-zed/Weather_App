@@ -40,10 +40,9 @@ class _CurrentWeatherState extends State<CurrentWeather> {
   }
 
   Widget currentData(Day currentDay) {
-    return Container(
-        margin: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
-        child: Obx(() => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Obx(() => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+
               children: [
                 SizedBox(
                   height: 80,
@@ -86,7 +85,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                   ]),
                 ),
               ],
-            )));
+            ));
   }
 
 }

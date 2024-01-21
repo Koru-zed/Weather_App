@@ -23,7 +23,6 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
 
   final RxBool isLoading = true.obs;
   final RxBool isEnable = true.obs;
-  final RxBool nowCity = true.obs;
   final RxBool changeCity = false.obs;
   final RxBool isDark = false.obs;
   final RxBool showMore = false.obs;
@@ -45,7 +44,6 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   void onInit() {
     super.onInit();
 
-
     dateTime.value = DateFormat('yMMMMd').format(currentTime.value);
     cardHourIndex.value = currentHourTime;
 
@@ -57,10 +55,10 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     if (loadWeatherData() == false) {
       developer.log('hadaaaaaaaaaaaf');
-      if (getGeoLocatore()){
+      if (getGeoLocatore()) {
         getLocation();
       } else {
-        nowCity.value = false;
+        isEnable.value = false;
       }
     }
   }
@@ -84,21 +82,20 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
   }
 
-  // Check type of device 
+  // Check type of device
   bool getGeoLocatore() => kIsWeb
-    ? true
-    : switch (defaultTargetPlatform) {
-        TargetPlatform.android => true,
-        TargetPlatform.iOS => true,
-        TargetPlatform.linux => false,
-        TargetPlatform.windows => true,
-        TargetPlatform.macOS => true,
-        TargetPlatform.fuchsia => false
-  };
+      ? true
+      : switch (defaultTargetPlatform) {
+          TargetPlatform.android => true,
+          TargetPlatform.iOS => true,
+          TargetPlatform.linux => false,
+          TargetPlatform.windows => true,
+          TargetPlatform.macOS => true,
+          TargetPlatform.fuchsia => false
+        };
 
   // Check Connection
   bool checkConnection(ConnectivityResult connectivityResult) {
-    // developer.log('2 object : ${connectivityResult.toString()}');
     if (connectivityResult == ConnectivityResult.none ||
         connectivityResult == ConnectivityResult.bluetooth) {
       developer.log('hlwa');
@@ -145,20 +142,20 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
     // Check Location Service
     isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!isLocationServiceEnabled) {
-      nowCity.value = false;
+      isEnable.value = false;
       developer.log('Error: Location Service not enabled');
       return;
     }
     // Check permissions
     locationPermission = await Geolocator.checkPermission();
     if (locationPermission == LocationPermission.deniedForever) {
-      nowCity.value = false;
+      isEnable.value = false;
       developer.log('Error: Permissions are deniedForever');
       return;
     } else if (locationPermission == LocationPermission.denied) {
       locationPermission = await Geolocator.requestPermission();
       if (locationPermission == LocationPermission.denied) {
-        nowCity.value = false;
+        isEnable.value = false;
         developer.log('Error: Permissions are denied');
         return;
       }
@@ -171,7 +168,7 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
         fetchData(value.latitude, value.longitude);
       });
     } catch (e) {
-      nowCity.value = false;
+      isEnable.value = false;
       return developer.log('Error getting location: $e');
     }
     developer.log('all good');
@@ -201,6 +198,7 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
     return true;
   }
 
+
   Future<void> fetchData(double lat, double log) async {
     if (isConnect.value == false) return;
     try {
@@ -214,7 +212,7 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
     }
     if (changeCity.value == false) {
       weatherData.value.address!.value =
-          await cityService.searchCitiesByLatLog(lat, log) ?? '';
+          await cityService.searchCitiesByLatLog(lat, log);
     }
     isLoading.value = false;
     return Future.delayed(const Duration(seconds: 0));

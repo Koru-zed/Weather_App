@@ -23,7 +23,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    // if (_presenter.isLoading.isTrue)
   }
 
   Future<void> onRefresh() {
@@ -39,30 +38,17 @@ class _HomeState extends State<Home> {
         Theme.of(context).colorScheme.brightness == Brightness.light
             ? false
             : true;
-    return SafeArea(
-      child: Scaffold(
-        key: _presenter.scaffoldKey.value,
-        drawer: const MyDrawer(),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () => _presenter.saveWeatherData(),
-        //   backgroundColor: Colors.blue.shade300,
-        //   child: Icon(
-        //     Icons.save,
-        //     color: Colors.pink,
-        //   ),
-        // ),
-        // body: Obx(() => Center(
-        //     child: Text(
-        //         'Connection Status: ${_presenter.isConnect.value}')),
-        body: Obx(
-          () => _presenter.isLoading.value || _presenter.nowCity.isFalse
-              ? checkData()
-              : RefreshIndicator(
-                  color: Theme.of(context).colorScheme.secondary,
-                  onRefresh: () => onRefresh(),
-                  child: _buildContent(),
-                ),
-        ),
+    return Scaffold(
+      key: _presenter.scaffoldKey.value,
+      drawer: const MyDrawer(),
+      body: Obx(
+        () => _presenter.isLoading.value || _presenter.isEnable.isFalse
+            ? checkData()
+            : RefreshIndicator(
+                color: Theme.of(context).colorScheme.secondary,
+                onRefresh: () => onRefresh(),
+                child: _buildContent(),
+              ),
       ),
     );
   }
@@ -71,7 +57,7 @@ class _HomeState extends State<Home> {
     Widget widget = const Center(
       child: CircularProgressIndicator(color: Colors.blue),
     );
-    if (_presenter.nowCity.isFalse) {
+    if (_presenter.isEnable.isFalse) {
       widget = Center(
         child: Container(
           constraints: const BoxConstraints(maxHeight: 500),
@@ -94,19 +80,6 @@ class _HomeState extends State<Home> {
         ),
       );
     }
-    if (_presenter.isLoading.isTrue) {
-          developer.log('----------------------');
-      if (_presenter.weatherData.value
-              .getIndexofDay(_presenter.currentTime.value) ==
-          -1 && _presenter.getGeoLocatore()) {
-          developer.log('getLocation');
-        _presenter.getLocation();
-      } else {
-        developer.log('getNewLocation');
-        _presenter.getNewLocation();
-      }
-    }
-
     if (_presenter.isConnect.value == false) {
       widget = Center(
         child: Column(
@@ -139,22 +112,37 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildContent() {
+    final double maxHeight = MediaQuery.of(context).size.height;
+
     return Align(
       alignment: Alignment.center,
       child: Container(
         constraints: BoxConstraints(
           maxWidth: 600.0,
-          maxHeight: MediaQuery.of(context).size.height - 25,
+          maxHeight: maxHeight,
         ),
-        child: ListView(
+        child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          children: [
-            const Header(),
-            const CurrentWeather(),
-            _presenter.showMore.isFalse
-                ? const SizedBox(height: 270, child: DailyWeather())
-                : Container(),
-          ],
+          child: SizedBox(
+            height: maxHeight,
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                const Header(),
+                Expanded(
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      const CurrentWeather(),
+                      _presenter.showMore.isFalse
+                          ? const SizedBox(height: 270, child: DailyWeather())
+                          : Container(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
