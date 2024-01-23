@@ -1,6 +1,6 @@
 import 'dart:developer' as developer;
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/models/geonames.dart';
 import 'package:weather_app/presenter/presenter.dart';
 import 'package:get/get.dart';
@@ -36,6 +36,7 @@ class _SearchLocationState extends State<SearchLocation> {
           SizedBox(
             height: 37,
             child: TextField(
+              style: const TextStyle(fontVariations: [FontVariation('wght', (400))]),
               controller: _searchController,
               onSubmitted: _searchCities,
               decoration: InputDecoration(
@@ -43,13 +44,13 @@ class _SearchLocationState extends State<SearchLocation> {
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
                   border: const OutlineInputBorder(),
                   labelText: 'location',
-                  labelStyle: GoogleFonts.saira(
+                  labelStyle: const TextStyle(
                     fontSize: 15,
-                    fontWeight: FontWeight.w400,
+                    fontVariations: [FontVariation('wght', (600))],
                   ),
                   hintText: 'location',
-                  hintStyle: GoogleFonts.saira(
-                      fontSize: 15, fontWeight: FontWeight.w400),
+                  hintStyle:
+                      const TextStyle(fontSize: 15, fontVariations: [FontVariation('wght', (400))]),
                   suffixIcon: Container(
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
@@ -109,8 +110,8 @@ class _SearchLocationState extends State<SearchLocation> {
                             },
                             title: Text(
                               _searchcities[index].name!,
-                              style: GoogleFonts.saira(
-                                  fontSize: 16, fontWeight: FontWeight.w400),
+                              style: const TextStyle(
+                                  fontSize: 16, fontVariations: [FontVariation('wght', (500))],),
                             ),
                             subtitle: Padding(
                               padding: const EdgeInsets.only(
@@ -118,9 +119,9 @@ class _SearchLocationState extends State<SearchLocation> {
                               ),
                               child: Text(
                                   _searchcities[index].countryName ?? '',
-                                  style: GoogleFonts.saira(
+                                  style: const TextStyle(
                                       fontSize: 12,
-                                      fontWeight: FontWeight.w400)),
+                                      fontVariations: [FontVariation('wght', (400))])),
                             ),
                           );
                         },
@@ -138,7 +139,8 @@ class _SearchLocationState extends State<SearchLocation> {
                             _searchController.text.isNotEmpty
                                 ? 'No ${_presenter.isConnect.value == false ? 'Internet' : 'Location'}..'
                                 : '',
-                            style: GoogleFonts.saira(
+                            style: const TextStyle(
+                                fontVariations: [FontVariation('wght', (400))],
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           )
                         ],

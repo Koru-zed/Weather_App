@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/presenter/presenter.dart';
 import 'package:weather_app/views/search_view.dart';
+import 'dart:ui';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -29,8 +29,8 @@ class _MyDrawerState extends State<MyDrawer> {
                   Image.asset('assets/icons/Ixon.png'),
                   Text(
                     'Weather',
-                    style: GoogleFonts.saira(
-                        fontWeight: FontWeight.bold,
+                    style: TextStyle(
+                        fontVariations: const [FontVariation('wght', (600))],
                         fontSize: 25,
                         color: Theme.of(context).colorScheme.secondary),
                   ),
@@ -47,9 +47,11 @@ class _MyDrawerState extends State<MyDrawer> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Dark Mode',
-                        style: GoogleFonts.saira(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontVariations: [FontVariation('wght', (700))],
+                        ),
                       ),
                       Transform.scale(
                         scale: 0.6,

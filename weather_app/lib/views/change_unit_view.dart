@@ -1,6 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/presenter/presenter.dart';
 
 class ChangeUnits extends StatefulWidget {
@@ -22,9 +24,10 @@ class ChangeUnitsState extends State<ChangeUnits> {
           children: [
             Text(
               '°${_presenter.unit[0]}/${_presenter.unit[1]}',
-              style: GoogleFonts.saira(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontVariations: const [FontVariation('wght', (700))],
+              ),
             ),
             IconButton(
               onPressed: () {
@@ -55,7 +58,7 @@ class ChangeUnitsState extends State<ChangeUnits> {
             margin: const EdgeInsets.all(4), // Add margin here
             child: Text(
               '°${_presenter.weatherData.value.units[index][0]}/${_presenter.weatherData.value.units[index][1]}',
-              style: GoogleFonts.saira(),
+              style: const TextStyle(fontVariations: [FontVariation('wght', (500))],),
             ),
           ),
         ),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:developer' as developer;
-// import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'dart:ui';
 import 'package:weather_app/presenter/presenter.dart';
 import 'package:weather_app/views/daily_view.dart';
 import 'package:weather_app/views/header.dart';
@@ -23,6 +22,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    developer.log('1 -isConnect : ${_presenter.isConnect.value}');
   }
 
   Future<void> onRefresh() {
@@ -34,6 +34,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     _presenter.width.value = MediaQuery.of(context).size.width;
+    _presenter.height.value = MediaQuery.of(context).size.height;
     _presenter.isDark.value =
         Theme.of(context).colorScheme.brightness == Brightness.light
             ? false
@@ -42,7 +43,9 @@ class _HomeState extends State<Home> {
       key: _presenter.scaffoldKey.value,
       drawer: const MyDrawer(),
       body: Obx(
-        () => _presenter.isLoading.value || _presenter.isEnable.isFalse
+        () => _presenter.isLoading.value ||
+                _presenter.isEnable.isFalse ||
+                _presenter.isConnect.value == false
             ? checkData()
             : RefreshIndicator(
                 color: Theme.of(context).colorScheme.secondary,
@@ -54,6 +57,8 @@ class _HomeState extends State<Home> {
   }
 
   Widget checkData() {
+    developer.log('2 -isConnect : ${_presenter.isConnect.value}');
+
     Widget widget = const Center(
       child: CircularProgressIndicator(color: Colors.blue),
     );
@@ -66,8 +71,8 @@ class _HomeState extends State<Home> {
               Image.asset('assets/icons/Ixon.png'),
               Text(
                 'Weather',
-                style: GoogleFonts.saira(
-                    fontWeight: FontWeight.bold,
+                style: TextStyle(
+                    fontVariations: const [FontVariation('wght', (700))],
                     fontSize: 25,
                     color: Theme.of(context).colorScheme.secondary),
               ),
@@ -98,10 +103,11 @@ class _HomeState extends State<Home> {
                   borderRadius: BorderRadius.circular(10),
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-                child: Text(
+                child: const Text(
                   'No Connection..',
-                  style: GoogleFonts.saira(
-                      fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontVariations: [FontVariation('wght', (700))]),
                 )),
           ],
         ),
@@ -112,7 +118,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildContent() {
-    final double maxHeight = MediaQuery.of(context).size.height;
+    final double maxHeight = _presenter.height.value;
 
     return Align(
       alignment: Alignment.center,
@@ -125,7 +131,7 @@ class _HomeState extends State<Home> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: SizedBox(
             height: maxHeight,
-            width: MediaQuery.of(context).size.width,
+            width: _presenter.width.value,
             child: Column(
               children: [
                 const Header(),
@@ -135,7 +141,11 @@ class _HomeState extends State<Home> {
                     children: [
                       const CurrentWeather(),
                       _presenter.showMore.isFalse
-                          ? const SizedBox(height: 270, child: DailyWeather())
+                          ? const SizedBox(
+                              height: 300,
+                              child: DailyWeather(
+                                containerHeight: 300,
+                              ))
                           : Container(),
                     ],
                   ),

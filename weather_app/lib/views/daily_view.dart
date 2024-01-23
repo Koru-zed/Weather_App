@@ -1,11 +1,13 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/presenter/presenter.dart';
 import 'package:weather_app/models/weather_data/day.dart';
 
 class DailyWeather extends StatefulWidget {
-  const DailyWeather({Key? key}) : super(key: key);
+  final double containerHeight;
+  const DailyWeather({required this.containerHeight, Key? key})
+      : super(key: key);
 
   @override
   _DailyWeatherState createState() => _DailyWeatherState();
@@ -16,13 +18,12 @@ class _DailyWeatherState extends State<DailyWeather> {
   final GlobalPresenter _presenter = Get.put(GlobalPresenter());
 
   void _scrollToCenteredElement(int index) {
-    const double itemHeight = 95; // Set the height of each list item
-    const double containerHeight = 270;
-    const double maxScrollExtent = (8 * itemHeight) - containerHeight;
+    const double itemHeight = 85; // Set the height of each list item
+    final double maxScrollExtent = (8 * itemHeight) - widget.containerHeight;
 
     // Calculate the target offset to center the element, but ensure that the last
     // element is fully visible at the bottom
-    double targetOffset = (index * itemHeight) - containerHeight / 2;
+    double targetOffset = (index * itemHeight) - widget.containerHeight / 2 + 20;
     targetOffset = targetOffset.clamp(0, maxScrollExtent);
 
     // Scroll to make the element visible and centered
@@ -50,9 +51,10 @@ class _DailyWeatherState extends State<DailyWeather> {
       children: [
         Container(
           margin: const EdgeInsets.only(top: 10),
-          child: Text(
+          child: const Text(
             'Next Days',
-            style: GoogleFonts.saira(fontWeight: FontWeight.w500, fontSize: 20),
+            style: TextStyle(
+                fontVariations: [FontVariation('wght', (600))], fontSize: 20),
           ),
         ),
         Expanded(
@@ -103,8 +105,11 @@ class _DailyWeatherState extends State<DailyWeather> {
                               children: [
                                 Text(
                                   '${day.nameday}',
-                                  style: GoogleFonts.saira(
-                                      fontWeight: FontWeight.w500),
+                                  style: const TextStyle(
+                                    fontVariations: const [
+                                      FontVariation('wght', (600))
+                                    ],
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(6),
@@ -115,8 +120,11 @@ class _DailyWeatherState extends State<DailyWeather> {
                                 Obx(
                                   () => Text(
                                     '${(day.tempmax!.value.toInt())}° / ${day.tempmin!.value.toInt()}°',
-                                    style: GoogleFonts.saira(
-                                        fontWeight: FontWeight.w500),
+                                    style: const TextStyle(
+                                      fontVariations: [
+                                        FontVariation('wght', (600))
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],

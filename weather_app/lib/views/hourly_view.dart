@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/presenter/presenter.dart';
+import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:weather_app/models/weather_data/day.dart';
 
@@ -33,16 +33,8 @@ class _HourlyWeatherState extends State<HourlyWeather> {
   void initState() {
     super.initState();
 
-    // Set the initial scroll position to center the selected card
-    // ;
-    // double initialOffset =
-    //     _presenter.cardHourIndex.value * 76.5 - widget.middleWidth + 32;
-    // initialOffset = initialOffset.clamp(0.0, widget.maxOffset);
-
-    // // Scroll to the initial offset
-    // scrollController = ScrollController(initialScrollOffset: initialOffset);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    _scrollToElement(_presenter.cardHourIndex.value, 1500);
+      _scrollToElement(_presenter.cardHourIndex.value, 1500);
     });
   }
 
@@ -57,8 +49,10 @@ class _HourlyWeatherState extends State<HourlyWeather> {
         const SizedBox(height: 7),
         Text(
           widget.text,
-          style: GoogleFonts.saira(
-              fontSize: widget.fontSizeText, fontWeight: FontWeight.w500),
+          style: TextStyle(
+            fontSize: widget.fontSizeText,
+            fontVariations: const [FontVariation('wght', (700))],
+          ),
         ),
         const SizedBox(height: 5),
         SizedBox(
@@ -110,8 +104,11 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                           flex: 4,
                           child: Text(
                             '${index > 9 ? '' : '0'}$index:00 $timeStamp',
-                            style: GoogleFonts.saira(
+                            style: TextStyle(
                                 fontSize: 12,
+                                fontVariations: const [
+                                  FontVariation('wght', (400))
+                                ],
                                 color: _presenter.currentHourTime == index
                                     ? Theme.of(context).colorScheme.background
                                     : textColor),
@@ -127,7 +124,10 @@ class _HourlyWeatherState extends State<HourlyWeather> {
                           flex: 4,
                           child: Text(
                             '${widget.currentDay.hours![index].temp}°',
-                            style: GoogleFonts.saira(
+                            style: TextStyle(
+                                fontVariations: const [
+                                  FontVariation('wght', (400))
+                                ],
                                 color: _presenter.currentHourTime == index
                                     ? Theme.of(context).colorScheme.background
                                     : textColor),

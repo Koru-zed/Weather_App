@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/presenter/presenter.dart';
 import 'package:weather_app/views/change_unit_view.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'dart:ui';
 
+//
 class Header extends StatefulWidget {
   const Header({Key? key}) : super(key: key);
 
@@ -32,25 +33,26 @@ class _HeaderState extends State<Header> {
                     Theme.of(context).colorScheme.secondary.withOpacity(0.25),
               ),
               padding: const EdgeInsets.all(2),
-              margin: const EdgeInsets.only(top: 30, left: 18, bottom: 8, right: 18),
+              margin: const EdgeInsets.only(
+                  top: 30, left: 18, bottom: 6, right: 18),
               child: InkWell(
-                onTap: () =>
-                _presenter.scaffoldKey.value.currentState?.openDrawer(),
-                child: Image.asset(height: 30, 'assets/icons/menu.png'))),
+                  onTap: () =>
+                      _presenter.scaffoldKey.value.currentState?.openDrawer(),
+                  child: Image.asset(height: 30, 'assets/icons/menu.png'))),
         ),
         Container(
-          margin: const EdgeInsets.only(
-            left: 20,
-            right: 10,
-          ),
+          margin: const EdgeInsets.only(left: 20,right: 10,),
           alignment: Alignment.topLeft,
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Obx(() => Text(
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Obx(
+              () => Text(
                 _presenter.weatherData.value.address!.value,
-                style: GoogleFonts.saira(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 35,
-                    fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontSize: 40,
+                  fontVariations: const [FontVariation('wght', (700))],
+                ),
               ),
             ),
             InkWell(
@@ -71,10 +73,11 @@ class _HeaderState extends State<Header> {
               children: [
                 Text(
                   _presenter.dateTime.value,
-                  style: GoogleFonts.saira(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    fontSize: 16,
+                    fontVariations: const [FontVariation('wght', (600))],
+                  ),
                 ),
                 const ChangeUnits()
               ],

@@ -21,12 +21,16 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   // Storage
   final GetStorage box = GetStorage();
 
+  // Timer
+  Timer? _hourlyTimer;
+
   final RxBool isLoading = true.obs;
   final RxBool isEnable = true.obs;
   final RxBool changeCity = false.obs;
   final RxBool isDark = false.obs;
   final RxBool showMore = false.obs;
   final RxDouble width = 0.0.obs;
+  final RxDouble height = 0.0.obs;
   final RxInt cardHourIndex = 0.obs;
   final MyTheme myTheme = Get.put(MyTheme());
   final Rx<DateTime> currentTime = DateTime.now().obs;
@@ -44,7 +48,9 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   void onInit() {
     super.onInit();
 
+    initConnectivity();
     dateTime.value = DateFormat('yMMMMd').format(currentTime.value);
+    _scheduleHourlyTimer();
     cardHourIndex.value = currentHourTime;
 
     _connectivitySubscription =
@@ -54,7 +60,6 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
     if (loadWeatherData() == false) {
-      developer.log('hadaaaaaaaaaaaf');
       if (getGeoLocatore()) {
         getLocation();
       } else {
@@ -82,6 +87,33 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
   }
 
+  Future<void> initConnectivity() async {
+    late ConnectivityResult result;
+    try {
+      result = await _connectivity.checkConnectivity();
+      isConnect.value = checkConnection(result);
+    } catch (e) {
+      developer.log('Couldn\'t check connectivity status', error: e);
+      isConnect.value = false;
+    }
+  }
+
+  void _scheduleHourlyTimer() {
+    const Duration hourly = Duration(hours: 1);
+
+    _hourlyTimer = Timer.periodic(hourly, (Timer timer) {
+      _checkHourChange();
+    });
+  }
+
+  void _checkHourChange() {
+    developer.log('check Hour Change');
+    DateTime now = DateTime.now();
+    if (now.hour != currentHourTime) {
+      currentTime.value = now;
+    }
+  }
+
   // Check type of device
   bool getGeoLocatore() => kIsWeb
       ? true
@@ -98,7 +130,6 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   bool checkConnection(ConnectivityResult connectivityResult) {
     if (connectivityResult == ConnectivityResult.none ||
         connectivityResult == ConnectivityResult.bluetooth) {
-      developer.log('hlwa');
       return false;
     }
     return true;
@@ -112,14 +143,11 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
 
   // Load Weather Data
   bool loadWeatherData() {
-    developer.log('goooooooool');
     final Map<String, dynamic>? json =
         box.read<Map<String, dynamic>>('weatherData');
     if (json != null) {
       weatherData.value = WeatherData.fromJson(json);
-      developer.log(weatherData.value.address!.value);
       if (weatherData.value.getIndexofDay(currentTime.value) == -1) {
-        developer.log('no data');
         return false;
       }
       isLoading.value = false;
@@ -171,7 +199,6 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
       isEnable.value = false;
       return developer.log('Error getting location: $e');
     }
-    developer.log('all good');
   }
 
   getNewLocation() async {
@@ -191,13 +218,12 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
       if (currentTimeNow.hour != currentTime.value.hour) {
         currentTime.value = currentTimeNow;
       }
-      developer.log(' no my friend object');
+      developer.log(' no my friend');
       return false;
     }
     if (isConnect.value == false) return false;
     return true;
   }
-
 
   Future<void> fetchData(double lat, double log) async {
     if (isConnect.value == false) return;
@@ -214,7 +240,15 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
       weatherData.value.address!.value =
           await cityService.searchCitiesByLatLog(lat, log);
     }
+    weatherData.value.updateUnits(unit, weatherData.value.units[0]);
     isLoading.value = false;
     return Future.delayed(const Duration(seconds: 0));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _hourlyTimer?.cancel();
   }
 }

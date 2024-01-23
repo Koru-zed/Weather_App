@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "/home/k-zed/Projects/Weather/weather_app/linux"
+    "cmake.sourceDirectory": "/goinfre/mait-jao/Project/Weather_App/weather_app/linux",
+    "java.compile.nullAnalysis.mode": "automatic"
 }

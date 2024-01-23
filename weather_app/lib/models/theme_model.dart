@@ -5,6 +5,7 @@ class CustomTheme {
 
   // light theme
   static final lightTheme = ThemeData(
+      fontFamily: 'Saira',
       colorScheme: ColorScheme.light(
           brightness: Brightness.light,
           primary: Colors.black,
@@ -18,6 +19,7 @@ class CustomTheme {
 
   // dark theme
   static final darkTheme = ThemeData(
+      fontFamily: 'Saira',
       colorScheme: ColorScheme.dark(
           brightness: Brightness.dark,
           primary: Colors.white,
