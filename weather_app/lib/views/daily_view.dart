@@ -18,12 +18,12 @@ class _DailyWeatherState extends State<DailyWeather> {
   final GlobalPresenter _presenter = Get.put(GlobalPresenter());
 
   void _scrollToCenteredElement(int index) {
-    const double itemHeight = 85; // Set the height of each list item
+    const double itemHeight = 80; // Set the height of each list item
     final double maxScrollExtent = (8 * itemHeight) - widget.containerHeight;
 
     // Calculate the target offset to center the element, but ensure that the last
     // element is fully visible at the bottom
-    double targetOffset = (index * itemHeight) - widget.containerHeight / 2 + 20;
+    double targetOffset = (index * itemHeight) - widget.containerHeight / 2 - 20;
     targetOffset = targetOffset.clamp(0, maxScrollExtent);
 
     // Scroll to make the element visible and centered

@@ -94,7 +94,7 @@ class _MoreDetailState extends State<MoreDetail> {
           () => Column(
             children: [
               Tooltip(
-                textStyle: const TextStyle(fontVariations: [FontVariation('wght', (400))],),
+                textStyle: const TextStyle(fontVariations: [FontVariation('wght', (400))], color: Colors.black,),
                 message: items[index],
                 child: Container(
                   height: 50,

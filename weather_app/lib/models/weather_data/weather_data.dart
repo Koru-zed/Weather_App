@@ -121,8 +121,6 @@ class WeatherData {
   }
 
   void updateUnitsToUS(List<String> state) {
-    developer.log("F/miles");
-
     days!.forEach((Day day) {
       day.tempmax!.value = celsiusToFahrenheit(day.tempmax!.value);
       day.tempmin!.value = celsiusToFahrenheit(day.tempmin!.value);
@@ -136,7 +134,6 @@ class WeatherData {
   }
 
   void updateUnitsToUk(List<String> state) {
-    developer.log("C/miles");
     if (state == units[0]) {
       days!.forEach((Day day) {
         day.hours!.forEach((Hour hour) {
@@ -155,8 +152,6 @@ class WeatherData {
   }
 
   void updateUnitsToMetric(List<String> state) {
-    developer.log("C/km");
-
     if (state == units[1]) {
       days!.forEach((Day day) {
         day.tempmax!.value = fahrenheitToCelsius(day.tempmax!.value);
@@ -176,7 +171,6 @@ class WeatherData {
   }
 
   void updateUnits(List<String> unit, List<String> state) {
-    print('unit : $unit');
     if (unit == units[0] && state != unit) updateUnitsToMetric(state);
     if (unit == units[1] && state != unit) updateUnitsToUS(state);
     if (unit == units[2] && state != unit) updateUnitsToUk(state);
