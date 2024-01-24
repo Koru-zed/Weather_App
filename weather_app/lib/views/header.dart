@@ -46,12 +46,15 @@ class _HeaderState extends State<Header> {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Obx(
-              () => Text(
-                _presenter.weatherData.value.address!.value,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontSize: 40,
-                  fontVariations: const [FontVariation('wght', (700))],
+              () => Flexible(
+                child: Text(
+                  _presenter.weatherData.value.address!.value,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 40,
+                    overflow: TextOverflow.ellipsis,
+                    fontVariations: const [FontVariation('wght', (600))],
+                  ),
                 ),
               ),
             ),

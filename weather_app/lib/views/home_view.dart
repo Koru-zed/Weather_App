@@ -39,19 +39,21 @@ class _HomeState extends State<Home> {
         Theme.of(context).colorScheme.brightness == Brightness.light
             ? false
             : true;
-    return Scaffold(
-      key: _presenter.scaffoldKey.value,
-      drawer: const MyDrawer(),
-      body: Obx(
-        () => _presenter.isLoading.value ||
-                _presenter.isEnable.isFalse ||
-                _presenter.isConnect.value == false
-            ? checkData()
-            : RefreshIndicator(
-                color: Theme.of(context).colorScheme.secondary,
-                onRefresh: () => onRefresh(),
-                child: _buildContent(),
-              ),
+    return SafeArea(
+      child: Scaffold(
+        key: _presenter.scaffoldKey.value,
+        drawer: const MyDrawer(),
+        body: Obx(
+          () => _presenter.isLoading.value ||
+                  _presenter.isEnable.isFalse ||
+                  _presenter.isConnect.value == false
+              ? checkData()
+              : RefreshIndicator(
+                  color: Theme.of(context).colorScheme.secondary,
+                  onRefresh: () => onRefresh(),
+                  child: _buildContent(),
+                ),
+        ),
       ),
     );
   }

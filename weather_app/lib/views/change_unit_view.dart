@@ -22,11 +22,12 @@ class ChangeUnitsState extends State<ChangeUnits> {
           (BuildContext context, MenuController controller, Widget? child) {
         return Row(
           children: [
-            Text(
-              '°${_presenter.unit[0]}/${_presenter.unit[1]}',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.secondary,
-                fontVariations: const [FontVariation('wght', (700))],
+            Obx(() => Text(
+                '°${_presenter.weatherData.value.units[_presenter.unit.value][0]}/${_presenter.weatherData.value.units[_presenter.unit.value][1]}',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontVariations: const [FontVariation('wght', (700))],
+                ),
               ),
             ),
             IconButton(
@@ -49,16 +50,17 @@ class ChangeUnitsState extends State<ChangeUnits> {
         (int index) => MenuItemButton(
           onPressed: () {
             _presenter.weatherData.value.updateUnits(
-                _presenter.weatherData.value.units[index], _presenter.unit);
-            setState(() => _presenter.unit.value =
-                _presenter.weatherData.value.units[index]);
-            _presenter.unit.value = _presenter.weatherData.value.units[index];
+                _presenter.weatherData.value.units[index], _presenter.weatherData.value.units[_presenter.unit.value]);
+            _presenter.unit.value = index;
+            print('check : ${_presenter.unit.value == 1}');
           },
           child: Container(
             margin: const EdgeInsets.all(4), // Add margin here
             child: Text(
               '°${_presenter.weatherData.value.units[index][0]}/${_presenter.weatherData.value.units[index][1]}',
-              style: const TextStyle(fontVariations: [FontVariation('wght', (500))],),
+              style: const TextStyle(
+                fontVariations: [FontVariation('wght', (500))],
+              ),
             ),
           ),
         ),

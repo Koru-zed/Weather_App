@@ -94,6 +94,7 @@ class _MoreDetailState extends State<MoreDetail> {
           () => Column(
             children: [
               Tooltip(
+                textStyle: const TextStyle(fontVariations: [FontVariation('wght', (400))],),
                 message: items[index],
                 child: Container(
                   height: 50,
@@ -146,18 +147,18 @@ class _MoreDetailState extends State<MoreDetail> {
         break;
       case 'visibility':
         text =
-            '${currentDay.hours![_presenter.currentHourTime].visibility}${_presenter.unit[1]}';
+            '${currentDay.hours![_presenter.currentHourTime].visibility}${_presenter.weatherData.value.units[_presenter.unit.value][1]}';
         break;
       case 'windspeed':
         text =
-            '${currentDay.hours![_presenter.currentHourTime].windspeed}${_presenter.unit[1]}/h';
+            '${currentDay.hours![_presenter.currentHourTime].windspeed}${_presenter.weatherData.value.units[_presenter.unit.value][1]}/h';
         break;
       case 'winddir':
         text = '${currentDay.hours![_presenter.currentHourTime].winddir}°';
         break;
       case 'snow':
         text =
-            '${currentDay.hours![_presenter.currentHourTime].snow}${_presenter.unit[1] == 'km' ? 'cm' : 'inch'}';
+            '${currentDay.hours![_presenter.currentHourTime].snow}${_presenter.weatherData.value.units[_presenter.unit.value][1] == 'km' ? 'cm' : 'inch'}';
         break;
       case 'solarradiation':
         text =

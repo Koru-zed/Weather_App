@@ -35,7 +35,7 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   final MyTheme myTheme = Get.put(MyTheme());
   final Rx<DateTime> currentTime = DateTime.now().obs;
   final Rx<WeatherData> weatherData = WeatherData().obs;
-  final RxList<String> unit = ['C', 'km'].obs;
+  final RxInt unit = 0.obs;
   final Rx<Geoname> newcity = Geoname().obs;
   final cityService = CityService('koruzed');
   final Rx<GlobalKey<ScaffoldState>> scaffoldKey =
@@ -240,7 +240,7 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
       weatherData.value.address!.value =
           await cityService.searchCitiesByLatLog(lat, log);
     }
-    weatherData.value.updateUnits(unit, weatherData.value.units[0]);
+    weatherData.value.updateUnits(weatherData.value.units[unit.value], weatherData.value.units[0]);
     isLoading.value = false;
     return Future.delayed(const Duration(seconds: 0));
   }

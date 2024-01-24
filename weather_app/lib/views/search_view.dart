@@ -140,8 +140,7 @@ class _SearchLocationState extends State<SearchLocation> {
                                 ? 'No ${_presenter.isConnect.value == false ? 'Internet' : 'Location'}..'
                                 : '',
                             style: const TextStyle(
-                                fontVariations: [FontVariation('wght', (400))],
-                                fontWeight: FontWeight.bold, fontSize: 18),
+                                fontVariations: [FontVariation('wght', (400))], fontSize: 18),
                           )
                         ],
                       )),
