@@ -57,7 +57,7 @@ The Weather App is a mobile application built using Flutter. It provides users w
 
 Feel free to contribute to the project by opening issues, submitting pull requests, or suggesting enhancements. For major changes, please open an issue first to discuss what you would like to change.
 
-   <br>
-      <img src="https://github.com/K-zew/Weather_App/tree/main/weather_app/Videos/WeatherApp.mov" alt="tcp_ip_model">
-   </br>
+   <div>
+      <img src="https://github.com/K-zew/Weather_App/tree/main/weather_app/Videos/WeatherApp.mov" alt="video">
+   </div>
 
