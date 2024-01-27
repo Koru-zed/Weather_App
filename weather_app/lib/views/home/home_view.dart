@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'dart:developer' as developer;
 import 'dart:ui';
 import 'package:weather_app/presenter/presenter.dart';
-import 'package:weather_app/views/daily_view.dart';
-import 'package:weather_app/views/header.dart';
-import 'package:weather_app/views/current_view.dart';
-import 'package:weather_app/views/drawer_view.dart';
-import 'package:weather_app/views/search_view.dart';
+import 'package:weather_app/views/home/daily_view.dart';
+import 'package:weather_app/views/home/header.dart';
+import 'package:weather_app/views/home/current_view.dart';
+import 'package:weather_app/views/drawer/drawer_view.dart';
+import 'package:weather_app/views/widgets/search_view.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

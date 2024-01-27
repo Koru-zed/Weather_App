@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/presenter/presenter.dart';
-import 'package:weather_app/views/change_unit_view.dart';
+import 'package:weather_app/views/home/change_unit_view.dart';
 import 'dart:ui';
 
 //

@@ -1,13 +1,10 @@
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/presenter/presenter.dart';
-// import 'package:weather_app/views/current_view.dart';
 import 'dart:ui';
-
-import 'package:weather_app/views/hourly_view.dart';
-import 'package:weather_app/views/more_detail.dart';
+import 'package:weather_app/views/widgets/hourly_view.dart';
+import 'package:weather_app/views/widgets/more_detail.dart';
 
 class DetailOfDay extends StatefulWidget {
   const DetailOfDay({Key? key}) : super(key: key);

@@ -1,11 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:weather_app/models/weather_data/day.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/presenter/presenter.dart';
-import 'package:weather_app/views/hourly_view.dart';
-import 'package:weather_app/views/more_detail.dart';
+import 'package:weather_app/views/widgets/hourly_view.dart';
+import 'package:weather_app/views/widgets/more_detail.dart';
 
 class CurrentWeather extends StatefulWidget {
   const CurrentWeather({Key? key}) : super(key: key);
