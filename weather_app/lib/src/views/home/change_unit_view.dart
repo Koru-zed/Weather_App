@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather_app/presenter/presenter.dart';
+import 'package:weather_app/src/presenter/presenter.dart';
 
 class ChangeUnits extends StatefulWidget {
   const ChangeUnits({super.key});
@@ -20,7 +20,8 @@ class ChangeUnitsState extends State<ChangeUnits> {
           (BuildContext context, MenuController controller, Widget? child) {
         return Row(
           children: [
-            Obx(() => Text(
+            Obx(
+              () => Text(
                 '°${_presenter.weatherData.value.units[_presenter.unit.value][0]}/${_presenter.weatherData.value.units[_presenter.unit.value][1]}',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
@@ -48,7 +49,8 @@ class ChangeUnitsState extends State<ChangeUnits> {
         (int index) => MenuItemButton(
           onPressed: () {
             _presenter.weatherData.value.updateUnits(
-                _presenter.weatherData.value.units[index], _presenter.weatherData.value.units[_presenter.unit.value]);
+                _presenter.weatherData.value.units[index],
+                _presenter.weatherData.value.units[_presenter.unit.value]);
             _presenter.unit.value = index;
             print('check : ${_presenter.unit.value == 1}');
           },

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:weather_app/models/geonames.dart';
+import 'package:weather_app/src/models/geonames.dart';
 
 final dio = Dio();
 
@@ -32,7 +32,8 @@ class CityService {
         throw Exception('Failed to load city data');
       }
     } catch (e) {
-      return List<Geoname>.empty(); // Return an empty list or handle it accordingly
+      return List<
+          Geoname>.empty(); // Return an empty list or handle it accordingly
     }
   }
 

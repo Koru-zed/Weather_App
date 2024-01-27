@@ -1,8 +1,8 @@
 import 'dart:developer' as developer;
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:weather_app/models/geonames.dart';
-import 'package:weather_app/presenter/presenter.dart';
+import 'package:weather_app/src/models/geonames.dart';
+import 'package:weather_app/src/presenter/presenter.dart';
 import 'package:get/get.dart';
 
 class SearchLocation extends StatefulWidget {
@@ -36,7 +36,8 @@ class _SearchLocationState extends State<SearchLocation> {
           SizedBox(
             height: 37,
             child: TextField(
-              style: const TextStyle(fontVariations: [FontVariation('wght', (400))]),
+              style: const TextStyle(
+                  fontVariations: [FontVariation('wght', (400))]),
               controller: _searchController,
               onSubmitted: _searchCities,
               decoration: InputDecoration(
@@ -49,8 +50,9 @@ class _SearchLocationState extends State<SearchLocation> {
                     fontVariations: [FontVariation('wght', (600))],
                   ),
                   hintText: 'location',
-                  hintStyle:
-                      const TextStyle(fontSize: 15, fontVariations: [FontVariation('wght', (400))]),
+                  hintStyle: const TextStyle(
+                      fontSize: 15,
+                      fontVariations: [FontVariation('wght', (400))]),
                   suffixIcon: Container(
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
@@ -111,7 +113,9 @@ class _SearchLocationState extends State<SearchLocation> {
                             title: Text(
                               _searchcities[index].name!,
                               style: const TextStyle(
-                                  fontSize: 16, fontVariations: [FontVariation('wght', (500))],),
+                                fontSize: 16,
+                                fontVariations: [FontVariation('wght', (500))],
+                              ),
                             ),
                             subtitle: Padding(
                               padding: const EdgeInsets.only(
@@ -121,7 +125,9 @@ class _SearchLocationState extends State<SearchLocation> {
                                   _searchcities[index].countryName ?? '',
                                   style: const TextStyle(
                                       fontSize: 12,
-                                      fontVariations: [FontVariation('wght', (400))])),
+                                      fontVariations: [
+                                        FontVariation('wght', (400))
+                                      ])),
                             ),
                           );
                         },
@@ -140,7 +146,8 @@ class _SearchLocationState extends State<SearchLocation> {
                                 ? 'No ${_presenter.isConnect.value == false ? 'Internet' : 'Location'}..'
                                 : '',
                             style: const TextStyle(
-                                fontVariations: [FontVariation('wght', (400))], fontSize: 18),
+                                fontVariations: [FontVariation('wght', (400))],
+                                fontSize: 18),
                           )
                         ],
                       )),

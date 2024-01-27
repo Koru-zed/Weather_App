@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:weather_app/models/weather_data/day.dart';
+import 'package:weather_app/src/models/weather_data/day.dart';
 import 'package:get/get.dart';
-import 'package:weather_app/presenter/presenter.dart';
-import 'package:weather_app/views/widgets/hourly_view.dart';
-import 'package:weather_app/views/widgets/more_detail.dart';
+import 'package:weather_app/src/presenter/presenter.dart';
+import 'package:weather_app/src/views/widgets/hourly_view.dart';
+import 'package:weather_app/src/views/widgets/more_detail.dart';
 
 class CurrentWeather extends StatefulWidget {
   const CurrentWeather({Key? key}) : super(key: key);
@@ -27,7 +27,9 @@ class _CurrentWeatherState extends State<CurrentWeather> {
     return Column(
       children: [
         Padding(
-            padding: const EdgeInsets.only(bottom: 5, ),
+            padding: const EdgeInsets.only(
+              bottom: 5,
+            ),
             child: currentData(currentDay)),
         const MoreDetail(indexDay: 2, showMore: false),
         HourlyWeather(
@@ -61,10 +63,11 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                 TextSpan(
                   text: '${currentDay.hours![_presenter.currentHourTime].temp}',
                   style: TextStyle(
-                      fontFamily: 'Saira',
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 60,
-                      fontVariations: const [FontVariation('wght', (600))],),
+                    fontFamily: 'Saira',
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 60,
+                    fontVariations: const [FontVariation('wght', (600))],
+                  ),
                 ),
                 TextSpan(
                   text: '°',
@@ -81,7 +84,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                   style: TextStyle(
                       fontFamily: 'Saira',
                       color: Theme.of(context).colorScheme.tertiary,
-                      fontVariations: const  [FontVariation('wght', (400))],
+                      fontVariations: const [FontVariation('wght', (400))],
                       fontSize: 13.5),
                 )
               ]),

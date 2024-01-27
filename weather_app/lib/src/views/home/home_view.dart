@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:developer' as developer;
 import 'dart:ui';
-import 'package:weather_app/presenter/presenter.dart';
-import 'package:weather_app/views/home/daily_view.dart';
-import 'package:weather_app/views/home/header.dart';
-import 'package:weather_app/views/home/current_view.dart';
-import 'package:weather_app/views/drawer/drawer_view.dart';
-import 'package:weather_app/views/widgets/search_view.dart';
+import 'package:weather_app/src/presenter/presenter.dart';
+import 'package:weather_app/src/views/home/daily_view.dart';
+import 'package:weather_app/src/views/home/header.dart';
+import 'package:weather_app/src/views/home/current_view.dart';
+import 'package:weather_app/src/views/drawer/drawer_view.dart';
+import 'package:weather_app/src/views/widgets/search_view.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

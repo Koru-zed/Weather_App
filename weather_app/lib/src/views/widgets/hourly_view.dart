@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/presenter/presenter.dart';
+import 'package:weather_app/src/presenter/presenter.dart';
 import 'dart:ui';
 import 'package:get/get.dart';
-import 'package:weather_app/models/weather_data/day.dart';
+import 'package:weather_app/src/models/weather_data/day.dart';
 
 class HourlyWeather extends StatefulWidget {
   final String text;

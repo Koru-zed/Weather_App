@@ -7,10 +7,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
-import 'package:weather_app/presenter/theme_controller.dart';
-import 'package:weather_app/models/city_service.dart';
-import 'package:weather_app/models/geonames.dart';
-import 'package:weather_app/models/weather_data/weather_data.dart';
+import 'package:weather_app/src/presenter/theme_controller.dart';
+import 'package:weather_app/src/models/city_service.dart';
+import 'package:weather_app/src/models/geonames.dart';
+import 'package:weather_app/src/models/weather_data/weather_data.dart';
 
 class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   // Check Conection
@@ -240,7 +240,8 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
       weatherData.value.address!.value =
           await cityService.searchCitiesByLatLog(lat, log);
     }
-    weatherData.value.updateUnits(weatherData.value.units[unit.value], weatherData.value.units[0]);
+    weatherData.value.updateUnits(
+        weatherData.value.units[unit.value], weatherData.value.units[0]);
     isLoading.value = false;
     return Future.delayed(const Duration(seconds: 0));
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather_app/presenter/presenter.dart';
-import 'package:weather_app/views/home/change_unit_view.dart';
+import 'package:weather_app/src/presenter/presenter.dart';
+import 'package:weather_app/src/views/home/change_unit_view.dart';
 import 'dart:ui';
 
 //
@@ -41,7 +41,10 @@ class _HeaderState extends State<Header> {
                   child: Image.asset(height: 30, 'assets/icons/menu.png'))),
         ),
         Container(
-          margin: const EdgeInsets.only(left: 20,right: 10,),
+          margin: const EdgeInsets.only(
+            left: 20,
+            right: 10,
+          ),
           alignment: Alignment.topLeft,
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [

@@ -1,10 +1,10 @@
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather_app/presenter/presenter.dart';
+import 'package:weather_app/src/presenter/presenter.dart';
 import 'dart:ui';
-import 'package:weather_app/views/widgets/hourly_view.dart';
-import 'package:weather_app/views/widgets/more_detail.dart';
+import 'package:weather_app/src/views/widgets/hourly_view.dart';
+import 'package:weather_app/src/views/widgets/more_detail.dart';
 
 class DetailOfDay extends StatefulWidget {
   const DetailOfDay({Key? key}) : super(key: key);
@@ -83,8 +83,10 @@ class _DetailOfDayState extends State<DetailOfDay> {
                     margin: const EdgeInsets.only(top: 6, bottom: 6),
                     child: Text(
                       '${(_presenter.weatherData.value.days![index].tempmax!.value)}° / ${_presenter.weatherData.value.days![index].tempmin!.value}°',
-                      style:
-                          const TextStyle(fontSize: 25, fontVariations: [FontVariation('wght', (600))],),
+                      style: const TextStyle(
+                        fontSize: 25,
+                        fontVariations: [FontVariation('wght', (600))],
+                      ),
                     ),
                   )
                 ]),
@@ -98,14 +100,17 @@ class _DetailOfDayState extends State<DetailOfDay> {
                       Text(
                         '${_presenter.weatherData.value.days![index].nameday}',
                         style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontSize: 20.5,
-                            fontVariations: const [FontVariation('wght', (600))],),
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontSize: 20.5,
+                          fontVariations: const [FontVariation('wght', (600))],
+                        ),
                       ),
                       Text(
                         '${_presenter.weatherData.value.days![index].datetime}',
                         style: const TextStyle(
-                            fontSize: 13.5, fontVariations:[FontVariation('wght', (600))],),
+                          fontSize: 13.5,
+                          fontVariations: [FontVariation('wght', (600))],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 30.0),
@@ -113,9 +118,12 @@ class _DetailOfDayState extends State<DetailOfDay> {
                           _presenter.weatherData.value.days![index].icon!.value
                               .replaceAll('-', ' '),
                           style: TextStyle(
-                              color: Theme.of(context).colorScheme.tertiary,
-                              fontSize: 17,
-                              fontVariations: const [FontVariation('wght', (500))],),
+                            color: Theme.of(context).colorScheme.tertiary,
+                            fontSize: 17,
+                            fontVariations: const [
+                              FontVariation('wght', (500))
+                            ],
+                          ),
                         ),
                       ),
                     ]),

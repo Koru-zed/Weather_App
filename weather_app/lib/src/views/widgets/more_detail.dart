@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/models/weather_data/day.dart';
+import 'package:weather_app/src/models/weather_data/day.dart';
 import 'package:get/get.dart';
 import 'dart:ui';
-import 'package:weather_app/presenter/presenter.dart';
-// import 'package:weather_app/views/hourly_view.dart';
+import 'package:weather_app/src/presenter/presenter.dart';
+// import 'package:weather_app/src/views/hourly_view.dart';
 
 class MoreDetail extends StatefulWidget {
   final int indexDay;
@@ -94,7 +94,10 @@ class _MoreDetailState extends State<MoreDetail> {
           () => Column(
             children: [
               Tooltip(
-                textStyle: const TextStyle(fontVariations: [FontVariation('wght', (400))], color: Colors.black,),
+                textStyle: const TextStyle(
+                  fontVariations: [FontVariation('wght', (400))],
+                  color: Colors.black,
+                ),
                 message: items[index],
                 child: Container(
                   height: 50,

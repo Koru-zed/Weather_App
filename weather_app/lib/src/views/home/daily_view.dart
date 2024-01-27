@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather_app/presenter/presenter.dart';
-import 'package:weather_app/models/weather_data/day.dart';
+import 'package:weather_app/src/presenter/presenter.dart';
+import 'package:weather_app/src/models/weather_data/day.dart';
 
 class DailyWeather extends StatefulWidget {
   final double containerHeight;
@@ -23,7 +23,8 @@ class _DailyWeatherState extends State<DailyWeather> {
 
     // Calculate the target offset to center the element, but ensure that the last
     // element is fully visible at the bottom
-    double targetOffset = (index * itemHeight) - widget.containerHeight / 2 - 20;
+    double targetOffset =
+        (index * itemHeight) - widget.containerHeight / 2 - 20;
     targetOffset = targetOffset.clamp(0, maxScrollExtent);
 
     // Scroll to make the element visible and centered
