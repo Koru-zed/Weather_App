@@ -56,9 +56,7 @@ The Weather App is a mobile application built using Flutter. It provides users w
 ## Contributing
 
 Feel free to contribute to the project by opening issues, submitting pull requests, or suggesting enhancements. For major changes, please open an issue first to discuss what you would like to change.
-<div align="center" >
-   <video width="500" controls>
-     <source src="https://github.com/Koru-zed/Weather_App/assets/97313235/5d774192-71dc-474b-a591-e2db0dc8554f" type="video/mov">
-   </video>
-</div>
+<br>
+   https://github.com/Koru-zed/Weather_App/assets/97313235/5d774192-71dc-474b-a591-e2db0dc8554f
+</br>
 
