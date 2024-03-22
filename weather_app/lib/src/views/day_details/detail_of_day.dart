@@ -1,8 +1,8 @@
-import 'dart:developer' as developer;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:weather_app/src/presenter/presenter.dart';
-import 'dart:ui';
 import 'package:weather_app/src/views/widgets/hourly_view.dart';
 import 'package:weather_app/src/views/widgets/more_detail.dart';
 
@@ -22,8 +22,6 @@ class _DetailOfDayState extends State<DetailOfDay> {
     double width = _presenter.width.value > 600 ? 600 : _presenter.width.value;
     double maxOffset = 24 * (64 + 12) - width;
     double middelWidth = width / 2;
-
-    developer.log('index : $index');
 
     return Scaffold(
         body: Column(
@@ -57,42 +55,44 @@ class _DetailOfDayState extends State<DetailOfDay> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.only(left: 40, right: 40),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                      bottomRight: Radius.circular(30),
-                      topRight: Radius.circular(30)),
-                  color:
-                      Theme.of(context).colorScheme.secondary.withOpacity(0.4),
-                ),
-                child: Column(children: [
-                  Container(
-                      padding: const EdgeInsets.only(bottom: 12, top: 6),
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  width: 2,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .background))),
-                      child: Image.asset(
-                          'assets/weather/${_presenter.weatherData.value.days![index].icon}.png')),
-                  Container(
-                    height: 40,
-                    margin: const EdgeInsets.only(top: 6, bottom: 6),
-                    child: Text(
-                      '${(_presenter.weatherData.value.days![index].tempmax!.value)}° / ${_presenter.weatherData.value.days![index].tempmin!.value}°',
-                      style: const TextStyle(
-                        fontSize: 25,
-                        fontVariations: [FontVariation('wght', (600))],
+              Flexible(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.06),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        bottomRight: Radius.circular(30),
+                        topRight: Radius.circular(30)),
+                    color:
+                        Theme.of(context).colorScheme.secondary.withOpacity(0.4),
+                  ),
+                  child: Column(children: [
+                    Container(
+                        padding: const EdgeInsets.only(bottom: 12, top: 6),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    width: 2,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background))),
+                        child: Image.asset(
+                            'assets/weather/${_presenter.weatherData.value.days![index].icon}.png')),
+                    Container(
+                      height: 40,
+                      margin: const EdgeInsets.only(top: 6, bottom: 6),
+                      child: Text(
+                        '${(_presenter.weatherData.value.days![index].tempmax!.value)}° / ${_presenter.weatherData.value.days![index].tempmin!.value}°',
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontVariations: [FontVariation('wght', (600))],
+                        ),
                       ),
-                    ),
-                  )
-                ]),
+                    )
+                  ]),
+                ),
               ),
               SizedBox(
-                width: 154,
+                width: MediaQuery.of(context).size.width * 0.4,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -119,7 +119,7 @@ class _DetailOfDayState extends State<DetailOfDay> {
                               .replaceAll('-', ' '),
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.tertiary,
-                            fontSize: 17,
+                            fontSize: 16,
                             fontVariations: const [
                               FontVariation('wght', (500))
                             ],

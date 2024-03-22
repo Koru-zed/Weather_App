@@ -22,7 +22,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    developer.log('1 -isConnect : ${_presenter.isConnect.value}');
   }
 
   Future<void> onRefresh() {
@@ -57,11 +56,12 @@ class _HomeState extends State<Home> {
   }
 
   Widget checkData() {
-    developer.log('2 -isConnect : ${_presenter.isConnect.value}');
-
     Widget widget = const Center(
       child: CircularProgressIndicator(color: Colors.blue),
     );
+    if (_presenter.LocalData.value == true) {
+      widget = _buildContent();
+    }
     if (_presenter.isEnable.isFalse) {
       widget = Center(
         child: Container(
@@ -85,7 +85,8 @@ class _HomeState extends State<Home> {
         ),
       );
     }
-    if (_presenter.isConnect.value == false) {
+    if (_presenter.isConnect.value == false &&
+        _presenter.LocalData.value == false) {
       widget = Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -127,30 +128,33 @@ class _HomeState extends State<Home> {
           maxWidth: 600.0,
           maxHeight: maxHeight,
         ),
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: SizedBox(
-            height: maxHeight,
-            width: _presenter.width.value,
-            child: Column(
-              children: [
-                const Header(),
-                Expanded(
-                  child: ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    children: [
-                      const CurrentWeather(),
-                      _presenter.showMore.isFalse
-                          ? const SizedBox(
-                              height: 300,
-                              child: DailyWeather(
-                                containerHeight: 300,
-                              ))
-                          : Container(),
-                    ],
+        child: ScrollConfiguration(
+          behavior: const ScrollBehavior().copyWith(scrollbars: false),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: SizedBox(
+              height: maxHeight,
+              width: _presenter.width.value,
+              child: Column(
+                children: [
+                  const Header(),
+                  Expanded(
+                    child: ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [
+                        const CurrentWeather(),
+                        _presenter.showMore.isFalse
+                            ? const SizedBox(
+                                height: 300,
+                                child: DailyWeather(
+                                  containerHeight: 300,
+                                ))
+                            : Container(),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

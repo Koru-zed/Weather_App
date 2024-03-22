@@ -33,7 +33,7 @@ class CityService {
       }
     } catch (e) {
       return List<
-          Geoname>.empty(); // Return an empty list or handle it accordingly
+          Geoname>.empty(); 
     }
   }
 

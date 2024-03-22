@@ -37,12 +37,10 @@ class _DailyWeatherState extends State<DailyWeather> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToCenteredElement(_presenter.weatherData.value
           .getIndexofDay(_presenter.currentTime.value));
-      // _scrollToCenteredElement(_index);
     });
   }
 
@@ -107,7 +105,7 @@ class _DailyWeatherState extends State<DailyWeather> {
                                 Text(
                                   '${day.nameday}',
                                   style: const TextStyle(
-                                    fontVariations: const [
+                                    fontVariations: [
                                       FontVariation('wght', (600))
                                     ],
                                   ),

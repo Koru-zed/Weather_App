@@ -16,7 +16,7 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   // Check Conection
   final RxBool isConnect = true.obs;
   final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
 
   // Storage
   final GetStorage box = GetStorage();
@@ -25,6 +25,7 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
   Timer? _hourlyTimer;
 
   final RxBool isLoading = true.obs;
+  final RxBool LocalData = false.obs;
   final RxBool isEnable = true.obs;
   final RxBool changeCity = false.obs;
   final RxBool isDark = false.obs;
@@ -77,18 +78,18 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
     super.onClose();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      // Save user data only when the app is paused (closed)
-      saveWeatherData();
-    }
-    // TODO: implement didChangeAppLifecycleState
-    super.didChangeAppLifecycleState(state);
-  }
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.paused) {
+  //     // Save user data only when the app is paused (closed)
+  //     saveWeatherData();
+  //   }
+  //   // TODO: implement didChangeAppLifecycleState
+  //   super.didChangeAppLifecycleState(state);
+  // }
 
   Future<void> initConnectivity() async {
-    late ConnectivityResult result;
+    late List<ConnectivityResult> result;
     try {
       result = await _connectivity.checkConnectivity();
       isConnect.value = checkConnection(result);
@@ -127,18 +128,19 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
         };
 
   // Check Connection
-  bool checkConnection(ConnectivityResult connectivityResult) {
-    if (connectivityResult == ConnectivityResult.none ||
-        connectivityResult == ConnectivityResult.bluetooth) {
-      return false;
+  bool checkConnection(List<ConnectivityResult> connectivityResult) {
+    if (connectivityResult.contains(ConnectivityResult.mobile) ||
+        connectivityResult.contains(ConnectivityResult.wifi)) {
+      return true;
     }
-    return true;
+    return false;
   }
 
   // Save Weather Data
   void saveWeatherData() {
     box.write('weatherData', weatherData.value.toJson());
-    developer.log('save Data');
+    LocalData.value = true;
+    // developer.log('save Data');
   }
 
   // Load Weather Data
@@ -151,6 +153,7 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
         return false;
       }
       isLoading.value = false;
+      LocalData.value = true;
       return true;
     }
     return false;
@@ -194,6 +197,7 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
               desiredAccuracy: LocationAccuracy.high)
           .then((value) {
         fetchData(value.latitude, value.longitude);
+        saveWeatherData();
       });
     } catch (e) {
       isEnable.value = false;
@@ -208,6 +212,7 @@ class GlobalPresenter extends GetxController with WidgetsBindingObserver {
       weatherData.value.address!.value = newcity.value.name![0].toUpperCase() +
           newcity.value.name!.substring(1);
       changeCity.value = false;
+      saveWeatherData();
     }
   }
 

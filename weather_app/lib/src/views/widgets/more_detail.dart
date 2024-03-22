@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/src/models/weather_data/day.dart';
 import 'package:get/get.dart';
-import 'dart:ui';
 import 'package:weather_app/src/presenter/presenter.dart';
-// import 'package:weather_app/src/views/hourly_view.dart';
 
 class MoreDetail extends StatefulWidget {
   final int indexDay;
@@ -17,7 +15,7 @@ class MoreDetail extends StatefulWidget {
 
 class _MoreDetailState extends State<MoreDetail> {
   final GlobalPresenter _presenter = Get.put(GlobalPresenter());
-  final items = <String>[
+  static const items = <String>[
     'cloudcover',
     'precipprob',
     'humidity',
@@ -31,7 +29,6 @@ class _MoreDetailState extends State<MoreDetail> {
     'solarradiation',
     'solarenergy',
   ];
-  // bool showMore = _presenter
 
   @override
   Widget build(BuildContext context) {
@@ -80,50 +77,53 @@ class _MoreDetailState extends State<MoreDetail> {
   }
 
   Widget detail() {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisExtent: _presenter.showMore.isTrue ? 100 : 80,
+    return ScrollConfiguration(
+      behavior: const ScrollBehavior().copyWith(scrollbars: false),
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          mainAxisExtent: _presenter.showMore.isTrue ? 100 : 80,
+        ),
+        itemCount: widget.showMore || _presenter.showMore.isTrue ? 12 : 3,
+        physics: _presenter.showMore.isTrue
+            ? const BouncingScrollPhysics()
+            : const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          return Obx(
+            () => Column(
+              children: [
+                Tooltip(
+                  textStyle: const TextStyle(
+                    fontVariations: [FontVariation('wght', (400))],
+                    color: Colors.black,
+                  ),
+                  message: items[index],
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .tertiary
+                          .withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Image.asset(
+                      'assets/icons/${items[index]}.${items[index] == 'moonphase' ? 'gif' : 'png'}',
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                getDetail(items[index],
+                    _presenter.weatherData.value.days![widget.indexDay]),
+              ],
+            ),
+          );
+        },
       ),
-      itemCount: widget.showMore || _presenter.showMore.isTrue ? 12 : 3,
-      physics: _presenter.showMore.isTrue
-          ? const BouncingScrollPhysics()
-          : const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        return Obx(
-          () => Column(
-            children: [
-              Tooltip(
-                textStyle: const TextStyle(
-                  fontVariations: [FontVariation('wght', (400))],
-                  color: Colors.black,
-                ),
-                message: items[index],
-                child: Container(
-                  height: 50,
-                  width: 50,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .tertiary
-                        .withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Image.asset(
-                    'assets/icons/${items[index]}.${items[index] == 'moonphase' ? 'gif' : 'png'}',
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              getDetail(items[index],
-                  _presenter.weatherData.value.days![widget.indexDay]),
-            ],
-          ),
-        );
-      },
     );
   }
 
