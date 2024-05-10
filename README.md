@@ -31,7 +31,7 @@ The Weather App is a mobile application built using Flutter. It provides users w
 
 1. **Clone the Repository:**
     ```bash
-    git clone https://github.com/your-username/weather-app.git
+    git clone https://github.com/Koru-zed/weather-app.git
     ```
 
 2. **Navigate to the Project Directory:**
